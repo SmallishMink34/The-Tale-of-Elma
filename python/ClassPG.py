@@ -21,21 +21,21 @@ class game:
         self.running = True
 
         # Image de fond
-        self.fond = pygame.image.load('image/background.png')
-        self.fond = pygame.transform.scale(self.fond, size)
+        self.fond = img('img/menu/background.jpg', 0, 0, size[0], size[1])
 
         # Vitesse du jeux
         self.clock = pygame.time.Clock()
         self.tick = tick
 
+        # Element du jeux a blit
+        self.ielement = []
+
         # Touche
         self.pressed = {}
 
-    def gameloop(self, screen):
+    def gameloop(self):
         """Fonction de la boucle de jeu"""
         self.clock.tick(self.tick)  # Vitesse du jeux
-
-        self.iblitall(screen)
 
     def eventpy(self):
         for event in pygame.event.get():  # parcours de tous les event pygame dans cette fenêtre
@@ -48,11 +48,14 @@ class game:
             if event.type == pygame.KEYUP:
                 self.pressed[event.key] = False
 
-    def iblitall(self, screen):
+    def iblitall(self):
         """Fonction pour 'blit' les éléments sur l'écran"""
 
         # Fond
-        screen.blit(self.fond, (0, 0))
+        self.fond.iblit(self.screen)
+
+        for i in self.ielement:
+            i.iblit(self.screen)
 
         # Actualisation des éléments sur l'écran
         pygame.display.flip()
@@ -61,7 +64,7 @@ class game:
 class Texte:
     """Class qui permet de créer des textes """
 
-    def __init__(self, texte, x, y, center, color=(255, 255, 255), size=32, font='font/Like Snow.otf'):
+    def __init__(self, texte, x, y, center:bool, color=(255, 255, 255), size=32, font='font/Like Snow.otf'):
         self.texte = texte
         self.x = x
         self.y = y
@@ -71,14 +74,14 @@ class Texte:
 
         self.iupdate(self.texte)
 
-        if center == 'center':  # Detecte si on veut que les coordonées sois centré ou non
+        if center:  # Detecte si on veut que les coordonées sois centré ou non
             self.rect.centerx, self.rect.centery = x, y
         else:
             self.rect.x, self.rect.y = x, y
 
     def iupdate(self, texte, color=(255, 255, 255)):
         self.txt = self.font.render(str(texte), True, color)
-        self.rect = self.texte.get_rect()
+        self.rect = self.txt.get_rect()
 
     def ihover(self, mousepos, color=(128, 255, 0)):
         """Detection du survol de la souris"""
@@ -96,7 +99,7 @@ class Texte:
 
     def iblit(self, screen):
         """Affichage du texte"""
-        screen.blit(self.texte, self.rect)
+        screen.blit(self.txt, self.rect)
 
 
 class bouton:
