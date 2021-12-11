@@ -61,7 +61,7 @@ class game:
 class Texte:
     """Class qui permet de créer des textes """
 
-    def __init__(self, texte, x, y, center, color=(255, 255, 255), size=32, font='font/font.ttf'):
+    def __init__(self, texte, x, y, center, color=(255, 255, 255), size=32, font='font/Like Snow.otf'):
         self.texte = texte
         self.x = x
         self.y = y
