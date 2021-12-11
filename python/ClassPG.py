@@ -1,6 +1,8 @@
 import pygame
 import sys
 
+from pygame.constants import FULLSCREEN
+
 
 ##=====================================================##
 #	Fichier Python pour gerer les élements de pygame	#
@@ -9,13 +11,18 @@ import sys
 class game:
     """Class qui gere la fenetre """
 
-    def __init__(self, name, size, tick):
+    def __init__(self, name, size, tick, fullscreen=None):
         # Lancement de pygame
         pygame.init()
 
         # Création de la fenetre de jeux
-        self.screen = pygame.display.set_mode(size)
+        if fullscreen is None:
+            self.screen = pygame.display.set_mode(size)
+        else:
+            self.screen = pygame.display.set_mode((0,0), FULLSCREEN)
         pygame.display.set_caption(name)  # Choix du nom
+
+        self.w, self.h = self.screen.get_size()
 
         # Variable boolean Boucle de jeux
         self.running = True
@@ -28,6 +35,7 @@ class game:
         self.tick = tick
 
         # Element du jeux a blit
+        self.telement = []
         self.ielement = []
 
         # Touche
@@ -39,6 +47,7 @@ class game:
 
     def eventpy(self):
         for event in pygame.event.get():  # parcours de tous les event pygame dans cette fenêtre
+            x, y = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:  # si l'événement est le clic sur la fermeture de la fenêtre
                 sys.exit()
             # gestion du clavier
@@ -47,6 +56,9 @@ class game:
                 self.pressed[event.key] = True
             if event.type == pygame.KEYUP:
                 self.pressed[event.key] = False
+            for i in self.telement:
+                if i.click((x, y), event):
+                    print('button click '+str(i.texte))
 
     def iblitall(self):
         """Fonction pour 'blit' les éléments sur l'écran"""
@@ -57,6 +69,9 @@ class game:
         for i in self.ielement:
             i.iblit(self.screen)
 
+        for i in self.telement:
+            i.iblit(self.screen)
+
         # Actualisation des éléments sur l'écran
         pygame.display.flip()
 
@@ -64,11 +79,12 @@ class game:
 class Texte:
     """Class qui permet de créer des textes """
 
-    def __init__(self, texte, x, y, center:bool, color=(255, 255, 255), size=32, font='font/Like Snow.otf'):
+    def __init__(self, texte, x, y, center:bool, color=(255, 255, 255), size=32, colorhover=(128,255,0),font='font/Like Snow.otf'):
         self.texte = texte
         self.x = x
         self.y = y
         self.color = color
+        self.hcolor = colorhover
         self.size = size
         self.font = pygame.font.Font(font, self.size)
 
@@ -83,12 +99,12 @@ class Texte:
         self.txt = self.font.render(str(texte), True, color)
         self.rect = self.txt.get_rect()
 
-    def ihover(self, mousepos, color=(128, 255, 0)):
+    def ihover(self, mousepos, color=(128,255,0)):
         """Detection du survol de la souris"""
         if self.rect.collidepoint(mousepos):
-            self.texte = self.font.render(str(self.texte), True, color)
+            self.txt = self.font.render(str(self.texte), True, self.hcolor)
         else:
-            self.texte = self.font.render(str(self.texte), True, self.color)
+            self.txt = self.font.render(str(self.texte), True, self.color)
 
     def click(self, mousepos, event):
         """Detection du click de la souris et du survol"""
