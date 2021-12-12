@@ -9,20 +9,18 @@ def gaming():
 
     d = {}
 
-    map = []
     sizemap = 100
-    for i2 in range(sizemap):
-        for i3 in range(sizemap):
-            pass
 
-    map += world.Genlist(sizemap, sizemap, False)
+    worlde = world.Terrain()
 
+    map = worlde.GenerateTerrain()
+    print(map)
     print(len(map))
 
     tile = pygame.sprite.Group()
 
     for row in map:
-        d[str(row[1])] = world.tiles(f"../img/tile/bloc/tile_{str(row[1])}.png", row[0][0]*16,  row[0][1]*16)
+        d[str(row[1])] = world.tiles(f"../img/tile/bloc/tile_{str(row[1])}.png", row[0][0]*8+100,  row[0][1]*8+100)
         tile.add(d[str(row[1])])
 
     while game.running:
