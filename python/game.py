@@ -8,24 +8,29 @@ def gaming():
     game = ClassPG.game("Ingame", (1280,720), 60)
 
     d = {}
-    for i in range(1, 4):
-        d[i] = world.tiles(f"img/tile/bloc/tile_{i}.png")
-    
+
     map = []
-    for i2 in range(3):
-        print(map)
-        for i3 in range(3):
-            map += world.generate_chunk(i2, i3)
-    print(map[1])
+    sizemap = 100
+    for i2 in range(sizemap):
+        for i3 in range(sizemap):
+            pass
+
+    map += world.Genlist(sizemap, sizemap, False)
+
+    print(len(map))
+
+    tile = pygame.sprite.Group()
+
+    for row in map:
+        d[str(row[1])] = world.tiles(f"../img/tile/bloc/tile_{str(row[1])}.png", row[0][0]*16,  row[0][1]*16)
+        tile.add(d[str(row[1])])
+
     while game.running:
         game.gameloop()
 
-        for row in map:
-            d[row[1]].setcoord(row[0][0]*48,row[0][1]*48)
-            d[row[1]].iblit(game.screen)
+        tile.draw(game.screen)
 
         game.eventpy()
-
         
         pygame.display.update()
 
