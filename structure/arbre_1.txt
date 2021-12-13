@@ -1,0 +1,7 @@
+air,leaves,leaves,leaves,air
+air,leaves,leaves,leaves,air
+leaves,leaves,leaves,leaves,leaves
+leaves,leaves,leaves,leaves,leaves
+air,air,trunk_mid,air,air
+air,air,trunk_mid,air,air
+air,air,trunk_bottom,air,air

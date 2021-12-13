@@ -31,7 +31,7 @@ class Terrain:
 		self.CaveFreq = 0.08
 		self.TerrainFreq = 0.02
 		self.heightmultiplier = 25
-		self.heightaddtion = 25
+		self.heightaddtion = 40
 
 		self.treechance = 10
 
@@ -103,7 +103,6 @@ class Terrain:
 
 					if self.tree == 1 :
 						# Generation d'un arbre
-						print(self.map[0][0][1])
 						if self.map[x][y][1] == 'grass':
 							self.GenerateTree(x, y + 1)
 
@@ -117,11 +116,37 @@ class Terrain:
 	def PlaceTile(self, x, y, element):
 		self.ligne += [[[x, -y], element]]
 
+	def ReplaceTile(self, x, y, element):
+		for i in range(len(self.ligne)):
+			if self.ligne[i][0][1] == -y:
+				self.ligne[i] = [[x, -y], element]
+				print('Replace Element At ', self.ligne[i])
+
 	def GenerateTree(self, x, y):
-		self.PlaceTile(x, y, 'trunk_bottom')
-		self.PlaceTile(x, y+1, 'trunk_mid')
-		self.PlaceTile(x, y+2, 'trunk_mid')
-		self.PlaceTile(x, y+3, 'trunk_side')
-		self.PlaceTile(x-1, y + 3, 'leaves')
-		self.PlaceTile(x , y + 4, 'leaves')
-		self.PlaceTile(x + 1, y + 3, 'leaves')
+		'''tree_file = open('../structure/arbre_1.txt', 'r')
+		tree_list = tree_file.readlines()
+		tree_file.close()
+
+		for element in range(len(tree_list)):
+			tree_list[element] = tree_list[element].strip().split(',')
+
+
+		x2 = -round(len(tree_list[0]) / 2)
+		i = 0
+		y2 = -len(tree_list)+1
+		for row in tree_list:
+			for column in row:
+				print(x2, y2)
+				self.ReplaceTile(x-x2, y-y2, 'stone')
+				x2+=1
+				i+= 1
+			y-=1
+			x2= -round(len(tree_list[x2]) / 2)
+			i = 0'''
+		self.ReplaceTile(x, y, 'trunk_bottom')
+		self.ReplaceTile(x, y+1, 'trunk_mid')
+		self.ReplaceTile(x, y+2, 'trunk_mid')
+		self.ReplaceTile(x, y+3, 'trunk_mid')
+		self.ReplaceTile(x+1, y+3, 'leaves')
+		self.ReplaceTile(x, y+4, 'leaves')
+		self.ReplaceTile(x-1, y+3, 'leaves')

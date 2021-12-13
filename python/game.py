@@ -17,7 +17,6 @@ def gaming():
 
     map = worlde.GenerateTerrain()
 
-    print(map)
     tile = pygame.sprite.Group()
 
     for column in map:
@@ -38,6 +37,9 @@ def gaming():
             x, y = pygame.mouse.get_pos()
             for i in tile:
                 if i.rect.collidepoint(x, y):
-                    print(i)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        print(i)
+                        worlde.PlaceTile(i.rect.x, i.rect.y, 'stone')
+
         pygame.display.update()
 gaming()
