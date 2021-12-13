@@ -22,6 +22,7 @@ class game:
             self.screen = pygame.display.set_mode((0,0), FULLSCREEN)
         pygame.display.set_caption(name)  # Choix du nom
 
+
         self.w, self.h = self.screen.get_size()
 
         # Variable boolean Boucle de jeux
