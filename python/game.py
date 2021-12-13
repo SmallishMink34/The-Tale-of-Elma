@@ -20,7 +20,7 @@ def gaming():
     tile = pygame.sprite.Group()
 
     for row in map:
-        d[str(row[1])] = world.tiles(f"../img/tile/bloc/tile_{str(row[1])}.png", row[0][0]*8+100,  row[0][1]*8+100)
+        d[str(row[1])] = world.tiles(f"../img/tile/bloc/PNG/Tiles/tile_{str(row[1])}.png", row[0][0]*8+10,  row[0][1]*8+500)
         tile.add(d[str(row[1])])
 
     while game.running:

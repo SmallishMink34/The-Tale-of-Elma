@@ -21,30 +21,36 @@ class tiles(pygame.sprite.Sprite):
 
 class Terrain:
 	def __init__(self):
-		self.seed = 2004
-		self.worldsize = 100
-		self.noiseFreq = 0.05
+
+		self.dirtlayerheight = 5
+		self.surfaceValue = -0.225
+
+		self.generateCave = True
+		self.seed = random.randint(-10000, 10000)
+		self.worldsize = 150
+		self.CaveFreq = 0.08
+		self.TerrainFreq = 0.02
+		self.heightmultiplier = 25
+		self.heightaddtion = 25
+
+		self.treechance = 10
+
 		self.width = 1200
 		self.height = 800
-		self.heightmultiplier = 80
+		self.map = []
+
 
 	def generate(self):
 		pass
 
 	def GenerateNoiseTexture(self):
-		noise1 = PerlinNoise(octaves=3, seed=self.seed)
-		noise2 = PerlinNoise(octaves=6, seed=self.seed)
-		noise3 = PerlinNoise(octaves=12, seed=self.seed)
-		noise4 = PerlinNoise(octaves=24, seed=self.seed)
 		pic = []
 		for i in range(self.worldsize):
 			row = []
 			for j in range(self.worldsize):
-				noise_val = noise1([i / self.worldsize, j / self.worldsize])
-				noise_val += 0.5 * noise2([i / self.worldsize, j / self.worldsize])
-				noise_val += 0.25 * noise3([i / self.worldsize, j / self.worldsize])
-				noise_val += 0.125 * noise4([i / self.worldsize, j / self.worldsize])
-
+				noise_val = noise.pnoise2((i + self.seed) * self.CaveFreq, (j + self.seed) * self.CaveFreq, 2, 0.5, 2,
+										  1024, 1024)
+				print(noise_val)
 				row.append(noise_val)
 			pic.append(row)
 		print('Gen noise finished')
@@ -53,21 +59,51 @@ class Terrain:
 	def GenerateTerrain(self):
 		x = 0
 		noiseeffet = self.GenerateNoiseTexture()
-		map = []
 		while x < self.worldsize:
 			y = 0
-			height = PerlinNoise(octaves=4.8, seed=self.seed)
-			height_val = abs(height([(x + self.seed) * self.noiseFreq, self.seed * self.noiseFreq]) * self.heightmultiplier)
-			print(height_val)
-			while y < height_val:
-				map += [[[x, y], 1]]
-				'''if noiseeffet[x][y] < 0.05:
-					pass
+			height = noise.pnoise2((x + self.seed) * self.TerrainFreq, self.seed * self.TerrainFreq, 2, 0.5, 2, 1024,
+								   1024) * self.heightmultiplier + self.heightaddtion
+			while y < height:
+				if (y < height - self.dirtlayerheight + random.randint(-1, 1)):
+					element = 'stone'
+				elif y < height - 1:
+					element = 'dirt'
 				else:
-					pass
-					map += [[[x, y], 0]]'''
+					# Generation herbe
+					element = 'grass'
+				if self.generateCave:
+					if noiseeffet[x][y] > self.surfaceValue:
+						self.PlaceTile(x, y, element)
+				else:
+					self.PlaceTile(x, y, element)
 				y += 1
 			x += 1
+
+		while x < self.worldsize:
+			y = 0
+			height = noise.pnoise2((x + self.seed) * self.TerrainFreq, self.seed * self.TerrainFreq, 2, 0.5, 2, 1024,
+								   1024) * self.heightmultiplier + self.heightaddtion
+			while y < height:
+				if (y < height - self.dirtlayerheight + random.randint(-1, 1)):
+					print('couche herbe')
+				elif y < height - 1:
+					print('couche terre')
+				else:
+					# Generation herbe
+					self.tree = random.randint(0, self.treechance)
+
+					if self.tree == 1:
+						# Generation d'un arbre
+						self.GenerateTree(x, y + 1)
+				y += 1
+			x += 1
+
 		print('Gen map Finished')
 
-		return map
+		return self.map
+
+	def PlaceTile(self, x, y, element):
+		self.map += [[[x, -y], element]]
+
+	def GenerateTree(self, x, y):
+		return self.PlaceTile(x, y, 'trunk_bottom')
