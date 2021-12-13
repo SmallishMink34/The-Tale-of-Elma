@@ -1,43 +1,55 @@
 import pygame
+import sys
 import world
 import ClassPG
-import sys
+import ClassPlayer
+from pygame.locals import *
+
+clock = pygame.time.Clock()
+game = ClassPG.game("Ingame", (1280, 720), 60)
+cp = ClassPlayer.Player()
+
+d = {}
+worlde = world.Terrain()
+map = worlde.GenerateTerrain()
+
+tileee = pygame.sprite.Group()
+tile_size = 16
+
+for column in map:
+    for row in column:
+        d[str(row[1])] = world.tiles(str(row[1]), f"../img/tile/bloc/PNG/Tiles/tile_{str(row[1])}.png",
+                                     row[0][0] * tile_size, row[0][1] * tile_size + 800, tile_size)
+
+        tileee.add(d[str(row[1])])
 
 
-def gaming():
+true_scroll = [0,0]
 
-    game = ClassPG.game("Ingame", (1280,720), 60)
 
-    d = {}
 
-    tile_size = 8
-    sizemap = 100
+while game.running: # game loop
 
-    worlde = world.Terrain()
+    game.screen.fill((146, 244, 255))
 
-    map = worlde.GenerateTerrain()
+    game.gameloop()
 
-    print(map)
-    tile = pygame.sprite.Group()
+    tileee.draw(game.screen)
 
-    for column in map:
-        for row in column:
-            d[str(row[1])] = world.tiles(str(row[1]),f"../img/tile/bloc/PNG/Tiles/tile_{str(row[1])}.png", row[0][0]*tile_size,  row[0][1]*tile_size + 500, tile_size)
+    game.screen.blit(cp.player,cp.rect)
 
-            tile.add(d[str(row[1])])
 
-    while game.running:
-        game.gameloop()
+    for event in pygame.event.get(): # event loop
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == KEYDOWN:
+            cp.pressed[event.key] = True
+        if event.type == KEYUP:
+            cp.pressed[event.key] = False
 
-        tile.draw(game.screen)
+    cp.dirrection()
+    cp.move(tileee)
 
-        for event in pygame.event.get():  # parcours de tous les event pygame dans cette fenêtre
-
-            if event.type == pygame.QUIT:  # si l'événement est le clic sur la fermeture de la fenêtre
-                sys.exit()
-            x, y = pygame.mouse.get_pos()
-            for i in tile:
-                if i.rect.collidepoint(x, y):
-                    print(i)
-        pygame.display.update()
+    pygame.display.update()
 gaming()

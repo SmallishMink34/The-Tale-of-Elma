@@ -1,13 +1,18 @@
 import pygame, sys
-from pygame.locals import *  # import pygame modules
+
 
 
 class Player:
     def __init__(self):
-        self.player = pygame.image.load("../img/player/player.png")
+        self.player = pygame.image.load("../img/player/player.png").convert_alpha()
         self.rect = self.player.get_rect()  # self.rect.x
-        self.moving_left = False
-        self.moving_right = False
+        self.rect.x, self.rect.y = 250, 80
+
+        self.pressed = {} # Dico qui retient les touche presser
+        self.movement = [0, 0] #Vitesse x et y
+
+        self.momentum_y = 0 # Vitesse de la chute
+
         self.fall = True
         self.onground = False
         self.collision_types = {'top': False, 'bottom': False, 'right': False, 'left': False}
@@ -15,42 +20,46 @@ class Player:
     def blit(self, screen):
         screen.blit(self.player, self.rect)
 
-    def move(self):
-        for event in pygame.event.get():  # event loop
-            if event.type == KEYDOWN:
-                if event.key == K_RIGHT:
-                    self.moving_right = True
-                if event.key == K_LEFT:
-                    self.moving_left = True
-            if event.type == KEYUP:
-                if event.key == K_RIGHT:
-                    self.moving_right = False
-                if event.key == K_LEFT:
-                    self.moving_left = False
-        if self.moving_right:
-            self.rect.x += 1
-        if self.moving_left:
-            self.rect.x -= 1
+    def dirrection(self):
+        self.movement = [0, 0]
+        if self.pressed.get(pygame.K_d):
+            self.movement[0] += 2
+        if self.pressed.get(pygame.K_q):
+            self.movement[0] -= 2
+        self.movement[1] += self.momentum_y
+        self.momentum_y += 0.2
+        if self.momentum_y > 3:
+            self.momentum_y = 3
 
-    def grav(self):
-        if self.fall:
-            self.rect.y += 1
 
-    def collision(self, element, tile):
-        hit_list = collision_test(rect, tiles)
-        for tile in hit_list:
-            if movement[0] > 0:
-                rect.right = tile.left
-                collision_types['right'] = True
-            elif movement[0] < 0:
-                rect.left = tile.right
-                collision_types['left'] = True
-        hit_list = collision_test(rect, tiles)
-        for tile in hit_list:
-            if movement[1] > 0:
-                rect.bottom = tile.top
-                collision_types['bottom'] = True
-            elif movement[1] < 0:
-                rect.top = tile.bottom
-                collision_types['top'] = True
-        return rect, collision_types
+    def move(self, tiles):
+        self.rect.x += self.movement[0]
+
+        hitlist = self.collision(tiles)
+        for tile in hitlist:
+            if self.movement[0] > 0:
+                self.rect.right = tile.rect.left
+                self.collision_types['right'] = True
+            if self.movement[0] < 0:
+                self.rect.left = tile.rect.right
+                self.collision_types['left'] = True
+
+        self.rect.y += self.movement[1]
+
+        hitlist = self.collision(tiles)
+        for tile in hitlist:
+            if self.movement[1] > 0:
+                self.rect.bottom = tile.rect.top
+                self.collision_types['bottom'] = True
+            if self.movement[1] < 0:
+                self.rect.top = tile.rect.bottom
+                self.collision_types['top'] = True
+
+    def collision(self, tiles):
+        hit = []
+        for tile in tiles:
+            if self.rect.colliderect(tile) and tile.name != 'air':
+                hit.append(tile)
+
+        return hit
+
