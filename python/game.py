@@ -21,17 +21,17 @@ for column in map:
 
         tile.add(d[str(row[1])])
 
-
-
 while game.running:  # game
 
-    display.fill((135,206,235))
+    display.fill((135, 206, 235))
 
     game.gameloop()
 
     tile.draw(display)
 
-    display.blit(cp.player, cp.rect)
+
+
+
 
     for event in pygame.event.get():  # event loop
         if event.type == QUIT:
@@ -45,6 +45,14 @@ while game.running:  # game
     cp.dirrection()
     cp.move(tile)
     cp.jump()
-
+    if cp.cond:
+        if cp.current < 1:
+            cp.anim()
+        else:
+            cp.current = 0
+    if cp.movement[0] > 0:
+        display.blit(pygame.transform.flip(cp.player, True, False), cp.rect)
+    if cp.movement[0] <= 0:
+        display.blit(cp.player, cp.rect)
     game.screen.blit(pygame.transform.scale(display, (1280, 720)), (0, 0))
     pygame.display.update()

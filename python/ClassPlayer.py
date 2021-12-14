@@ -7,7 +7,6 @@ class Player:
         self.rigth = False
         self.left = False
 
-
         self.player = pygame.image.load("../img/player/player.png")
         self.rect = self.player.get_rect()  # self.rect.x
         self.rect.x, self.rect.y = 250, 80
@@ -23,6 +22,16 @@ class Player:
         self.onground = False
         self.collision_types = None
 
+        self.current = 0
+        self.cond = True
+
+        self.run = []
+        for i in range(1, 4):
+            self.run.append(pygame.image.load(f"../img/player/run/{i}.png"))
+
+        self.idle = []
+        for i in range(1, 3):
+            self.idle.append(pygame.image.load(f"../img/player/idle/{i}.png"))
 
     def dirrection(self):
         self.movement = [0, 0]
@@ -80,4 +89,16 @@ class Player:
         return hit
 
     def anim(self):
-        pass
+        print(self.air_time)
+        if self.air_time > 5:
+            self.player = pygame.image.load("../img/player/jump/1.png")
+        if not self.movement[0] == 0:
+            if self.collision_types['bottom']:
+                self.current += 0.50  # ca vas etre un chiffre qui augmente
+                self.player = pygame.transform.scale(self.run[int(self.current)], (16, 32))
+        else:
+            if self.collision_types['bottom']:
+                self.current += 0.05  # ca vas etre un chiffre qui augmente
+                self.player = pygame.transform.scale(self.idle[int(self.current)], (16, 32))
+
+

@@ -26,8 +26,8 @@ class Terrain:
 		self.basevalue = 0
 
 		self.generateCave = True
-		self.seed = 187548 #random.randint(-10000, 10000)
-		self.worldsize = 40
+		self.seed = random.randint(-10000, 10000)
+		self.worldsize = 100
 		self.CaveFreq = 0.08
 		self.TerrainFreq = 0.02
 		self.heightmultiplier = 25
