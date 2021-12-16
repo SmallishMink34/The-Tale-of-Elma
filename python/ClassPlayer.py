@@ -25,6 +25,8 @@ class Player:
         self.current = 0
         self.cond = True
 
+        self.zoomscale = 0.33
+
         self.run = []
         for i in range(1, 4):
             self.run.append(pygame.image.load(f"../img/player/run/{i}.png"))

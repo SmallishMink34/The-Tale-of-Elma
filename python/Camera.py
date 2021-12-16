@@ -16,6 +16,8 @@ class GameCamera(object):
         self.world = world
         self.pos = position
         self.size = size
+        self.zoomscale = 1
+        self.size[0], self.size[1] = self.size[0]*self.zoomscale, self.size[1]*self.zoomscale
         self.rect = pygame.Rect(self.pos, self.size)
         self.surface = pygame.Surface(self.size)
 
@@ -23,6 +25,7 @@ class GameCamera(object):
         self.display_rect = pygame.Rect(display_position, size)
 
         self.on = on
+        
 
     def __str__(self):
         return 'GameCamera: %s, size: %s, tracking: %s' % \
@@ -102,7 +105,7 @@ class GameCamera(object):
         self.focus()
         self.get_frame()
         
-        screen.blit(self.surface, (30,50))
+        screen.blit(pygame.transform.scale(self.surface, (self.size[0]*self.zoomscale, self.size[1]*self.zoomscale)), (0, 0))
 
     def turn_on(self):
         """Turn the camera on."""
@@ -116,9 +119,11 @@ class GameCamera(object):
         """Toggle the camera's state - on and off."""
         self.on = False if self.on else True
 
-    def zoom(self):
+    def zoom(self, zoom):
         #self.world.rect = pygame.transform.scale(self.world.rect, (1280, 720))
-        pass
+        self.zoomscale = zoom
+        
+
 class World():
     def __init__(self, rect, surface, object):
         self.rect = rect

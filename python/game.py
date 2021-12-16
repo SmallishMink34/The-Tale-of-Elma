@@ -8,6 +8,9 @@ import Camera
 
 clock = pygame.time.Clock()
 game = ClassPG.game("Ingame", (1280, 720), 60)
+
+display_w, display_h = 1280, 720
+
 display = pygame.Surface((1280, 720))
 cp = ClassPlayer.Player()
 d = {}
@@ -23,9 +26,9 @@ for column in map:
         tile.add(d[str(row[1])])
 
 world = Camera.World(pygame.Rect(0,0,1280,720), game.screen, [cp])
-camera = Camera.GameCamera((1280, 720), world, (0,0))
+camera = Camera.GameCamera([display_w*cp.zoomscale, display_h*cp.zoomscale], world, (0,0))
 camera.turn_on()
-camera.zoom()
+camera.zoom(1/cp.zoomscale)
 camera.track(cp.rect)
 while game.running:  # game
 
@@ -36,9 +39,6 @@ while game.running:  # game
     tile.draw(display)
 
 
-
-
-
     for event in pygame.event.get():  # event loop
         if event.type == QUIT:
             pygame.quit()
@@ -47,6 +47,12 @@ while game.running:  # game
             cp.pressed[event.key] = True
         if event.type == KEYUP:
             cp.pressed[event.key] = False
+        
+        if event.type == MOUSEBUTTONDOWN:
+            cp.zoomscale = 0.5
+            camera = Camera.GameCamera([display_w*cp.zoomscale, display_h*cp.zoomscale], world, (0,0))
+            camera.zoom(1/cp.zoomscale)
+            camera.track(cp.rect)
 
     cp.dirrection()
     cp.move(tile)
@@ -69,7 +75,7 @@ while game.running:  # game
             display.blit(pygame.transform.flip(cp.player, True, False), cp.rect)
         else:
             display.blit(cp.player, cp.rect)
-    game.screen.blit(pygame.transform.scale(display, (1280, 720)), (0, 0))
+    game.screen.blit(display, (0, 0))
     
     ##################################### Update de la fenetre ##########################################"
     camera.display(game.screen)
