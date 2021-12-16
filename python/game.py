@@ -4,6 +4,7 @@ import world
 import ClassPG
 import ClassPlayer
 from pygame.locals import *
+import Camera
 
 clock = pygame.time.Clock()
 game = ClassPG.game("Ingame", (1280, 720), 60)
@@ -21,6 +22,11 @@ for column in map:
 
         tile.add(d[str(row[1])])
 
+world = Camera.World(pygame.Rect(0,0,1280,720), game.screen, [cp])
+camera = Camera.GameCamera((1280, 720), world, (0,0))
+camera.turn_on()
+camera.zoom()
+camera.track(cp.rect)
 while game.running:  # game
 
     display.fill((135, 206, 235))
@@ -52,7 +58,19 @@ while game.running:  # game
             cp.current = 0
     if cp.movement[0] > 0:
         display.blit(pygame.transform.flip(cp.player, True, False), cp.rect)
-    if cp.movement[0] <= 0:
+        cp.left = True
+        cp.rigth = False
+    if cp.movement[0] < 0:
+        cp.left = False
+        cp.rigth = True
         display.blit(cp.player, cp.rect)
+    if cp.movement[0] == 0:
+        if cp.left:
+            display.blit(pygame.transform.flip(cp.player, True, False), cp.rect)
+        else:
+            display.blit(cp.player, cp.rect)
     game.screen.blit(pygame.transform.scale(display, (1280, 720)), (0, 0))
+    
+    ##################################### Update de la fenetre ##########################################"
+    camera.display(game.screen)
     pygame.display.update()

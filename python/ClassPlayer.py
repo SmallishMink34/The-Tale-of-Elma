@@ -36,10 +36,8 @@ class Player:
     def dirrection(self):
         self.movement = [0, 0]
         if self.pressed.get(pygame.K_RIGHT):
-            self.rigth = True
             self.movement[0] += 2
         if self.pressed.get(pygame.K_LEFT):
-            self.left = True
             self.movement[0] -= 2
         if self.pressed.get(pygame.K_UP):
             if self.air_time < 6:

@@ -25,3 +25,5 @@ def menu():
         menu.eventpy()
 
         menu.iblitall()
+
+menu()
