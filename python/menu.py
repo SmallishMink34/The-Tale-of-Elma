@@ -11,7 +11,7 @@ def menu():
 
     #Class dans le menu
     d['Texte'] = PG.Texte("FluoFloat", menu.w/2, 120, True, (255,255,255), 70, (255,255,255))
-    d['Play'] = PG.Texte("Play", menu.w/2, 220, True, (255,255,255), 36)
+    d['Play'] = PG.Texte("Ply", menu.w/2, 220, True, (255,255,255), 36)
     d['Option'] = PG.Texte("Option", menu.w/2, 280, True, (255,255,255), 36)
     d['Credits'] = PG.Texte("Credis", menu.w/2, 340, True, (255,255,255), 36)
     d['Exit'] = PG.Texte("Exit", menu.w/2, 400, True, (255,255,255), 36)
@@ -25,3 +25,5 @@ def menu():
         menu.eventpy()
 
         menu.iblitall()
+
+menu()
