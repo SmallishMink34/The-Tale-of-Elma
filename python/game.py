@@ -1,11 +1,13 @@
 import pygame
 import world
 import ClassPG
-
+import Camera
+import ClassPlayer
 
 def gaming():
+    display_w, display_h = 1280, 720
 
-    game = ClassPG.game("Ingame", (1280,720), 60)
+    game = ClassPG.game("Ingame", (display_w,display_h), 60)
 
     d = {}
 
@@ -41,10 +43,10 @@ def gaming():
         return tiling
 
     tile = modifymap(map, tile, None, None)
+    cp = ClassPlayer.Player()
 
-
-    world = Camera.World(pygame.Rect(0,0,1280,720), game.screen, [cp])
-    camera = Camera.GameCamera([display_w*cp.zoomscale, display_h*cp.zoomscale], world, (0,0))
+    worldCam = Camera.World(pygame.Rect(0,0,1280,720), game.screen, [cp])
+    camera = Camera.GameCamera([display_w*cp.zoomscale, display_h*cp.zoomscale], worldCam, (0,0))
     camera.turn_on()
     camera.zoom(1/cp.zoomscale)
     camera.track(cp.rect)
