@@ -2,9 +2,10 @@ import pygame, sys, os, random, noise
 
 
 class tiles(pygame.sprite.Sprite):
-	def __init__(self, name, image, x, y, size=16):
+	def __init__(self, name, image, x, y, posinworld =[0, 0],size=16):
 		super().__init__()
 		self.name = name
+		self.posinworld = posinworld
 		self.image = pygame.image.load(image).convert_alpha()
 		self.size = size
 		self.image = pygame.transform.scale(self.image, (self.size, self.size))
@@ -13,6 +14,9 @@ class tiles(pygame.sprite.Sprite):
 
 	def getcoords(self):
 		return (round(self.rect.x / self.size), round(self.rect.y / self.size))
+
+	def die(self):
+		self.kill()
 
 	def __repr__(self):
 		return self.name
@@ -91,7 +95,7 @@ class Terrain:
 			y = 0
 			height = noise.pnoise2((x + self.seed) * self.TerrainFreq, self.seed * self.TerrainFreq, 2, 0.5, 2, 1024,
 								   1024) * self.heightmultiplier + self.heightaddtion
-			self.ligne = self.map[x]
+
 			while y < height:
 				if (y < height - self.dirtlayerheight + random.randint(-1, 1)):
 					pass
@@ -105,25 +109,38 @@ class Terrain:
 						# Generation d'un arbre
 						if self.map[x][y][1] == 'grass':
 							self.GenerateTree(x, y + 1)
-
 				y += 1
-			self.map[x] = self.ligne
+
 			x += 1
 
 		print('Gen map Finished')
 		return self.map
 
+	def newmap(self, mape):
+		self.map = mape
+		return self.map
+
 	def PlaceTile(self, x, y, element):
 		self.ligne += [[[x, -y], element]]
 
-	def ReplaceTile(self, x, y, element):
-		for i in range(len(self.ligne)):
-			if self.ligne[i][0][1] == -y:
-				self.ligne[i] = [[x, -y], element]
-				print('Replace Element At ', self.ligne[i])
+	def ReplaceTile(self, x, y, element, playermode=False):
+		if playermode and element != 'air':
+			for i in range(len(self.map)):
+				if i == x:
+					for i2 in range(len(self.map[x])):
+						if i2 == y:
+							if self.map[x][y][1] == 'air':
+								self.map[x][y] = [[x, -y], element]
+
+		else:
+			for i in range(len(self.map)):
+				if i == x:
+					for i2 in range(len(self.map[x])):
+						if i2 == y:
+							self.map[x][y] = [[x, -y], element]
 
 	def GenerateTree(self, x, y):
-		'''tree_file = open('../structure/arbre_1.txt', 'r')
+		tree_file = open('../structure/arbre_1.txt', 'r')
 		tree_list = tree_file.readlines()
 		tree_file.close()
 
@@ -137,16 +154,9 @@ class Terrain:
 		for row in tree_list:
 			for column in row:
 				print(x2, y2)
-				self.ReplaceTile(x-x2, y-y2, 'stone')
+				self.ReplaceTile(x-x2, y-y2, column)
 				x2+=1
 				i+= 1
 			y-=1
 			x2= -round(len(tree_list[x2]) / 2)
-			i = 0'''
-		self.ReplaceTile(x, y, 'trunk_bottom')
-		self.ReplaceTile(x, y+1, 'trunk_mid')
-		self.ReplaceTile(x, y+2, 'trunk_mid')
-		self.ReplaceTile(x, y+3, 'trunk_mid')
-		self.ReplaceTile(x+1, y+3, 'leaves')
-		self.ReplaceTile(x, y+4, 'leaves')
-		self.ReplaceTile(x-1, y+3, 'leaves')
+			i = 0
