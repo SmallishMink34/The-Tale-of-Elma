@@ -7,7 +7,10 @@ class Player:
         self.rigth = False
         self.left = False
 
-        self.player = pygame.image.load("../img/player/player.png")
+        self.player = pygame.image.load("img/player/player.png")
+        
+        self.player = pygame.transform.scale(self.player,(16,32))
+        
         self.rect = self.player.get_rect()  # self.rect.x
         self.rect.x, self.rect.y = 250, 80
 
@@ -23,17 +26,20 @@ class Player:
         self.collision_types = None
 
         self.current = 0
-        self.cond = True
+        self.zoomscale = 0.40
 
-        self.zoomscale = 0.33
-
+        self.live = 4
+        self.img_live = False
+        
+        self.scroll = [0,0]
+        
         self.run = []
         for i in range(1, 4):
-            self.run.append(pygame.image.load(f"../img/player/run/{i}.png"))
+            self.run.append(pygame.image.load(f"img/player2/run/{i}.png"))
 
         self.idle = []
         for i in range(1, 3):
-            self.idle.append(pygame.image.load(f"../img/player/idle/{i}.png"))
+            self.idle.append(pygame.image.load(f"img/player2/idle/{i}.png"))
 
     def dirrection(self):
         self.movement = [0, 0]
@@ -41,6 +47,10 @@ class Player:
             self.movement[0] += 2
         if self.pressed.get(pygame.K_LEFT):
             self.movement[0] -= 2
+        if self.pressed.get(pygame.K_RIGHT) and self.pressed.get(pygame.K_LSHIFT):
+            self.movement[0] += 0.5
+        if self.pressed.get(pygame.K_LEFT) and self.pressed.get(pygame.K_LSHIFT):
+            self.movement[0] -= 0.5
         if self.pressed.get(pygame.K_UP):
             if self.air_time < 6:
                 self.momentum_y = -5
@@ -89,16 +99,18 @@ class Player:
         return hit
 
     def anim(self):
-        print(self.air_time)
-        if self.air_time > 5:
-            self.player = pygame.image.load("../img/player/jump/1.png")
-        if not self.movement[0] == 0:
+        if self.air_time > 5: # if the player is in air
+            self.player = pygame.image.load("img/player/jump/1.png").convert_alpha()
+            self.player = pygame.transform.smoothscale(self.player,(16,32))
+        if self.movement[0] == 0: # if the character doesn't move
+            if self.collision_types['bottom']: 
+                self.current += 0.1  
+                self.player = pygame.transform.scale(self.idle[int(self.current)], (16,32))
+        elif self.movement[0] == 2.5 or self.movement[0] == -2.5:
             if self.collision_types['bottom']:
-                self.current += 0.50  # ca vas etre un chiffre qui augmente
-                self.player = pygame.transform.scale(self.run[int(self.current)], (16, 32))
-        else:
+                self.current += 0.8   # ca vas etre un chiffre qui augmente
+                self.player = pygame.transform.scale(self.run[int(self.current)], (16,32))
+        elif self.movement[0] == 2 or self.movement[0] == -2:
             if self.collision_types['bottom']:
-                self.current += 0.05  # ca vas etre un chiffre qui augmente
-                self.player = pygame.transform.scale(self.idle[int(self.current)], (16, 32))
-
-
+                self.current += 0.3   # ca vas etre un chiffre qui augmente
+                self.player = pygame.transform.scale(self.run[int(self.current)], (16,32))

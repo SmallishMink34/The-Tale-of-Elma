@@ -1,8 +1,7 @@
 import pygame, sys, os, random, noise
-from pygame.locals import *
-from perlin_noise import PerlinNoise
+import ClassPlayer
 
-
+cp = ClassPlayer.Player()
 class tiles(pygame.sprite.Sprite):
 	def __init__(self, name, image, x, y, posinworld =[0, 0],size=16):
 		super().__init__()
@@ -12,6 +11,8 @@ class tiles(pygame.sprite.Sprite):
 		self.size = size
 		self.image = pygame.transform.scale(self.image, (self.size, self.size))
 		self.rect = self.image.get_rect()
+		self.rect.x, self.rect.y = x, y
+	def set_coord(self,x,y):
 		self.rect.x, self.rect.y = x, y
 
 	def getcoords(self):
@@ -57,7 +58,6 @@ class Terrain:
 			for j in range(self.worldsize):
 				noise_val = noise.pnoise2((i + self.seed) * self.CaveFreq, (j + self.seed) * self.CaveFreq, 2, 0.5, 2,
 										  1024, 1024)
-				print(noise_val)
 				row.append(noise_val)
 			pic.append(row)
 		print('Gen noise finished')
@@ -109,6 +109,7 @@ class Terrain:
 
 					if self.tree == 1 :
 						# Generation d'un arbre
+						print(self.map[0][0][1])
 						if self.map[x][y][1] == 'grass':
 							self.GenerateTree(x, y + 1)
 				y += 1
