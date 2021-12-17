@@ -1,6 +1,7 @@
 import pygame, sys, os, random, noise
+import ClassPlayer
 
-
+cp = ClassPlayer.Player()
 class tiles(pygame.sprite.Sprite):
 	def __init__(self, name, image, x, y, size=16):
 		super().__init__()
@@ -10,7 +11,9 @@ class tiles(pygame.sprite.Sprite):
 		self.image = pygame.transform.scale(self.image, (self.size, self.size))
 		self.rect = self.image.get_rect()
 		self.rect.x, self.rect.y = x, y
-
+	def set_coord(self,x,y):
+		self.rect.x, self.rect.y = x, y
+		
 	def getcoords(self):
 		return (round(self.rect.x / self.size), round(self.rect.y / self.size))
 
