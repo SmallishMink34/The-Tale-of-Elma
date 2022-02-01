@@ -29,7 +29,7 @@ class game:
         self.running = True
 
         # Image de fond
-        self.fond = img('img/menu/background.jpg', 0, 0, size[0], size[1])
+        self.fond = img('../img/menu/background.jpg', 0, 0, size[0], size[1])
 
         # Vitesse du jeux
         self.clock = pygame.time.Clock()
@@ -44,7 +44,7 @@ class game:
 
     def gameloop(self):
         """Fonction de la boucle de jeu"""
-        self.clock.tick(self.tick)  # Vitesse du jeux
+        self.clock.tick(self.tick) # Vitesse du jeux
 
     def eventpy(self):
         for event in pygame.event.get():  # parcours de tous les event pygame dans cette fenêtre
