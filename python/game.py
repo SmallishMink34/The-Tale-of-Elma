@@ -56,7 +56,7 @@ class Game():
         display = pygame.Surface((self.display_w, self.display_h))
         LEFT = 1
         RIGHT = 3
-        invenataire = inv.inv("img/INV PNG.png","Inventaire")
+        inventaire = inv.inv("img/INV PNG.png","Inventaire")
         
         while running:
             self.game.screen.fill((255, 25, 48))
@@ -73,7 +73,7 @@ class Game():
             self.player.dirrection() #Deplacement joueur
 
             if inv_:
-                invenataire.iblit(display)
+                inventaire.iblit(display)
             
             for i in self.group.sprites():
                 if i.feet.collidelist(self.walls) > -1: #si les pieds du joueurs entre en collision avec un objet
@@ -93,15 +93,15 @@ class Game():
 
 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
-                    invenataire.suppr("c3")
+                    inventaire.suppr("c3")
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                    invenataire.add("img/item/diamond_helmet.png","c1")
-                    invenataire.add("img/item/diamond_chestplate.png","c2")
-                    invenataire.add("img/item/diamond_leggings.png","c3")
-                    invenataire.add("img/item/diamond_boots.png","c4")
-                    invenataire.add("img/item/diamond_sword.png","c5")
-                    invenataire.add("img/item/diamond_pickaxe.png","c6")
-                    invenataire.add("img/item/diamond_hoe.png","c7")
+                    inventaire.add("img/item/diamond_helmet.png","c1")
+                    inventaire.add("img/item/diamond_chestplate.png","c2")
+                    inventaire.add("img/item/diamond_leggings.png","c3")
+                    inventaire.add("img/item/diamond_boots.png","c4")
+                    inventaire.add("img/item/diamond_sword.png","c5")
+                    inventaire.add("img/item/diamond_pickaxe.png","c6")
+                    inventaire.add("img/item/diamond_hoe.png","c7")
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_i:
