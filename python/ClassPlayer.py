@@ -161,7 +161,7 @@ class PlayerTopDown(pygame.sprite.Sprite):
         self.tilesize = 16
         self.tilesizescale = 2
 
-        self.sprite = pygame.image.load("../img/PlayerTopDown/Player.png").convert_alpha()
+        self.sprite = pygame.image.load("img/PlayerTopDown/Player.png").convert_alpha()
         self.sprite = pygame.transform.scale(self.sprite, (
         self.sprite.get_size()[0] * self.tilesizescale, self.sprite.get_size()[1] * self.tilesizescale))
 

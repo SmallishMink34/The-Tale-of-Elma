@@ -21,7 +21,7 @@ class Mapmanager:
         self.teleport_player("PlayerPos")
 
     def register_map(self, name, player_layer=7):
-        self.tmx = pytmx.util_pygame.load_pygame(f"../img/tile/{name}.tmx")
+        self.tmx = pytmx.util_pygame.load_pygame(f"img/tile/{name}.tmx")
         mapdata = pyscroll.data.TiledMapData(self.tmx)
         map_layer = pyscroll.orthographic.BufferedRenderer(mapdata, self.screen.get_size())
         map_layer.zoom = 1.6
