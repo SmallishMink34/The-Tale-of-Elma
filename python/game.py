@@ -5,6 +5,7 @@ from pygame.locals import *
 import sys
 import pyscroll
 import pytmx
+import inv
 
 
 class Game():
@@ -48,10 +49,15 @@ class Game():
         Mise en marche du jeux
         :return: Nothing
         """
+        inv_ = False
+        inv_clique = True
         running = True
         clock = pygame.time.Clock()
         display = pygame.Surface((self.display_w, self.display_h))
-
+        LEFT = 1
+        RIGHT = 3
+        invenataire = inv.inv("img/INV PNG.png","Inventaire")
+        
         while running:
             self.game.screen.fill((255, 25, 48))
             self.game.screen.blit(display, (0, 0))
@@ -66,6 +72,9 @@ class Game():
 
             self.player.dirrection() #Deplacement joueur
 
+            if inv_:
+                invenataire.iblit(display)
+            
             for i in self.group.sprites():
                 if i.feet.collidelist(self.walls) > -1: #si les pieds du joueurs entre en collision avec un objet
                     i.moveback()
@@ -77,22 +86,33 @@ class Game():
                 if event.type == pygame.QUIT:
                     running = False
                 x, y = pygame.mouse.get_pos()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    for element in self.walls:
-                        if element.collidepoint(x, y):
-                            print('click on')
                 if event.type == pygame.KEYDOWN:
                     self.player.pressed[event.key] = True
                 if event.type == pygame.KEYUP:
                     self.player.pressed[event.key] = False
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    print(x, self.player.rect.centerx + x)
-                    '''for i in self.objects:
-                        if i[1].collidepoint(x, y):
-                            print(i[0].name)'''
 
-
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+                    invenataire.suppr("c3")
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
+                    invenataire.add("img/item/diamond_helmet.png","c1")
+                    invenataire.add("img/item/diamond_chestplate.png","c2")
+                    invenataire.add("img/item/diamond_leggings.png","c3")
+                    invenataire.add("img/item/diamond_boots.png","c4")
+                    invenataire.add("img/item/diamond_sword.png","c5")
+                    invenataire.add("img/item/diamond_pickaxe.png","c6")
+                    invenataire.add("img/item/diamond_hoe.png","c7")
+                
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_i:
+                        if inv_clique:
+                            inv_ = True
+                            inv_clique = False
+                            
+                        else:
+                            inv_ = False
+                            inv_clique = True
+                
             clock.tick(60)
             pygame.display.update()
 

@@ -88,14 +88,14 @@ class Texte:
         self.size = size
         self.font = pygame.font.Font(font, self.size)
 
-        self.iupdate(self.texte)
+        self.iupdate(self.texte,self.color)
 
         if center:  # Detecte si on veut que les coordonées sois centré ou non
             self.rect.centerx, self.rect.centery = x, y
         else:
             self.rect.x, self.rect.y = x, y
 
-    def iupdate(self, texte, color=(255, 255, 255)):
+    def iupdate(self, texte, color):
         self.txt = self.font.render(str(texte), True, color)
         self.rect = self.txt.get_rect()
 
