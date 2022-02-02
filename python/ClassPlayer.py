@@ -215,6 +215,8 @@ class PlayerTopDown(pygame.sprite.Sprite):
             self.move(self.rect.x, self.rect.y + self.speed)
             self.animation('down')
 
+
+
     def move(self, x, y):
         """
         Update les coordonées du joueurs et de ses pieds
@@ -236,7 +238,7 @@ class PlayerTopDown(pygame.sprite.Sprite):
         self.image = self.moveimage[name]
         self.image.set_colorkey((0, 0, 0))
 
-    def location_old(self):
+    def save_old_location(self):
         """
         Recuperer l'ancienne position du joueur
         :return: Nothing
@@ -245,14 +247,16 @@ class PlayerTopDown(pygame.sprite.Sprite):
 
     def moveback(self):
         """
-        Teleporte le joueur au l'ancien coordonée
+        Teleporte le joueur aux l'anciennes coordonées
         :return: Nothing
         """
         self.rect.x, self.rect.y = self.old_position[0], self.old_position[1]
         self.feet.midbottom = self.rect.midbottom
 
-    def inputaction(self):
+    def inputaction(self, object):
         """ Fait apparaitre la touche d'action et permet son utilisation
         :return: Nothing
         """
-        pass
+        if self.pressed.get(pygame.K_e):
+            self.pressed[pygame.K_e] = False
+            print(object.name)
