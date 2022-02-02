@@ -6,7 +6,7 @@ import sys
 import pyscroll
 import pytmx
 import inv
-
+import time
 
 class Game():
     """
@@ -56,8 +56,8 @@ class Game():
         display = pygame.Surface((self.display_w, self.display_h))
         LEFT = 1
         RIGHT = 3
-        inventaire = inv.inv("img/INV PNG.png","Inventaire")
-        
+        inventaire = inv.inv("Inventaire","img/img.inv/personnage_test.png")
+        move = False
         while running:
             self.game.screen.fill((255, 25, 48))
             self.game.screen.blit(display, (0, 0))
@@ -72,15 +72,14 @@ class Game():
 
             self.player.dirrection() #Deplacement joueur
 
-            if inv_:
-                inventaire.iblit(display)
             
+                    
             for i in self.group.sprites():
                 if i.feet.collidelist(self.walls) > -1: #si les pieds du joueurs entre en collision avec un objet
                     i.moveback()
                 if i.rect.collidelist(self.objects_input) > -1:#si le joueurs entre en collision avec un objet
                     i.inputaction()
-
+            
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -90,18 +89,26 @@ class Game():
                     self.player.pressed[event.key] = True
                 if event.type == pygame.KEYUP:
                     self.player.pressed[event.key] = False
+                    
+                if inv_:
+                    if not move:
+                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+                                case0 = inventaire.quelle_case(event)
+                                move = inventaire.click(event,case0)
+                    else:
+                        if inventaire.quelle_case(event)!= False: 
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+                                case = inventaire.quelle_case(event)
+                                inventaire.move(case0,case)
+                                move = False
+                if move:
+                    inventaire.image_suivie(case0,(x,y))
 
-
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
-                    inventaire.suppr("c3")
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
                     inventaire.add("img/item/diamond_helmet.png","c1")
-                    inventaire.add("img/item/diamond_chestplate.png","c2")
-                    inventaire.add("img/item/diamond_leggings.png","c3")
-                    inventaire.add("img/item/diamond_boots.png","c4")
-                    inventaire.add("img/item/diamond_sword.png","c5")
-                    inventaire.add("img/item/diamond_pickaxe.png","c6")
-                    inventaire.add("img/item/diamond_hoe.png","c7")
+                    inventaire.add("img/item/diamond_helmet.png","c2")
+                    inventaire.add("img/item/diamond_helmet.png","c3")
+                    inventaire.add("img/item/diamond_helmet.png","c4")
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_i:
@@ -112,10 +119,10 @@ class Game():
                         else:
                             inv_ = False
                             inv_clique = True
-                
+            if inv_:
+                inventaire.iblit(display)
             clock.tick(60)
             pygame.display.update()
-
         pygame.quit()
 
 

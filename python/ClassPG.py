@@ -245,6 +245,9 @@ class img(pygame.sprite.Sprite):
         """Affiche de l'image"""
         screen.blit(self.image, self.rect)
 
+    def take_rect(self):
+        return self.rect
+
 
 class animate_img(pygame.sprite.Sprite):
     """Class pour animer une image"""
