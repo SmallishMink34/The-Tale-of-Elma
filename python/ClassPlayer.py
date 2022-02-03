@@ -281,6 +281,11 @@ class PlayerTopDown(pygame.sprite.Sprite):
                 return True
 
     def allinputoff(self, switch=None):
+        """
+        Desactive/Active les touches de déplacement
+        :param switch: Boolean
+        :return: Nothing
+        """
         if switch is not None:
             if self.canPressKey:
                 self.canPressKey = False

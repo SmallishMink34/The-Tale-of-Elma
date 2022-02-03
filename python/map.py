@@ -9,6 +9,7 @@ class Map:
         self.group = group
         self.tmx_data = tmx_data
 
+
 class Mapmanager:
     def __init__(self, screen, player):
         self.maps = {}
@@ -88,19 +89,25 @@ class Mapmanager:
             if i.feet.collidelist(self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
                 i.moveback()
             for element in self.get_objectinp("InputAction", "all"):
-                if i.feet.colliderect(element[1]) and self.player.inputaction():  # si le joueurs entre en collision avec un objet
-                    if "Portail" in element[0].name: #Si c'est un point de teleportation
-                        try:var = element[0].properties['To?']
-                        except KeyError:var = self.current_map
+                if i.feet.colliderect(
+                        element[1]) and self.player.inputaction():  # si le joueurs entre en collision avec un objet
+                    if "Portail" in element[0].name:  # Si c'est un point de teleportation
+                        try:
+                            var = element[0].properties['To?']
+                        except KeyError:
+                            var = self.current_map
 
-                        try:var2 = element[0].properties['TeleportPoint']
-                        except KeyError:var2 = 'PlayerPos'
+                        try:
+                            var2 = element[0].properties['TeleportPoint']
+                        except KeyError:
+                            var2 = 'PlayerPos'
 
                         self.changemap(var, var2)
                     if "Panneau" in element[0].name:
                         self.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
                     else:
                         print(element[0].name)
+
     def checkcollision(self, x, y):
         for element in self.get_walls():
             if element.collidepoint((x, y)):
@@ -110,4 +117,3 @@ class Mapmanager:
     def changemap(self, name, teleportpoint):
         self.current_map = name
         self.teleport_player(teleportpoint)
-
