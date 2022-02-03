@@ -1,5 +1,5 @@
 import pygame
-
+import inv
 import ClassPG, pygame_textbox
 
 class Gui:
@@ -36,6 +36,13 @@ class Gui:
         self.element['cross'] = [ClassPG.bouton('../img/imgbutton/cross.png', 1200, 50, 80, 80), True]
         self.player.allinputoff(False)
 
+    def inventory(self, inv):
+        self.currentGui = "Inv"
+        self.element['inv'] = [inv, True]
+        print('Inventaire Ouvert')
+        self.player.allinputoff(False)
+
+
     def Pause(self):
         self.currentGui = "Pause"
         pass
@@ -52,3 +59,34 @@ class Gui:
             if self.element['cross'][0].click(mousepos,event) or self.player.pressed.get(pygame.K_ESCAPE):
                 self.InGame()
                 self.player.allinputoff(True)
+
+        if self.player.pressed.get(pygame.K_ESCAPE):
+            self.InGame()
+            self.player.allinputoff(True)
+
+        if self.currentGui == "Inv":
+
+            LEFT = 1
+            RIGHT = 3
+            move = False
+
+            if not move:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+                    case0 = self.element['inv'][0].quelle_case(event)
+                    move = self.element['inv'][0].click(event, case0)
+                    print(case0)
+            else:
+                if self.element['inv'][0].quelle_case(event) != False:
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+                        case = self.element['inv'][0].quelle_case(event)
+                        self.element['inv'][0].move(case0, case)
+                        move = False
+            if move:
+                print("suivit de l'objet")
+                self.element['inv'][0].image_suivie(case0, mousepos)
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
+                objet = inv.objet("casque", 2, "armure", "../img/item/diamond_helmet.png", "c1")
+                objet2 = inv.objet("plastron", 1, "armure", "../img/item/diamond_chestplate.png", "c2")
+                self.element['inv'][0].add(objet.recup())
+                self.element['inv'][0].add(objet2.recup())

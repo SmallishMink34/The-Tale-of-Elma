@@ -1,5 +1,7 @@
 import pygame, sys, ClassPG, Gui
 
+from python.PlayerAnim import AnimateSprite
+
 
 class Player(pygame.sprite.Sprite):
     """Class créant un joueur sideview"""
@@ -152,7 +154,7 @@ class Player(pygame.sprite.Sprite):
                                                         (self.size_w, self.size_h)).convert_alpha()
 
 
-class PlayerTopDown(pygame.sprite.Sprite):
+class PlayerTopDown(AnimateSprite):
     """
     Class créant un joueur TopDown
     """
@@ -163,21 +165,12 @@ class PlayerTopDown(pygame.sprite.Sprite):
         self.tilesizescale = 2
         self.screen = screen
 
-        self.sprite = pygame.image.load("../img/PlayerTopDown/Player.png").convert_alpha()
-        self.sprite = pygame.transform.scale(self.sprite, (
-        self.sprite.get_size()[0] * self.tilesizescale, self.sprite.get_size()[1] * self.tilesizescale))
 
         self.image = self.get_coords_image(0, 0)
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
 
-        self.moveimage = {
-            'down': self.get_coords_image(0, 64 * self.tilesizescale),
-            'left': self.get_coords_image(0, 16 * self.tilesizescale),
-            'right': self.get_coords_image(0, 32 * self.tilesizescale),
-            'up': self.get_coords_image(0, 48 * self.tilesizescale),
-            'idle': self.get_coords_image(0, 0)
-        }
+
 
         self.pressed = {}
         self.speed = 3
@@ -243,14 +236,7 @@ class PlayerTopDown(pygame.sprite.Sprite):
 
         self.feet.midbottom = self.rect.midbottom
 
-    def animation(self, name):
-        """
-        Dirrige l'image du joueur en fonction de la dirrection
-        :param name: str
-        :return: Nothing
-        """
-        self.image = self.moveimage[name]
-        self.image.set_colorkey((0, 0, 0))
+
 
     def save_old_location(self):
         """
@@ -266,6 +252,7 @@ class PlayerTopDown(pygame.sprite.Sprite):
         """
         self.rect.x, self.rect.y = self.old_position[0], self.old_position[1]
         self.feet.midbottom = self.rect.midbottom
+        self.animation_i = 0
 
     def inputaction(self):
         """ Fait apparaitre la touche d'action et permet son utilisation
@@ -283,7 +270,7 @@ class PlayerTopDown(pygame.sprite.Sprite):
         :param switch: Boolean
         :return: Nothing
         """
-        if switch is not None:
+        if switch is None:
             if self.canPressKey:
                 self.canPressKey = False
             else:

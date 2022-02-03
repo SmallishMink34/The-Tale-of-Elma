@@ -1,12 +1,9 @@
 import pygame
 import ClassPG
 import ClassPlayer
-from pygame.locals import *
-import sys
-import pyscroll
-import pytmx
+import map
 import inv
-import time
+
 
 class Game():
     """
@@ -21,7 +18,7 @@ class Game():
 
         self.player = ClassPlayer.PlayerTopDown("SmallIshMink",(0, 0), self.display)
 
-        self.map_manag = map.Mapmanager( self.display, self.player)
+        self.map_manag = map.Mapmanager(self.display, self.player)
 
 
     def run(self):
@@ -29,15 +26,10 @@ class Game():
         Mise en marche du jeux
         :return: Nothing
         """
-        inv_ = False
-        inv_clique = True
         running = True
         clock = pygame.time.Clock()
 
-        LEFT = 1
-        RIGHT = 3
         inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png")
-        move = False
 
 
         while running:
@@ -56,38 +48,14 @@ class Game():
                     self.player.pressed[event.key] = True
                 if event.type == pygame.KEYUP:
                     self.player.pressed[event.key] = False
+                self.player.gui.event((x, y), event)
 
-                if inv_:
-                    if not move:
-                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
-                                case0 = inventaire.quelle_case(event)
-                                move = inventaire.click(event,case0)
-                    else:
-                        if inventaire.quelle_case(event)!= False:
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
-                                case = inventaire.quelle_case(event)
-                                inventaire.move(case0,case)
-                                move = False
-                if move:
-                    inventaire.image_suivie(case0,(x,y))
+                if self.player.pressed.get(pygame.K_i):
+                    self.player.gui.inventory(inventaire)
+                    self.player.pressed[pygame.K_i] = False
 
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                    objet = inv.objet("casque",1,"armure","../img/item/diamond_helmet.png","c1")
-                    objet2 = inv.objet("plastron",1,"armure","../img/item/diamond_chestplate.png","c2")
-                    inventaire.add(objet.recup())
-                    inventaire.add(objet2.recup())
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_i:
-                        if inv_clique:
-                            inv_ = True
-                            inv_clique = False
-
-                        else:
-                            inv_ = False
-                            inv_clique = True
-            if inv_:
-                inventaire.iblit(self.display)
+            self.player.gui.iblit(self.display)
             clock.tick(60)
             pygame.display.update()
         pygame.quit()
