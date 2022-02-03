@@ -1,9 +1,12 @@
 import pygame
 import ClassPG
 import ClassPlayer
-import map
-import Gui
+from pygame.locals import *
+import sys
+import pyscroll
+import pytmx
 import inv
+import time
 
 class Game():
     """
@@ -19,7 +22,6 @@ class Game():
         self.player = ClassPlayer.PlayerTopDown("SmallIshMink",(0, 0), self.display)
 
         self.map_manag = map.Mapmanager( self.display, self.player)
-
 
 
     def run(self):
