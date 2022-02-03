@@ -105,8 +105,8 @@ class Game():
                     inventaire.image_suivie(case0,(x,y))
 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                    objet = inv.objet("casque",1,"armure","img/item/diamond_helmet.png","c1")
-                    objet2 = inv.objet("plastron",1,"armure","img/item/diamond_chestplate.png","c2")
+                    objet = inv.objet("casque",64,"armure","img/item/diamond_helmet.png","c1")
+                    objet2 = inv.objet("plastron",64,"armure","img/item/diamond_chestplate.png","c2")
                     inventaire.add(objet.recup())
                     inventaire.add(objet2.recup())
                 

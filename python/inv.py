@@ -23,6 +23,7 @@ class inv:
             self.c[c].append(self.c[c][2].take_rect()) # on crée le rect des carrés noir
             self.c[c].append(None) # pas d'image dans la case
             self.c[c].append(None) # pas d'image dans la case
+            self.c[c].append(None) # pas d'image dans la case'
         
     def iblit(self,screen):
         """[Methode qui blit tout ce qu'il a afficher]"""
@@ -33,13 +34,15 @@ class inv:
             c = "c"+str(i)
             self.c[c][2].iblit(screen)
             if self.c[c][4] != None: # si il y'a une image
-                self.c[c][5].iblit(screen)# on blit l'image    
+                self.c[c][5].iblit(screen)# on blit l'image
+                self.c[c][6].iblit(screen)# on blit    
         
     def add(self,obj):
         """[Méthode qui ajoute un objet à l'inv]"""
         c = obj[4]
         self.c[c][4] = obj
         self.c[c][5] = pg.img(self.c[c][4][3],self.c[c][1][0],self.c[c][1][1],80,80,False)
+        self.c[c][6] = pg.Texte(obj[1],self.c[c][1][0]+45,self.c[c][1][1]+40,False,color = (255,255,0))
 
     def suppr(self,case):
         """[Méthode qui suprime l'item dans la case de l'inv]"""
@@ -61,6 +64,7 @@ class inv:
         if self.c[case][4] != None:
             self.c[case][0] = mouse_pos
             self.c[case][5] = pg.img(self.c[case][4][3],self.c[case][0][0],self.c[case][0][1],80,80,True)
+            self.c[case][6] = pg.Texte(self.c[case][4][1],self.c[case][0][0]+10,self.c[case][0][1],False,color = (255,255,0))
     
     def quelle_case(self,event):
         """[Méthode qui permet de renvoyer le nom de la case sur la quelle on click]
@@ -97,16 +101,28 @@ class inv:
             return False
         if case1 == case2:
             self.c[case2][5] = pg.img(self.c[case2][4][3],self.c[case2][1][0],self.c[case2][1][1],80,80,False)
+            self.c[case2][6] = pg.Texte(self.c[case2][4][1],self.c[case2][1][0]+45,self.c[case2][1][1]+40,False,color = (255,255,0))
         if self.c[case2][4] != None: 
             self.c[case1][5] = pg.img(self.c[case1][4][3],self.c[case1][1][0],self.c[case1][1][1],80,80,False)
         elif case1 != case2:
             self.c[case2][4],self.c[case2][5] = self.c[case1][4],self.c[case1][5]
             self.c[case2][5] = pg.img(self.c[case2][4][3],self.c[case2][1][0],self.c[case2][1][1],80,80,False)
+            self.c[case2][6] = pg.Texte(self.c[case2][4][1],self.c[case2][1][0]+45,self.c[case2][1][1]+40,False,color = (255,255,0))
             self.suppr(case1)
         
 
 class objet:
-    def __init__(self,nom,nbr_max,genre,img,pos_inv = None):
+    def __init__(self,nom:str, nbr_max:int, genre:str, img:str, pos_inv = None):
+        """
+        [class permettant de crée un objet]
+
+        Args:
+            nom (str): [le nom de l'objet]
+            nbr_max (int): [le nombre d'objet à empiler maximum]
+            genre (str): [le genre d'objet par (ex "armure")]
+            img (str): [le lien de l'image]
+            pos_inv (optional): [on precise la position de l'objet dans l'inventaire]. Defaults to None.
+        """
         self.nom = nom
         self.nbr_max = nbr_max
         self.genre = genre
