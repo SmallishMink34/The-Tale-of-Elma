@@ -29,7 +29,7 @@ class game:
         self.running = True
 
         # Image de fond
-        self.fond = img('img/menu/background.jpg', 0, 0, size[0], size[1])
+        self.fond = img('../img/menu/background.jpg', 0, 0, size[0], size[1])
 
         # Vitesse du jeux
         self.clock = pygame.time.Clock()
@@ -80,18 +80,20 @@ class game:
 class Texte:
     """Class qui permet de créer des textes """
 
-    def __init__(self, texte, x, y, center:bool, color=(255, 255, 255), size=32, colorhover=(128,255,0),font='font/Like Snow.otf'):
+    def __init__(self, texte, x, y, center, color=(255, 255, 255), size=32, font=''):
         self.texte = texte
         self.x = x
         self.y = y
         self.color = color
-        self.hcolor = colorhover
         self.size = size
-        self.font = pygame.font.Font(font, self.size)
+        try:
+            self.font = pygame.font.Font(font, self.size)
+        except FileNotFoundError:
+            self.font = pygame.font.SysFont("Arial", self.size)
 
-        self.iupdate(self.texte)
+        self.iupdate(self.texte, self.color)
 
-        if center:  # Detecte si on veut que les coordonées sois centré ou non
+        if center == 'center':  # Detecte si on veut que les coordonées sois centré ou non
             self.rect.centerx, self.rect.centery = x, y
         else:
             self.rect.x, self.rect.y = x, y
@@ -100,16 +102,19 @@ class Texte:
         self.txt = self.font.render(str(texte), True, color)
         self.rect = self.txt.get_rect()
 
-    def ihover(self, mousepos, color=(128,255,0)):
+    def updatecoords(self, x, y):
+        self.rect.x, self.rect.y = x, y
+
+    def ihover(self, mousepos, color=(128, 255, 0)):
         """Detection du survol de la souris"""
         if self.rect.collidepoint(mousepos):
-            self.txt = self.font.render(str(self.texte), True, self.hcolor)
+            self.texte = self.font.render(str(self.texte), True, color)
         else:
-            self.txt = self.font.render(str(self.texte), True, self.color)
+            self.texte = self.font.render(str(self.texte), True, self.color)
 
-    def click(self, mousepos, event):
+    def click(self, mousepos, event, color=(128, 255, 0)):
         """Detection du click de la souris et du survol"""
-        self.ihover(mousepos)
+        self.ihover(mousepos, color)
         if self.rect.collidepoint(mousepos):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 return True

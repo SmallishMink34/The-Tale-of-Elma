@@ -1,11 +1,8 @@
 import pygame
 import ClassPG
 import ClassPlayer
-from pygame.locals import *
-import sys
-import pyscroll
-import pytmx
 import map
+import Gui
 
 class Game():
     """
@@ -16,9 +13,13 @@ class Game():
 
         self.game = ClassPG.game("Ingame", (self.display_w, self.display_h), 60)
 
-        self.player = ClassPlayer.PlayerTopDown((0, 0))
+        self.display = pygame.Surface((self.display_w, self.display_h))
 
-        self.map_manag = map.Mapmanager(self.game.screen, self.player)
+        self.player = ClassPlayer.PlayerTopDown("SmallIshMink",(0, 0), self.display)
+
+        self.map_manag = map.Mapmanager( self.display, self.player)
+
+
 
     def run(self):
         """
@@ -27,18 +28,13 @@ class Game():
         """
         running = True
         clock = pygame.time.Clock()
-        display = pygame.Surface((self.display_w, self.display_h))
 
         while running:
-            self.game.screen.fill((255, 25, 48))
-            self.game.screen.blit(display, (0, 0))
 
-            self.player.save_old_location()  # Savegarde des position du joueur avant mouvement
-
-            self.player.dirrection()  # Deplacement joueur
+            self.game.screen.blit(self.display, (0, 0))
 
             self.map_manag.updating() # Met a jour la carte et le joueur
-            self.map_manag.draw()
+            self.map_manag.draw() # Dessine la carte
 
 
             for event in pygame.event.get():
@@ -50,13 +46,13 @@ class Game():
                 if event.type == pygame.KEYUP:
                     self.player.pressed[event.key] = False
 
+                self.player.gui.event((x, y), event)
 
+            self.player.gui.iblit(self.display)
             clock.tick(60)
             pygame.display.update()
 
         pygame.quit()
-
-
 
 game = Game()
 game.run()
