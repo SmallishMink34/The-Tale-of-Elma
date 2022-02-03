@@ -1,14 +1,15 @@
-import pygame, sys
+import pygame, sys, ClassPG, Gui
 
 
 class Player(pygame.sprite.Sprite):
     """Class créant un joueur sideview"""
+
     def __init__(self, tile_size, pos: tuple, topdown=True):
         super().__init__()
         self.rigth = False
         self.left = False
         self.name = 'player'
-        self.image = pygame.image.load("img/player/player.png").convert_alpha()
+        self.image = pygame.image.load("../img/player/player.png").convert_alpha()
         self.viewleft = True
 
         self.size_w, self.size_h = tile_size, tile_size * 2
@@ -155,13 +156,14 @@ class PlayerTopDown(pygame.sprite.Sprite):
     """
     Class créant un joueur TopDown
     """
-    def __init__(self, spawncoords):
+    def __init__(self, name, spawncoords, screen):
         super(PlayerTopDown, self).__init__()
-
+        self.name = name
         self.tilesize = 16
         self.tilesizescale = 2
+        self.screen = screen
 
-        self.sprite = pygame.image.load("img/PlayerTopDown/Player.png").convert_alpha()
+        self.sprite = pygame.image.load("../img/PlayerTopDown/Player.png").convert_alpha()
         self.sprite = pygame.transform.scale(self.sprite, (
         self.sprite.get_size()[0] * self.tilesizescale, self.sprite.get_size()[1] * self.tilesizescale))
 
@@ -185,6 +187,19 @@ class PlayerTopDown(pygame.sprite.Sprite):
 
         self.move(spawncoords[0], spawncoords[1])
 
+        self.KeyAction = True
+        self.canPressKey = True
+
+        self.gui = Gui.Gui('Normal', self)
+
+    def update(self):
+        self.save_old_location()  # Savegarde des position du joueur avant mouvement
+        self.dirrection()  # Deplacement joueur
+        self.KeyAction = False
+
+        if self.pressed.get(pygame.K_e):
+            pass
+
     def get_coords_image(self, x, y):
         """
         Recuperer l'image sur une tile sheet
@@ -202,18 +217,19 @@ class PlayerTopDown(pygame.sprite.Sprite):
         Dirrige le joueur dans une dirrection
         :return: Nothing
         """
-        if self.pressed.get(pygame.K_RIGHT):
-            self.move(self.rect.x + self.speed, self.rect.y)
-            self.animation('right')
-        if self.pressed.get(pygame.K_LEFT):
-            self.move(self.rect.x - self.speed, self.rect.y)
-            self.animation('left')
-        if self.pressed.get(pygame.K_UP):
-            self.move(self.rect.x, self.rect.y - self.speed)
-            self.animation('up')
-        if self.pressed.get(pygame.K_DOWN):
-            self.move(self.rect.x, self.rect.y + self.speed)
-            self.animation('down')
+        if self.canPressKey:
+            if self.pressed.get(pygame.K_d):
+                self.move(self.rect.x + self.speed, self.rect.y)
+                self.animation('right')
+            if self.pressed.get(pygame.K_q):
+                self.move(self.rect.x - self.speed, self.rect.y)
+                self.animation('left')
+            if self.pressed.get(pygame.K_z):
+                self.move(self.rect.x, self.rect.y - self.speed)
+                self.animation('up')
+            if self.pressed.get(pygame.K_s):
+                self.move(self.rect.x, self.rect.y + self.speed)
+                self.animation('down')
 
     def move(self, x, y):
         """
@@ -236,7 +252,7 @@ class PlayerTopDown(pygame.sprite.Sprite):
         self.image = self.moveimage[name]
         self.image.set_colorkey((0, 0, 0))
 
-    def location_old(self):
+    def save_old_location(self):
         """
         Recuperer l'ancienne position du joueur
         :return: Nothing
@@ -245,7 +261,7 @@ class PlayerTopDown(pygame.sprite.Sprite):
 
     def moveback(self):
         """
-        Teleporte le joueur au l'ancien coordonée
+        Teleporte le joueur aux anciennes coordonées
         :return: Nothing
         """
         self.rect.x, self.rect.y = self.old_position[0], self.old_position[1]
@@ -255,4 +271,22 @@ class PlayerTopDown(pygame.sprite.Sprite):
         """ Fait apparaitre la touche d'action et permet son utilisation
         :return: Nothing
         """
-        pass
+        if self.canPressKey:
+            self.KeyAction = True
+            if self.pressed.get(pygame.K_e):
+                self.pressed[pygame.K_e] = False
+                return True
+
+    def allinputoff(self, switch=None):
+        """
+        Desactive/Active les touches de déplacement
+        :param switch: Boolean
+        :return: Nothing
+        """
+        if switch is not None:
+            if self.canPressKey:
+                self.canPressKey = False
+            else:
+                self.canPressKey = True
+        else:
+            self.canPressKey = switch
