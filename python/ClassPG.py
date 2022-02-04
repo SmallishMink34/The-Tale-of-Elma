@@ -98,9 +98,10 @@ class Texte:
         else:
             self.rect.x, self.rect.y = x, y
 
-    def iupdate(self, texte, color):
+    def iupdate(self, texte, color,coord=(0,0)):
         self.txt = self.font.render(str(texte), True, color)
         self.rect = self.txt.get_rect()
+        self.rect.x , self.rect.y = coord[0], coord[1]
 
     def updatecoords(self, x, y):
         self.rect.x, self.rect.y = x, y
@@ -251,7 +252,7 @@ class img(pygame.sprite.Sprite):
         """Affiche de l'image"""
         screen.blit(self.image, self.rect)
 
-    def take_rect(self):
+    def get_recte(self):
         return self.rect
 
 

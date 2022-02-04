@@ -1,6 +1,6 @@
 import pygame, sys, ClassPG, Gui
 
-from python.PlayerAnim import AnimateSprite
+from PlayerAnim import AnimateSprite
 
 
 class Player(pygame.sprite.Sprite):

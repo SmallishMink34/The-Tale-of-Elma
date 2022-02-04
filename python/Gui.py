@@ -11,6 +11,8 @@ class Gui:
         self.InGame()
 
         self.currentGui = 'InGame'
+        
+        self.move = None
 
     def InGame(self):
         self.currentGui = "InGame"
@@ -55,6 +57,7 @@ class Gui:
                 self.element[i][0].iblit(screen)
 
     def event(self, mousepos,event):
+        
         if self.currentGui == "DialogB" or self.currentGui == "DialogP":
             if self.element['cross'][0].click(mousepos,event) or self.player.pressed.get(pygame.K_ESCAPE):
                 self.InGame()
@@ -65,28 +68,27 @@ class Gui:
             self.player.allinputoff(True)
 
         if self.currentGui == "Inv":
-
+            self.element['inv'][0].info_case(mousepos,event)
+            if self.move:
+                self.element['inv'][0].image_suivie(self.c,mousepos)
+                
             LEFT = 1
             RIGHT = 3
-            move = False
-
-            if not move:
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
-                    case0 = self.element['inv'][0].quelle_case(event)
-                    move = self.element['inv'][0].click(event, case0)
-                    print(case0)
-            else:
-                if self.element['inv'][0].quelle_case(event) != False:
-                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
-                        case = self.element['inv'][0].quelle_case(event)
-                        self.element['inv'][0].move(case0, case)
-                        move = False
-            if move:
-                print("suivit de l'objet")
-                self.element['inv'][0].image_suivie(case0, mousepos)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+                self.move = True
+                self.c = self.element['inv'][0].hover(mousepos)
+                
+            if event.type == pygame.MOUSEBUTTONUP and event.button == LEFT:
+                self.move = False
+                self.c2 = self.element['inv'][0].hover(mousepos)
+                if not self.c2:
+                    self.c2 = self.c
+                self.element["inv"][0].move(self.c,self.c2)
+                
+                
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                objet = inv.objet("casque", 2, "armure", "../img/item/diamond_helmet.png", "c1")
-                objet2 = inv.objet("plastron", 1, "armure", "../img/item/diamond_chestplate.png", "c2")
-                self.element['inv'][0].add(objet.recup())
-                self.element['inv'][0].add(objet2.recup())
+                objet = inv.item(1,"casque", 1, "armure", "../img/item/diamond_helmet.png")
+                objet2 = inv.item(2,"plastron", 1, "armure", "../img/item/diamond_chestplate.png")
+                self.element['inv'][0].add(objet,1)
+                self.element['inv'][0].add(objet2,2)

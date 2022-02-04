@@ -54,7 +54,6 @@ class Game():
                     self.player.gui.inventory(inventaire)
                     self.player.pressed[pygame.K_i] = False
 
-
             self.player.gui.iblit(self.display)
             clock.tick(60)
             pygame.display.update()
