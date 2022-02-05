@@ -148,4 +148,10 @@ class Mapmanager:
         pass
 
     def set_layer_visible(self,layer, Visible):
+        """
+        Met le layer en visible ou non
+        :param layer: str
+        :param Visible: bool
+        :return: Nothing
+        """
         self.maps[self.current_map].tmx_data.get_layer_by_name(layer).visible = Visible
