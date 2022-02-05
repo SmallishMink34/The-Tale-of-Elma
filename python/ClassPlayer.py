@@ -165,7 +165,7 @@ class PlayerTopDown(AnimateSprite):
         self.tilesizescale = 2
         self.screen = screen
 
-
+        self.type = 'Joueur'
         self.image = self.get_coords_image(0, 0)
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()

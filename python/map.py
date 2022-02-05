@@ -11,6 +11,13 @@ class Map:
         self.map_data = mapdata
 
 
+class Tuile(pygame.sprite.Sprite):
+    def __init__(self, x, y, image, tile_size):
+        pygame.sprite.Sprite.__init__(self)
+        self.rect = pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size)
+        self.image = image
+        self.type = "tile"
+
 class Mapmanager:
     def __init__(self, screen, player):
         self.maps = {}
@@ -44,7 +51,7 @@ class Mapmanager:
 
         self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, mapdata)
 
-        self.actionnb = {"Pont": 0}
+        self.actionnb = {"Pont": 0, "Chest": False}
 
     def get_map(self):
         return self.maps[self.current_map]
@@ -97,33 +104,35 @@ class Mapmanager:
 
     def collision(self):
         for i in self.get_group().sprites():
-            if i.feet.collidelist(self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
-                i.moveback()
-            for element in self.get_objectinp("InputAction", "all"):
-                if i.feet.colliderect(
-                        element[1]) and self.player.inputaction():  # si le joueurs entre en collision avec un objet
-                    if "Portail" in element[0].name:  # Si c'est un point de teleportation
-                        try:
-                            var = element[0].properties['To?']
-                        except KeyError:
-                            var = self.current_map
+            if i.type == 'Joueur':
+                if i.feet.collidelist(self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
+                    i.moveback()
+                for element in self.get_objectinp("InputAction", "all"):
+                    if i.feet.colliderect(
+                            element[1]) and self.player.inputaction():  # si le joueurs entre en collision avec un objet
+                        if "Portail" in element[0].name:  # Si c'est un point de teleportation
+                            try:
+                                var = element[0].properties['To?']
+                            except KeyError:
+                                var = self.current_map
 
-                        try:
-                            var2 = element[0].properties['TeleportPoint']
-                        except KeyError:
-                            var2 = 'PlayerPos'
+                            try:
+                                var2 = element[0].properties['TeleportPoint']
+                            except KeyError:
+                                var2 = 'PlayerPos'
 
-                        self.changemap(var, var2)
-                    if "Panneau" in element[0].name:
-                        self.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
-                    if "Torch" in element[0].name:
-                        if not element[0].properties['Infire']:
-                            element[0].properties['Infire'] = True
-                            self.actionnb['Pont'] += 1
-                            print(self.actionnb['Pont'])
+                            self.changemap(var, var2)
+                        if "Panneau" in element[0].name:
+                            self.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
+                        if "Torch" in element[0].name:
+                            if not element[0].properties['Infire']:
+                                element[0].properties['Infire'] = True
+                                self.actionnb['Pont'] += 1
+                                self.add_element_to_draw_obj(8, element[0].x, element[0].y)
+                                print(self.actionnb['Pont'])
 
-                    else:
-                        print(element[0].name)
+                        else:
+                            print(element[0].name)
 
     def checkcollision(self, x, y):
         for element in self.get_walls():
@@ -138,16 +147,18 @@ class Mapmanager:
     def remove_collision(self, obj):
         self.walls.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
-    def add_collision_from_obj(self,obj):
+    def add_collision_from_obj(self, obj):
         self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
     def add_collision_from_rect(self, rect):
         self.walls.append(rect)
 
-    def add_element_to_draw_obj(self, gig):
-        pass
+    def add_element_to_draw_obj(self, gid, x, y):
+        image = self.maps[self.current_map].tmx_data.get_tile_image_by_gid(gid)
+        self.group.add(Tuile(x, y, image, 32))
+        print(x, y)
 
-    def set_layer_visible(self,layer, Visible):
+    def set_layer_visible(self, layer, Visible):
         """
         Met le layer en visible ou non
         :param layer: str
