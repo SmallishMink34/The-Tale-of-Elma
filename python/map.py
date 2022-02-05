@@ -2,12 +2,13 @@ import pygame, pytmx, pyscroll
 
 
 class Map:
-    def __init__(self, name, walls: list[pygame.Rect], objecte, group, tmx_data):
+    def __init__(self, name, walls: list[pygame.Rect], objecte, group, tmx_data, mapdata):
         self.name = name
         self.walls = walls
         self.object = objecte
         self.group = group
         self.tmx_data = tmx_data
+        self.map_data = mapdata
 
 
 class Mapmanager:
@@ -41,7 +42,9 @@ class Mapmanager:
                                             default_layer=player_layer)  # groupe contenant le joueur et la map
         self.group.add(self.player)
 
-        self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx)
+        self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, mapdata)
+
+        self.actionnb = {"Pont": 0}
 
     def get_map(self):
         return self.maps[self.current_map]
@@ -84,6 +87,14 @@ class Mapmanager:
         self.group.update()
         self.collision()
 
+        if self.get_object("Pont").properties['Enable']:
+            if self.actionnb['Pont'] == 5:
+                self.get_object("Pont").properties['Enable'] = False
+
+            if not self.get_object("Pont").properties['Enable']:
+                self.remove_collision(self.get_object("Pont"))
+                self.set_layer_visible('Pont', True)
+
     def collision(self):
         for i in self.get_group().sprites():
             if i.feet.collidelist(self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
@@ -105,6 +116,12 @@ class Mapmanager:
                         self.changemap(var, var2)
                     if "Panneau" in element[0].name:
                         self.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
+                    if "Torch" in element[0].name:
+                        if not element[0].properties['Infire']:
+                            element[0].properties['Infire'] = True
+                            self.actionnb['Pont'] += 1
+                            print(self.actionnb['Pont'])
+
                     else:
                         print(element[0].name)
 
@@ -117,3 +134,18 @@ class Mapmanager:
     def changemap(self, name, teleportpoint):
         self.current_map = name
         self.teleport_player(teleportpoint)
+
+    def remove_collision(self, obj):
+        self.walls.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
+    def add_collision_from_obj(self,obj):
+        self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
+    def add_collision_from_rect(self, rect):
+        self.walls.append(rect)
+
+    def add_element_to_draw_obj(self, gig):
+        pass
+
+    def set_layer_visible(self,layer, Visible):
+        self.maps[self.current_map].tmx_data.get_layer_by_name(layer).visible = Visible
