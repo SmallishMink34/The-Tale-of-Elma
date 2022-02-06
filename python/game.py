@@ -29,7 +29,7 @@ class Game():
         running = True
         clock = pygame.time.Clock()
 
-        inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png")
+        inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png","inv","player")
 
 
         while running:

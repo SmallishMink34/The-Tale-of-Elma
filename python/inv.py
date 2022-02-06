@@ -44,8 +44,11 @@ class case:
         
             
             
+
+
+
 class inv:
-    def __init__(self, text: str, personnage: str):
+    def __init__(self, text: str, personnage: str,inv:str,name:str):
         """[class pour l'inventaire]
         Args:
             text (str): [le texte que l'on veut afficher au dessus du personnage dans l'inventaire]
@@ -53,24 +56,40 @@ class inv:
         """
         self.text = pg.Texte(text, 500, 175, True, size=80, color=(0, 0, 0))
         self.personnage = pg.img(personnage, 540, 360, 230, 230, True)
+        self.type = inv
+        self.name = name
         # On crée un dictionnaire qui gère l'integraliter de l'inventaire
-        self.c = {'c1': case((312.82, 235.37)), 'c2': case((312.82, 320, 31)), 'c3': case((312.82, 404.87)),
-                  'c4': case((312.82, 489.68)), 'c5': case((571.73, 489.68)), 'c6': case((718.75, 150.79)),
-                  'c7': case((803.19, 150.85)), 'c8': case((887.72, 150.92)), 'c9': case((718.75, 235.73)),
-                  'c10': case((803.19, 235.79)), 'c11': case((887.72, 235.85)), 'c12': case((718.75, 320.29)),
-                  'c13': case((803.19, 320.35)), 'c14': case((887.72, 320.42)), 'c15': case((718.75, 405.1)),
-                  'c16': case((803.19, 405.25)), 'c17': case((887.72, 404.87)), 'c18': case((718.75, 489.7)),
-                  'c19': case((803.19, 489.76)), 'c20': case((887.72, 489.82))}
-
+        self.c = self.lire_inv(f"inv.case/{inv}.txt")
+        self.save(self.type)
     def iblit(self, screen):
         """[Methode qui blit tout ce qu'il a afficher]"""
-        self.text.iblit(screen)  # on blit deja le texte
+        if self.type == "inv":
+            self.text.iblit(screen)  # on blit deja le texte
+            self.personnage.iblit(screen)  # on blit le personnage
         pg.img("../img/img.inv/INV.png", 0, 0, 1280, 720, False).iblit(screen)  # on blit deja le fond
-        self.personnage.iblit(screen)  # on blit le personnage
-        for i in range(1, 21):  # on blit toute les cases
-            c = "c" + str(i)
+
+        for c in self.c.keys():  # on blit toute les cases
             self.c[c].iblit(screen)
 
+    def lire_inv(self,file):
+        self.file = open(file,"r")
+        L = self.file.readlines()
+        c = {}
+        for i in L:
+            c[i.split(":")[0]] = case((float((i.split(":")[1].split(",")[0]).strip()),float((i.split(":")[1].split(",")[1].strip()))))
+        return c
+    
+    def save(self,name):
+        file = open(f"save.inv/{name}.txt","w")
+        for c in self.c.keys():
+            if self.c[c].obj != None:
+                file.write((str(c) + ": ")+str(self.c[c].obj.recup())+"\n")
+            else:
+                file.write((str(c) + ": ")+str(None)+"\n")
+        
+    def import_save(self,name):
+        
+    
     def add(self, obj, case):
         """[Méthode qui ajoute un objet à l'inv]"""
         self.c["c"+str(case)].add_obj(obj)  
@@ -149,6 +168,7 @@ class inv:
                 c2 = self.c["c"+str(case2)].obj
                 self.add(c2,case1)
                 self.add(c1,case2)
+        self.save(self.name)
 
 
     def info_case(self,mouse_pos,event):
@@ -160,7 +180,7 @@ class inv:
 
 
 class item:
-    def __init__(self, ID:int , nom: str, nbr: int, genre: str, img: str, coord:tuple = (0,0), pos_inv=None):
+    def __init__(self, ID:int , nom: str, nbr: int, genre: str, img: str,coord:tuple = (0,0), nbr_max:int = 64):
         """
         [class permettant de crée un objet]
 
@@ -174,6 +194,7 @@ class item:
         self.id = ID
         self.nom = nom
         self.nbr = nbr
+        self.nbr_max = nbr_max
         self.genre = genre
         self.img = pg.img(img,coord[0],coord[1], 80, 80, False)
         self.rect = self.img.get_recte()
@@ -182,7 +203,7 @@ class item:
         
     
     def recup(self):
-        return [self.nom, self.nbr, self.genre, self.img, self.pos_inv]
+        return [self.id, self.nom, self.nbr, self.genre, self.nbr_max]
     
     def iblit(self,screen):
         self.img.iblit(screen)
@@ -195,4 +216,3 @@ class item:
         
     def update_txt(self,coord):
         self.text.iupdate(self.nbr,(255,255,0),(coord[0],coord[1]))
-    

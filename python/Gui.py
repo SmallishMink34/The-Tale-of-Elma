@@ -44,7 +44,13 @@ class Gui:
         print('Inventaire Ouvert')
         self.player.allinputoff(False)
 
-
+    def inventory_chest(self,name):
+        self.currentGui = "Inv"
+        self.element['inv'] = [inv.inv("Inventaire","../img/img.inv/personnage_test.png","chest",name), True]
+        print(f'{name} Ouvert')
+        self.player.allinputoff(False)
+        
+        
     def Pause(self):
         self.currentGui = "Pause"
         pass
