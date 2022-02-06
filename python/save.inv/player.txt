@@ -1,9 +1,9 @@
-c1: None
-c2: [2, 'plastron', 158, 'armure', 64]
+c1: [2, 'plastron', 2, 'armure', 2]
+c2: None
 c3: None
 c4: None
 c5: None
-c6: [1, 'casque', 158, 'armure', 64]
+c6: None
 c7: None
 c8: None
 c9: None
@@ -12,7 +12,7 @@ c11: None
 c12: None
 c13: None
 c14: None
-c15: None
+c15: [2, 'plastron', 2, 'armure', 2]
 c16: None
 c17: None
 c18: None

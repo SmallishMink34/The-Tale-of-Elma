@@ -2,6 +2,8 @@ import pygame
 import pygame
 import ClassPG as pg
 from pygame.locals import *
+import pandas as pd
+import ast #Module transforme representation of list into list
 
 class case:
     def __init__(self,coord,obj=None):
@@ -60,7 +62,11 @@ class inv:
         self.name = name
         # On crée un dictionnaire qui gère l'integraliter de l'inventaire
         self.c = self.lire_inv(f"inv.case/{inv}.txt")
-        self.save(self.type)
+
+
+    def load_inv(self):
+        self.import_save(self.name)
+
     def iblit(self, screen):
         """[Methode qui blit tout ce qu'il a afficher]"""
         if self.type == "inv":
@@ -86,8 +92,25 @@ class inv:
                 file.write((str(c) + ": ")+str(self.c[c].obj.recup())+"\n")
             else:
                 file.write((str(c) + ": ")+str(None)+"\n")
-        
+        file.close()
     def import_save(self,name):
+        self.clear()
+        try:
+            a = open(f"save.inv/{name}.txt", "r")
+            for i in a.readlines():
+                x = str(i.split(": ")[1])
+                print(x)
+                if x != None:
+                    x = ast.literal_eval(x)
+                    id = int(x[0])
+                    nb = int(x[2])
+
+                    obj = item(id, nb)
+                    self.add(obj, i.split(': ')[0][1])
+            a.close()
+        except FileNotFoundError:
+            return False
+
         
     
     def add(self, obj, case):
@@ -100,8 +123,8 @@ class inv:
 
     def clear(self):
         """[Méthode qui vide l'inv]"""
-        for i in range(1, 21):
-            self.suppr(i)
+        for i in self.c.keys():
+            self.suppr(int(i[1]))
 
     def image_suivie(self, case, mouse_pos):
         """[Methode qui permet de faire suivre l'image sur le curseur]
@@ -180,7 +203,7 @@ class inv:
 
 
 class item:
-    def __init__(self, ID:int , nom: str, nbr: int, genre: str, img: str,coord:tuple = (0,0), nbr_max:int = 64):
+    def __init__(self, ID:int, nb:int,coord:tuple = (0,0)):
         """
         [class permettant de crée un objet]
 
@@ -192,16 +215,24 @@ class item:
             pos_inv (optional): [on precise la position de l'objet dans l'inventaire]. Defaults to None.
         """
         self.id = ID
-        self.nom = nom
-        self.nbr = nbr
-        self.nbr_max = nbr_max
-        self.genre = genre
-        self.img = pg.img(img,coord[0],coord[1], 80, 80, False)
+        self.nbr = nb
+        self.recupinfoitem()
+
+        self.img = pg.img(self.imglink,coord[0],coord[1], 80, 80, False)
+
         self.rect = self.img.get_recte()
-        
         self.text = pg.Texte(str(self.nbr),coord[0],coord[1],True)
         
-    
+    def recupinfoitem(self):
+        data = pd.read_csv(r'info/items.csv', sep=',', low_memory=False)
+        info = data.loc[self.id-1, ["Id", "name", "type", "imglink", "nbmax"]]
+        self.nom = str(info["name"])
+        self.genre = str(info["type"])
+        self.imglink = str(info["imglink"])
+        self.nbr_max = int(info["nbmax"])
+
+
+
     def recup(self):
         return [self.id, self.nom, self.nbr, self.genre, self.nbr_max]
     
