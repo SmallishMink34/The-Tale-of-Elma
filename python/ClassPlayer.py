@@ -1,4 +1,4 @@
-import pygame, sys, ClassPG, Gui
+import pygame, sys, ClassPG, Gui, inv
 
 from PlayerAnim import AnimateSprite
 
@@ -170,7 +170,7 @@ class PlayerTopDown(AnimateSprite):
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
 
-
+        self.inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png","inv","player")
 
         self.pressed = {}
         self.speed = 3

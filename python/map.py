@@ -131,7 +131,7 @@ class Mapmanager:
                                 self.add_element_to_draw_obj(8, element[0].x, element[0].y)
                                 print(self.actionnb['Pont'])
                         if "Chest" in element[0].name:
-                            self.player.gui.inventory_chest(element[0].name)
+                            self.player.gui.inventory_chest(element[0].name, self.player.inventaire)
 
                         else:
                             print(element[0].name)

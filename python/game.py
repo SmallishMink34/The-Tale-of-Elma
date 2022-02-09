@@ -29,7 +29,7 @@ class Game():
         running = True
         clock = pygame.time.Clock()
 
-        inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png","inv","player")
+
 
 
         while running:
@@ -51,7 +51,7 @@ class Game():
                 self.player.gui.event((x, y), event)
 
                 if self.player.pressed.get(pygame.K_i):
-                    self.player.gui.inventory(inventaire)
+                    self.player.gui.inventory(self.player.inventaire)
                     self.player.pressed[pygame.K_i] = False
 
             self.player.gui.iblit(self.display)

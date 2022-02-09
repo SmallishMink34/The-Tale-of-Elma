@@ -47,9 +47,9 @@ class Gui:
         self.element['inv'][0].load_inv()
         self.player.allinputoff(False)
 
-    def inventory_chest(self, name):
+    def inventory_chest(self, name, inve):
         self.currentGui = "Invc"
-        self.element['inv'] = [inv.inv("Inventaire", "../img/img.inv/personnage_test.png", "chest", name), True]
+        self.element['inv'] = [inv.invdouble("c", "p", "chest"), True]
         self.element['inv'][0].load_inv()
         print(f'{name} Ouvert')
         self.player.allinputoff(False)
@@ -101,5 +101,5 @@ class Gui:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
                 objet = inv.item(1, 1)
                 objet2 = inv.item(2, 2)
-                self.element['inv'][0].add(objet, 1)
-                self.element['inv'][0].add(objet2, 2)
+                self.element['inv'][0].add(objet, "c1")
+                self.element['inv'][0].add(objet2, "c2")
