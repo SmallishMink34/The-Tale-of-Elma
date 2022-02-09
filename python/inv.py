@@ -104,7 +104,6 @@ class inv:
                     case = i.split(': ')[0][1:]
                     obj = item(id, nb)
                     self.add(obj, case)
-                    print('Item ajoutée a la case ', case)
             a.close()
         except FileNotFoundError:
             return False
@@ -228,12 +227,10 @@ class invdouble:
                     file.write((str(c) + ": ") + str(self.allcase[c].obj.recup()) + "\n")
                 else:
                     file.write((str(c) + ": ") + str(None) + "\n")
-        print('Enregistrement de inventaire du joueur')
 
         for c in lines:
             a = c.split(': ')[0]  # Recup de la clé
             a = a.replace('c', self.playercase)
-            print(c)
             if a in self.allcase.keys():
                 if self.allcase[a].obj != None:
                     file3.write((str(a) + ": ") + str(self.allcase[a].obj.recup()) + "\n")
@@ -262,7 +259,6 @@ class invdouble:
                     if self.playercase not in case:
                         obj = item(id, nb)
                         self.add(obj, case)
-                        print('Item ajoutée a la case ', case)
             a.close()
 
             a2 = open(f"save.inv/player.txt", "r")
@@ -278,7 +274,6 @@ class invdouble:
                         case = self.playercase + case[1:]
                         obj = item(id, nb)
                         self.add(obj, case)
-                        print('Item ajoutée a la case ', case)
             a.close()
 
         except FileNotFoundError:
