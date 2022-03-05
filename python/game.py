@@ -58,8 +58,7 @@ class Game():
             clock.tick(60)
             pygame.display.update()
         pygame.quit()
-
-
-
-game = Game()
-game.run()
+        
+def run():
+    game = Game()
+    game.run()

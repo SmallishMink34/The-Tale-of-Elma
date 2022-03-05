@@ -178,9 +178,9 @@ class son:
         self.music = music  # Lien de la music
         self.type = type  # Type music ou song
         if self.type == 'song':
-            self.song = pygame.mixer.Sound('song/' + self.music)
+            self.song = pygame.mixer.Sound(self.music)
         elif self.type == 'music':
-            self.song = pygame.mixer.music.load('song/' + self.music)
+            self.song = pygame.mixer.music.load(self.music)
 
     def volume(self, number):
         """Modification du volume"""
