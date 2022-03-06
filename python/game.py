@@ -29,16 +29,12 @@ class Game():
         running = True
         clock = pygame.time.Clock()
 
-
-
-
         while running:
 
             self.game.screen.blit(self.display, (0, 0))
 
             self.map_manag.updating() # Met a jour la carte et le joueur
             self.map_manag.draw() # Dessine la carte
-
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

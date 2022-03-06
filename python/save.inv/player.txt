@@ -3,13 +3,13 @@ c2: None
 c3: None
 c4: None
 c5: None
-c6: [1, 'casque', 5, 'armure', 1]
-c7: None
-c8: None
-c9: None
-c10: [2, 'plastron', 4, 'armure', 2]
-c11: None
-c12: None
+p6: [1, 'casque', 5, 'armure', 1]
+p7: None
+p8: None
+p9: None
+p10: [2, 'plastron', 4, 'armure', 2]
+p11: None
+p12: None
 c13: None
 c14: None
 c15: None
