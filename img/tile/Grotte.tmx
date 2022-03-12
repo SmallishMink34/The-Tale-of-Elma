@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="91">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="92">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="Base2 (32).tsx"/>
  <tileset firstgid="1485" source="Shadow.tsx"/>
@@ -371,6 +371,7 @@
    </properties>
   </object>
   <object id="88" type="Collision" x="1512.5" y="1719.5" width="367.5" height="32"/>
+  <object id="91" type="Collision" x="1829.33" y="2301.33" width="416" height="32"/>
  </objectgroup>
  <group id="12" name="To"/>
  <objectgroup id="5" name="Element">
@@ -395,8 +396,7 @@
   <object id="40" name="Panneau1" type="InputAction" x="981" y="1880.67" width="53" height="66">
    <properties>
     <property name="Speaker" value="Grotte"/>
-    <property name="Texte">Grotte dangereuse,
- Faire Attention</property>
+    <property name="Texte" value="Suis le chemin qui te ménera vers la lumière "/>
    </properties>
   </object>
   <object id="41" name="Torch1" type="InputAction" x="935.667" y="1835.67" width="17" height="68">
