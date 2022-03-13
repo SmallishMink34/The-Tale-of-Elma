@@ -14,7 +14,7 @@ class menu():
         #Musique du menu 
         self.musique = PG.son('../Sons/poke-chill.mp3',"music")
         self.musique.play()
-        self.musique.volume(0.3)
+        self.load()
         self.d = {}
         self.d['text_Play'] = PG.Texte("Jouer",560,320,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
         self.d['text_Para']= PG.Texte("Parametres",520,440,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
@@ -42,6 +42,11 @@ class menu():
                 self.continuer = False
                 paraa = para(self)
                 paraa.run()
+   
+    def load(self):
+        set = open("../python/save/settings.txt","r")
+        L = set.readlines()
+        self.musique.volume(float(L[0].split(" ")[1])/100)
                    
     def iblit(self, screen):
         self.image_fond.iblit(screen)
@@ -83,8 +88,7 @@ class para():
             x, y = pygame.mouse.get_pos()
             if self.d['Quitter'].click((x,y), event) :
                 self.continuer = False
-                menuu = menu()
-                menuu.run()
+                self.menu.run()
             if self.d['Musique'].click((x,y), event):
                 musi = song(self.menu)
                 musi.run()
@@ -112,9 +116,9 @@ class song():
         self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, 1280, 720, False)
         self.d = {}
         self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',1230,670,50,50)
-        self.slider = Slider(self.display, 250, 330, 800, 40, min=0, max=99, step = 1, initial=20, curved=True, handleRadius=30)
         self.d['Volume'] = PG.Texte('Volume : 0', 120, 120, True)
         self.menu = menu
+        self.load()
     def gameloop(self, event, screen):
         
         self.iblit(screen)
@@ -129,8 +133,8 @@ class song():
             x, y = pygame.mouse.get_pos()
             if self.d['Quitter'].click((x,y), event) :
                 self.continuer = False
-                menuu = menu()
-                menuu.run()
+                self.save()
+                self.menu.run()
 
         pw.update(events)
 
@@ -138,10 +142,20 @@ class song():
         self.image_fond.iblit(screen)
         for i in self.d.keys():
             self.d[i].iblit(screen)
-        
-
+            
+            
+    def load(self):
+        set = open("../python/save/settings.txt","r")
+        L = set.readlines()
+        self.slider = Slider(self.display, 250, 330, 800, 40, min=0, max=99, step = 1, initial = float(L[0].split(" ")[1]), curved=True, handleRadius=30)
 
     
+                         
+    def save(self):
+        set = open("../python/save/settings.txt","w")
+        set.writelines("volume: "+str(self.slider.getValue()))
+        set.close()
+        
     def run(self):
         self.continuer = True
         while self.continuer:
