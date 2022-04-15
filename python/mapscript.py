@@ -42,18 +42,8 @@ class Grotte:
     def collision(self,i):
         for element in self.mm.get_objectinp("InputAction", "all"):
             if i.feet.colliderect(element[1]) and self.mm.player.inputaction():
-                try : # si le joueurs entre en collision avec un objet
-                    if self.mm.player.get_item_in_inventory(5).obj.nom == element[0].properties["needitem"] and self.mm.player.get_item_in_inventory(5).obj.nbr >= element[0].properties["quantity"]:
-                        print('sa marche ?')
-                        """if element[0].properties["consume"]:
-                            self.mm.player.inventaire.suppr("c5")"""
-
-                    else:
-                        print('sa marche pas')
-                        break
-                except (AttributeError, KeyError):
-                    print('pas besoin')
-                    break
+                if self.mm.player.get_item_in_inventory(5).obj.nom == element[0].properties["needitem"] and self.mm.player.get_item_in_inventory(5).obj.nbr >= element[0].properties["quantity"]:
+                    pass
 
                 if "Portail" in element[0].name:  # Si c'est un point de teleportation
                     try:

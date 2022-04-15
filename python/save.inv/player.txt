@@ -2,7 +2,7 @@ c1: None
 c2: None
 c3: None
 c4: None
-c5: [4, 'briquet', 1, 'item', 1]
+c5: None
 c6: None
 c7: None
 c8: None
@@ -15,6 +15,6 @@ c14: None
 c15: None
 c16: None
 c17: None
-c18: None
+c18: [4, 'briquet', 1, 'item', 1]
 c19: None
 c20: None

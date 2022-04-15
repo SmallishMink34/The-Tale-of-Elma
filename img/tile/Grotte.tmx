@@ -408,7 +408,7 @@
   <properties>
    <property name="inv" value="c4: 1"/>
   </properties>
-  <object id="1" name="PlayerPos" type="PlayerPos" x="2157.21" y="2277.46">
+  <object id="1" name="PlayerPos" type="PlayerPos" x="1074.21" y="1989.46">
    <point/>
   </object>
   <object id="34" name="Chest1" type="InputAction" x="746" y="1559" width="72.6667" height="57.3334"/>
@@ -428,6 +428,9 @@
   <object id="41" name="Torch1" type="InputAction" x="935.667" y="1835.67" width="17" height="68">
    <properties>
     <property name="Infire" type="bool" value="false"/>
+    <property name="consume" type="bool" value="false"/>
+    <property name="needitem" value="briquet"/>
+    <property name="quantity" type="int" value="1"/>
     <property name="x1" type="int" value="29"/>
     <property name="y1" type="int" value="57"/>
    </properties>
@@ -435,6 +438,9 @@
   <object id="42" name="Torch2" type="InputAction" x="935.667" y="1484" width="16.3333" height="61">
    <properties>
     <property name="Infire" type="bool" value="false"/>
+    <property name="consume" type="bool" value="false"/>
+    <property name="needitem" value="briquet"/>
+    <property name="quantity" type="int" value="1"/>
     <property name="x1" type="int" value="29"/>
     <property name="y1" type="int" value="46"/>
    </properties>
@@ -442,6 +448,9 @@
   <object id="44" name="Torch3" type="InputAction" x="743.667" y="1484" width="16.3333" height="63">
    <properties>
     <property name="Infire" type="bool" value="false"/>
+    <property name="consume" type="bool" value="false"/>
+    <property name="needitem" value="briquet"/>
+    <property name="quantity" type="int" value="1"/>
     <property name="x1" type="int" value="23"/>
     <property name="y1" type="int" value="46"/>
    </properties>
@@ -449,6 +458,9 @@
   <object id="45" name="Torch4" type="InputAction" x="1254.66" y="1322.34" width="17.3333" height="68">
    <properties>
     <property name="Infire" type="bool" value="false"/>
+    <property name="consume" type="bool" value="false"/>
+    <property name="needitem" value="briquet"/>
+    <property name="quantity" type="int" value="1"/>
     <property name="x1" type="int" value="39"/>
     <property name="y1" type="int" value="41"/>
    </properties>
@@ -456,6 +468,9 @@
   <object id="46" name="Torch5" type="InputAction" x="1384" y="1228" width="16.6667" height="62.6667">
    <properties>
     <property name="Infire" type="bool" value="false"/>
+    <property name="consume" type="bool" value="false"/>
+    <property name="needitem" value="briquet"/>
+    <property name="quantity" type="int" value="1"/>
     <property name="x1" type="int" value="43"/>
     <property name="y1" type="int" value="38"/>
    </properties>
