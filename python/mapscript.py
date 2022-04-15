@@ -42,9 +42,19 @@ class Grotte:
     def collision(self,i):
         for element in self.mm.get_objectinp("InputAction", "all"):
             if i.feet.colliderect(element[1]) and self.mm.player.inputaction():
-                if self.mm.player.get_item_in_inventory(5).obj.nom == element[0].properties["needitem"] and self.mm.player.get_item_in_inventory(5).obj.nbr >= element[0].properties["quantity"]:
+                try:
+                    if element[0].properties["needitem"] != 0: #On regarde si on a besoin de la propriété needitem
+                        if self.mm.player.get_item_in_inventory(5).obj != None: #On regarde que la main sois pas vide
+                            if self.mm.player.get_item_in_inventory(5).obj.nom == element[0].properties["needitem"] and self.mm.player.get_item_in_inventory(5).obj.nbr >= element[0].properties["quantity"]:# On regarde si c'est le bonne objet et la bonne quantité
+                                pass
+                            else:
+                                break
+                        else:
+                            break
+                    else:
+                        break
+                except (AttributeError, KeyError):
                     pass
-
                 if "Portail" in element[0].name:  # Si c'est un point de teleportation
                     try:
                         var = element[0].properties['To?']
