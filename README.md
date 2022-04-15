@@ -17,7 +17,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 <table align = "center">
   <tr>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/SmallishMink34">
         <img src="https://avatars.githubusercontent.com/u/76260503?v=4" width="100px;" alt="Picture of Matthéo"/><br>
         <sub>
           <b>Matthéo</b>
@@ -25,7 +25,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
       </a>
     </td>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/MMMatth">
         <img src="https://avatars.githubusercontent.com/u/45897183?v=4" width="100px;" alt="Picture of Matthieu"/><br>
         <sub>
           <b>Matthieu</b>
@@ -33,7 +33,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
       </a>
     </td>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/Louillee">
         <img src="https://avatars.githubusercontent.com/u/95853618?v=4" width="100px;" alt="Picture of Louis"/><br>
         <sub>
           <b>Louis</b>
