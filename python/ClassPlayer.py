@@ -185,6 +185,14 @@ class PlayerTopDown(AnimateSprite):
 
         self.gui = Gui.Gui('Normal', self)
 
+    def get_inventory(self):
+        return self.inventaire.c
+
+    def get_item_in_inventory(self, case:int):
+        return self.get_inventory()["c"+str(case)]
+
+
+
     def update(self):
         self.save_old_location()  # Savegarde des position du joueur avant mouvement
         self.dirrection()  # Deplacement joueur

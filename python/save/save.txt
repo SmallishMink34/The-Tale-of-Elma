@@ -1,7 +1,8 @@
-Grotte
-Pont: 2
+Lobby
+Pont: 4
 Torch1: True
 Torch3: False
 Torch2: True
-Torch4: False
-Torch5: False
+Torch4: True
+Torch5: True
+Door: True

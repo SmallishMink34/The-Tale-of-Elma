@@ -13,7 +13,8 @@ class Map:
 
 class Tuile(pygame.sprite.Sprite):
     def __init__(self, x, y, image, tile_size):
-        pygame.sprite.Sprite.__init__(self)
+        super(Tuile, self).__init__()
+        self.name = "tile"
         self.rect = pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size)
         self.image = image
         self.type = "tile"
@@ -21,34 +22,45 @@ class Tuile(pygame.sprite.Sprite):
 class Mapmanager:
     def __init__(self, screen, player):
         self.maps = {}
-        self.current_map = "Lobby"
+        self.current_map = "Grotte"
         self.screen = screen
         self.player = player
 
-        self.register_map("Lobby", mapscript.lobby(self), 8)
+        self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
 
         self.teleport_player("PlayerPos")
 
-    def register_map(self, name, mapobject,player_layer=7):
-        self.tmx = pytmx.util_pygame.load_pygame(f"../img/tile/{name}.tmx")
-        mapdata = pyscroll.data.TiledMapData(self.tmx)
-        self.map_layer = pyscroll.orthographic.BufferedRenderer(mapdata, self.screen.get_size())
+    def alltiles(self):
+        self.alltiles_d = {}
+
+        self.alltiles_d["Base"] = pytmx.util_pygame.load_pygame("../img/tile/alltiles.tmx", load_all_tiles=True)
+        self.alltiles_d["Base2"] = pytmx.util_pygame.load_pygame("../img/tile/Base2Tiles.tmx", load_all_tiles=True)
+
+    def register_map(self, name, mapobject):
+        self.tmx = pytmx.util_pygame.load_pygame(f"../img/tile/{name}.tmx", load_all_tiles=True)
+        self.alltiles()
+        self.mapdata = pyscroll.data.TiledMapData(self.tmx)
+        self.map_layer = pyscroll.orthographic.BufferedRenderer(self.mapdata, self.screen.get_size())
         self.map_layer.zoom = 1.6
         self.walls = []
         self.objects_input = {}
 
+        player_layer = self.tmx.layers
+        for element in range(len(player_layer)):
+            if player_layer[element].name == "PlayerCalque":
+                u = element
         for obj in self.tmx.objects:  # Ajout des collsion dans des listes
             if obj.type == "Collision":
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "InputAction":
-                self.objects_input[obj.name] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), "InputAction"]
+            if obj.type == "InputAction" or obj.type == "add":
+                self.objects_input[obj.name] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), obj.type]
 
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer,
-                                            default_layer=player_layer)  # groupe contenant le joueur et la map
+                                            default_layer=u)  # groupe contenant le joueur et la map
         self.group.add(self.player)
-
-        self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, mapdata)
+        self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, self.mapdata)
+        mapobject.load()
         self.mapobject = mapobject
         self.actionnb = mapobject.actionb
 
@@ -146,6 +158,12 @@ class Mapmanager:
                 return True
 
     def changemap(self, name, teleportpoint):
+        """
+        Change la map actuel
+        :param name: str
+        :param teleportpoint: str
+        :return: Nothing
+        """
         self.current_map = name
         self.teleport_player(teleportpoint)
 
@@ -158,10 +176,16 @@ class Mapmanager:
     def add_collision_from_rect(self, rect):
         self.walls.append(rect)
 
-    def add_element_to_draw_obj(self, gid, x, y):
-        image = self.maps[self.current_map].tmx_data.get_tile_image_by_gid(gid)
-        self.group.add(Tuile(x, y, image, 32))
-        print(x, y)
+    def add_element_to_draw_obj(self,name:str ,gid:int, x:int, y:int, layer:int):
+        img = self.alltiles_d[name].get_tile_image_by_gid(gid+1)
+        self.group.add(Tuile(x, y, img, 32), layer=layer)
+
+    def remove_element_to_draw_obj(self, x, y):
+        for element in self.group:
+            if element.name == "tile":
+                if element.rect.x == x*32 and element.rect.y == y*32:
+                    self.group.remove(element)
+                    print('removed')
 
     def set_layer_visible(self, layer, Visible):
         """
