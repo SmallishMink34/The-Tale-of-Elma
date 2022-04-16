@@ -1,32 +1,27 @@
 import game 
 import ClassPG as PG
 import pygame
+import ast
 import pygame_widgets as pw 
 from pygame_widgets.slider import Slider
 from pygame_widgets.button import Button
 from pygame_widgets.dropdown import Dropdown
+from pygame_widgets.toggle import Toggle
 
 
 class menu():
-    def __init__(self) -> None:
+    def __init__(self,val) -> None:
         self.display_w,self.display_h = 1280,720
         self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
         self.display = pygame.Surface((self.display_w, self.display_h))
-        self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, 1280, 720, False)
-        #Musique du menu 
-        self.musique = PG.son('../Sons/poke-chill.mp3',"music")
-        self.musique.play()
-        self.load()
+        self.val = val
         self.d = {}
-        self.d['text_Play'] = PG.Texte("Jouer",560,320,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
-        self.d['text_Para']= PG.Texte("Parametres",520,440,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
-        self.d['text_Quit'] = PG.Texte("Quitter",545,570,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
-        self.d['Titre'] = PG.Texte("Titre",500,50,True,color=(255,255,255), size= 100, font='../font/Like Snow.otf')
+        self.load()
+        self.paraa = para(self,self.val)
 
     def gameloop(self, event, screen):
         self.eventpy(event)
         self.iblit(screen)
-
 
     def eventpy(self, events):
         for event in events:
@@ -36,34 +31,28 @@ class menu():
             if self.d['text_Play'].click((x,y), event, color=(128, 255, 0)):
                 self.continuer = False
                 gamee = game.Game()
-                self.musique.stop()
+                self.val.musique.stop()
                 gamee.run()
             if self.d['text_Quit'].click((x,y), event, color=(128, 255, 0)):
                 pygame.quit()
             if self.d['text_Para'].click((x,y), event, color=(128, 255, 0)):
                 self.continuer = False
-                paraa = para(self)
-                paraa.run()
+                self.paraa.load()
+                self.paraa.run()
+                
 
-
-    def screensize(self,val1, val2, fullscreen = False):
-        self.display_w,self.display_h = val1,val2
-        if fullscreen :
-            self.display = pygame.Surface((self.display_w, self.display_h),pygame.FULLSCREEN)
-            self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
-        else : 
-            self.display = pygame.Surface((val1, val2))
-            self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
-            self.image_fond.iupdate('../img/menu/Fond_Menu.png',(val1, val2))
-
-   
     def load(self):
         set = open("../python/save/settings.txt","r")
         L = set.readlines()
-        self.musique.volume(float(L[0].split(" ")[1])/100)
-        self.screensize(int(L[1].split(" ")[1].split(",")[0]), int(L[1].split(" ")[1].split(",")[1]))
+        self.val.musique.volume(float(L[0].split(" ")[1]))
+        self.val.screensize2((int(L[1].split(" ")[1].split(",")[0]),int(L[1].split(" ")[1].split(",")[1])), self.game.screen,self.val.toggle)
+        self.d['text_Play'] = PG.Texte("Jouer",self.val.screensize[0]//2-100, self.val.screensize[1]//2-10,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
+        self.d['text_Para']= PG.Texte("Parametres",self.val.screensize[0]//2-100, self.val.screensize[1]//2+100,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
+        self.d['text_Quit'] = PG.Texte("Quitter",self.val.screensize[0]//2-100, self.val.screensize[1]//2+210,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
+        self.d['Titre'] = PG.Texte("Titre",self.val.screensize[0]//2-175, self.val.screensize[1]//2 - 275,True,color=(255,255,255), size= 125, font='../font/Like Snow.otf')
+        self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1], False)
+        self.display= pygame.Surface(self.val.screensize)
         
-                   
     def iblit(self, screen):
         self.image_fond.iblit(screen)
         for i in self.d.keys():
@@ -80,18 +69,15 @@ class menu():
 
 
 class para():
-    def __init__(self,menu) -> None:
+    def __init__(self,menu,val) -> None:
         self.display_w,self.display_h = 1280,720
         self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
-        self.display = pygame.Surface((self.display_w, self.display_h))
-        self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, 1280, 720, False)
-        self.load()
+        self.val = val
         self.d = {}
-        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',1230,670,50,50)
-        self.d['Musique']= PG.Texte("Musique",535,440,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
-        self.d['Touche'] = PG.Texte("Touches",530,560,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
-        self.d['Skin'] = PG.Texte("Cosmetiques",500,320,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
-        self.menu = menu
+        self.load()
+        self.musi = song(menu,self.val)
+        self.menuu = menu
+      
 
     def gameloop(self, event, screen):
         self.eventpy(event)
@@ -105,29 +91,22 @@ class para():
             x, y = pygame.mouse.get_pos()
             if self.d['Quitter'].click((x,y), event) :
                 self.continuer = False
-                self.menu.run()
+                self.menuu.run()
             if self.d['Musique'].click((x,y), event):
-                musi = song(self.menu)
-                musi.load()
-                musi.run()
-                
-
-
-    def screensize(self,val1, val2, fullscreen = False):
-        self.display_w,self.display_h = val1,val2
-        if fullscreen :
-            self.display = pygame.Surface((self.display_w, self.display_h),pygame.FULLSCREEN)
-            self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
-        else : 
-            self.display = pygame.Surface((val1, val2))
-            self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
-            self.image_fond.iupdate('../img/menu/Fond_Menu.png',(val1, val2))
-
+                self.musi.load()
+                self.musi.run()
    
     def load(self):
         set = open("../python/save/settings.txt","r")
         L = set.readlines()
-        self.screensize(int(L[1].split(" ")[1].split(",")[0]), int(L[1].split(" ")[1].split(",")[1]))
+        self.val.screensize2(self.val.screensize, self.game.screen,self.val.toggle)
+        
+        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',1230,670,50,50)
+        self.d['Musique']= PG.Texte("General",self.val.screensize[0]//2-100,self.val.screensize[1]//2-10,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
+        self.d['Touche'] = PG.Texte("Touches",self.val.screensize[0]//2-100,self.val.screensize[1]//2+100,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
+        self.d['Skin'] = PG.Texte("Cosmetiques",self.val.screensize[0]//2-100,self.val.screensize[1]//2+210,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
+        self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1],False)
+
 
     def iblit(self, screen):
         self.image_fond.iblit(screen)
@@ -138,81 +117,121 @@ class para():
     def run(self):
         self.continuer = True
         while self.continuer:
-            self.game.screen.blit(self.display, (0, 0))
-            self.gameloop(pygame.event.get(), self.display)
+            self.game.screen.blit(self.game.screen, (0, 0))
+            self.gameloop(pygame.event.get(), self.game.screen)
             pygame.display.update()
         pygame.quit()
     
 class song():
-    def __init__(self,menu) -> None:
+    def __init__(self,menu,val) -> None:
         self.display_w,self.display_h = 1280,720
         self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
+        self.val = val
+        
+        self.slider = Slider(self.game.screen, self.val.screensize[0]//2-400, self.val.screensize[1]//2+30, 800, 40, min=0, max=99, step = 1, initial = 0, curved=True, handleRadius=30)
+        self.dropdown = Dropdown(self.game.screen, self.val.screensize[0]//2-100, self.val.screensize[1]//2-300, 200, 100, name='Resolution',
+        choices=[
+        '1920x1080',
+        '1366x768',
+        '1220x720',],borderRadius=3, colour=pygame.Color('white'), values=[(1920,1080), (1366,768), (1220,720)], direction='down', textHAlign='centre',onClick = self.changescreensize)
+        self.toggle = Toggle(self.game.screen, self.val.screensize[0]//2-25,self.val.screensize[1]//2-55, 60, 20, onColour = (255, 255, 255), offColour =(0, 0, 0), handleOnColour = (200, 200, 200) )
         self.load()
-        self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, 1280, 720, False)
-        self.d = {}
-        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',1230,670,50,50)
-        self.d['Volume'] = PG.Texte('Volume : 0', 120, 120, True)
         self.menu = menu
         
-    def gameloop(self, event, screen):
         
+        
+    def gameloop(self, event, screen):
         self.iblit(screen)
         self.eventpy(event)
 
     def eventpy(self, events):
         for event in events:
-            self.d['Volume'].iupdate("Volume : "+str(self.slider.getValue())+"%", (255, 255, 255), (600, 400))
-            self.menu.musique.volume(self.slider.getValue()/100)
+            self.d['Volume'].iupdate("Volume : "+str(self.slider.getValue())+"%", (255, 255, 255), (self.val.screensize[0]//2-85, self.val.screensize[1]//2+130))
+            self.val.volume = self.slider.getValue()/100
             if event.type == pygame.QUIT:
                 self.continuer = False
             x, y = pygame.mouse.get_pos()
             if self.d['Quitter'].click((x,y), event) :
                 self.continuer = False
-                self.save()
                 self.menu.load()
+                self.val.save()
                 self.menu.run()
+            if self.d['Valider'].click((x,y), event):
+                self.changescreensize()
+                self.val.save()
+                self.menu.load()
         pw.update(events)
 
     def iblit(self, screen):
         self.image_fond.iblit(screen)
         for i in self.d.keys():
             self.d[i].iblit(screen)
-            
-
-    def screensize(self,val1, val2, fullscreen = False):
-        self.display_w,self.display_h = val1,val2
-        if fullscreen :
-            self.display = pygame.Surface((self.display_w, self.display_h),pygame.FULLSCREEN)
-        else : 
-            self.display = pygame.Surface((val1, val2))
 
     def load(self):
         # slider 
         set = open("../python/save/settings.txt","r")
         L = set.readlines()
-        self.screensize(int(L[1].split(" ")[1].split(",")[0]), int(L[1].split(" ")[1].split(",")[1]))
-        self.slider = Slider(self.display, 250, 330, 800, 40, min=0, max=99, step = 1, initial = float(L[0].split(" ")[1]), curved=True, handleRadius=30)
-        self.dropdown = Dropdown(self.display, 120, 10, 100, 50, name='Resolution',
-        choices=[
-        '1920x1080',
-        '1366x768',
-        '1220x720',],borderRadius=3, colour=pygame.Color('white'), values=["1920,1080", "1366,768", "1220,720"], direction='down', textHAlign='left')
+        self.val.toggle = ast.literal_eval(L[2].split(" ")[1])
+        self.game.screen = self.val.screensize2(self.val.screensize,self.game.screen, self.val.toggle)
+        self.volume = self.val.volume
+        self.slider.setValue(float(L[0].split(" ")[1])*100)
+        self.slider._x = self.val.screensize[0]//2-400
+        self.slider._y = self.val.screensize[1]//2+40
+        self.dropdown._x = self.val.screensize[0]//2-100 
+        self.dropdown._y = self.val.screensize[1]//2-300
+        self.toggle._x = self.val.screensize[0]//2-25
+        self.toggle._y = self.val.screensize[1]//2-55
+        self.d = {}
+        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',20,self.val.screensize[1]-70,50,50)
+        self.d['Volume'] = PG.Texte('Volume : 0', self.val.screensize[0]//2-85, self.val.screensize[1]//2+130, False)
+        self.d['Valider'] = PG.Texte("Valider",self.val.screensize[0]/2-40,self.val.screensize[1]-100, True ,color=(0, 0, 0), size = 32 )
+        self.d['Toggle'] = PG.Texte("Fullscreen : ", self.val.screensize[0]//2-85,self.val.screensize[1]//2-135, True, color=(255, 255, 255), size = 32)
+        self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1], False)
         
-                         
-    def save(self):
-        set = open("../python/save/settings.txt","w")
-        set.writelines("volume: "+str(self.slider.getValue())+"\n")
-        set.writelines("resolution: "+str(self.dropdown.getSelected()))
-        set.close()
+            
+        
+    def changescreensize(self):
+        if self.dropdown.getSelected() != None:
+            self.val.screensize2(self.dropdown.getSelected(),self.game.screen, self.toggle.getValue())
+            self.val.save()
+            self.load()
+        
         
     def run(self):
         self.continuer = True
         while self.continuer:
-            self.game.screen.blit(self.display, (0, 0))
-            self.gameloop(pygame.event.get(), self.display)
+            self.game.screen.blit(self.game.screen, (0, 0))
+            self.gameloop(pygame.event.get(), self.game.screen)
             pygame.display.update()
         pygame.quit()
+    
+        
+class val():
+    def __init__(self):
+        self.screensize = (1280,720)
+        self.volume = 0
+        self.musique = PG.son('../Sons/poke-chill.mp3',"music")
+        self.musique.play()
+        self.toggle = False 
+        
+    def save(self):
+        set = open("../python/save/settings.txt","w")
+        set.writelines("volume: "+str(self.volume )+"\n")
+        set.writelines("resolution: "+str(self.screensize).replace(" ", "").replace ("(","").replace(")","")+"\n")
+        set.writelines("FullScreen: "+str(self.toggle))
+        set.close()
+    
+    def screensize2(self,valeurs, display, fullscreen = False):
+        self.screensize = valeurs
+        self.toggle = fullscreen
+        if fullscreen :
+            display = pygame.display.set_mode(self.screensize, pygame.FULLSCREEN)
+            print(self.toggle)
+        else : 
+            display = pygame.display.set_mode(self.screensize)
+        return display 
+        
 
-
-menue = menu()
+valeur = val()
+menue = menu(valeur)
 menue.run()
