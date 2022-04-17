@@ -44,7 +44,7 @@ class menu():
     def load(self):
         set = open("../python/save/settings.txt","r")
         L = set.readlines()
-        self.val.musique.volume(float(L[0].split(" ")[1]))
+        self.val.musique.volume(round(float(L[0].split(" ")[1]), 2))
         self.val.screensize2((int(L[1].split(" ")[1].split(",")[0]),int(L[1].split(" ")[1].split(",")[1])), self.game.screen,self.val.toggle)
         self.d['text_Play'] = PG.Texte("Jouer",self.val.screensize[0]//2-100, self.val.screensize[1]//2-10,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
         self.d['text_Para']= PG.Texte("Parametres",self.val.screensize[0]//2-100, self.val.screensize[1]//2+100,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
@@ -89,7 +89,7 @@ class para():
             if event.type == pygame.QUIT:
                 self.continuer = False
             x, y = pygame.mouse.get_pos()
-            if self.d['Quitter'].click((x,y), event) :
+            if self.d['Quitter'].click((x,y), event):
                 self.continuer = False
                 self.menuu.run()
             if self.d['Musique'].click((x,y), event):
@@ -101,7 +101,7 @@ class para():
         L = set.readlines()
         self.val.screensize2(self.val.screensize, self.game.screen,self.val.toggle)
         
-        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',1230,670,50,50)
+        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',40,self.val.screensize[1]-40,50,50)
         self.d['Musique']= PG.Texte("General",self.val.screensize[0]//2-100,self.val.screensize[1]//2-10,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
         self.d['Touche'] = PG.Texte("Touches",self.val.screensize[0]//2-100,self.val.screensize[1]//2+100,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
         self.d['Skin'] = PG.Texte("Cosmetiques",self.val.screensize[0]//2-100,self.val.screensize[1]//2+210,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
@@ -133,7 +133,7 @@ class song():
         choices=[
         '1920x1080',
         '1366x768',
-        '1220x720',],borderRadius=3, colour=pygame.Color('white'), values=[(1920,1080), (1366,768), (1220,720)], direction='down', textHAlign='centre',onClick = self.changescreensize)
+        '1220x720',],borderRadius=3, colour=pygame.Color('white'), values=[(1920,1080), (1366,768), (1220,720)], direction='down', textHAlign='centre')
         self.toggle = Toggle(self.game.screen, self.val.screensize[0]//2-25,self.val.screensize[1]//2-55, 60, 20, onColour = (255, 255, 255), offColour =(0, 0, 0), handleOnColour = (200, 200, 200) )
         self.load()
         self.menu = menu
@@ -182,7 +182,7 @@ class song():
         self.toggle._x = self.val.screensize[0]//2-25
         self.toggle._y = self.val.screensize[1]//2-55
         self.d = {}
-        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',20,self.val.screensize[1]-70,50,50)
+        self.d['Quitter'] = PG.bouton('../img/menu/Quit.png',40,self.val.screensize[1]-40,50,50)
         self.d['Volume'] = PG.Texte('Volume : 0', self.val.screensize[0]//2-85, self.val.screensize[1]//2+130, False)
         self.d['Valider'] = PG.Texte("Valider",self.val.screensize[0]/2-40,self.val.screensize[1]-100, True ,color=(0, 0, 0), size = 32 )
         self.d['Toggle'] = PG.Texte("Fullscreen : ", self.val.screensize[0]//2-85,self.val.screensize[1]//2-135, True, color=(255, 255, 255), size = 32)

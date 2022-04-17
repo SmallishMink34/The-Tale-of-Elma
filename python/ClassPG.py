@@ -162,6 +162,9 @@ class bouton:
             self.image = pygame.transform.scale(self.image, (self.w, self.h))
             self.rect = self.image.get_rect()
 
+        self.rect.centerx = self.x
+        self.rect.centery = self.y
+
 
         if self.rect.collidepoint(mousepos):
             if event.type == pygame.MOUSEBUTTONDOWN:
