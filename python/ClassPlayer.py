@@ -164,6 +164,12 @@ class PlayerTopDown(AnimateSprite):
         self.tilesize = 16
         self.tilesizescale = 2
         self.screen = screen
+        
+        # Stats du joueur 
+        self.hp = 100
+        self.deffence = 0
+        self.attaque = 0
+        
 
         self.type = 'Joueur'
         self.image = self.get_coords_image(0, 0)
