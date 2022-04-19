@@ -3,6 +3,7 @@ import ClassPG
 import ClassPlayer
 import map
 import inv
+import fight
 
 
 class Game():
@@ -19,6 +20,9 @@ class Game():
         self.player = ClassPlayer.PlayerTopDown("SmallIshMink",(0, 0), self.display)
 
         self.map_manag = map.Mapmanager(self.display, self.player)
+    
+        
+        
 
 
     def run(self):

@@ -1,5 +1,6 @@
-Id,name,type,imglink,nbmax
-1,casque,armure,../img/item/diamond_helmet.png,1
-2,plastron,armure,../img/item/diamond_chestplate.png,1
-3,legging,armure,../img/item/diamond_legging.png,1
-4,briquet,item,../img/item/briquet.png,1
+Id,name,type,imglink,nbmax,link
+1,casque,armure,../img/item/diamond_helmet.png,1,1
+2,plastron,armure,../img/item/diamond_chestplate.png,1,2
+3,legging,armure,../img/item/diamond_legging.png,1,3
+4,briquet,item,../img/item/briquet.png,1,0
+5,epee,arme,zzz,1,1
