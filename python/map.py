@@ -26,6 +26,8 @@ class Mapmanager:
         self.screen = screen
         self.player = player
 
+        self.loading = False #Load from the file
+
         self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
 
@@ -53,7 +55,7 @@ class Mapmanager:
         for obj in self.tmx.objects:  # Ajout des collsion dans des listes
             if obj.type == "Collision":
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "InputAction" or obj.type == "add":
+            if obj.type != "Collision":
                 self.objects_input[obj.name] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), obj.type]
 
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer,
@@ -123,6 +125,19 @@ class Mapmanager:
                     l.append(self.get_map().object[i])
         return l
 
+    def get_allobject(self, returntype="all"):
+        l = []
+        if returntype == "rect":
+            for i in self.get_map().object.keys():
+                l.append(self.get_map().object[i][1])
+        if returntype == "object":
+            for i in self.get_map().object.keys():
+                l.append(self.get_map().object[i][0])
+        if returntype == "all":
+            for i in self.get_map().object.keys():
+                l.append(self.get_map().object[i])
+        return l
+
     def get_object(self, name):
         return self.get_map().tmx_data.get_object_by_name(name)
 
@@ -139,6 +154,7 @@ class Mapmanager:
         self.group.update()
         self.collision()
 
+
         try :
             self.mapobject.update()
         except KeyError:
@@ -149,7 +165,8 @@ class Mapmanager:
             if i.type == 'Joueur':
                 if i.feet.collidelist(self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
                     i.moveback()
-                self.mapobject.collision(i)              
+                self.mapobject.collision(i)
+
 
     def checkcollision(self, x, y):
         for element in self.get_walls():

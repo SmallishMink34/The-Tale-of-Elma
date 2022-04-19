@@ -191,8 +191,10 @@ class invdouble:
         self.name = name
         self.text = pg.Texte(name, 500, 175, True, size=80, color=(0, 0, 0))
 
-        self.allcase = self.lire_inv(f"inv.case/{name}.txt")
-
+        if "Chest" in name:
+            self.allcase = self.lire_inv(f"inv.case/chest.txt")
+        else:
+            self.allcase = self.lire_inv(f"inv.case/{name}.txt")
 
     def load_inv(self):
         self.import_save(self.name)
@@ -248,6 +250,7 @@ class invdouble:
     def import_save(self, name):
         self.clear()
         try:
+            print('import normal')
             a = open(f"save.inv/{name}.txt", "r")
             for i in a.readlines():
                 x = str(i.split(": ")[1])
@@ -277,7 +280,10 @@ class invdouble:
             a.close()
 
         except FileNotFoundError:
-            return False
+            self.save(self.name)
+            self.import_save(self.name)
+
+
 
     def add(self, obj, case):
         """[Méthode qui ajoute un objet à l'inv]"""

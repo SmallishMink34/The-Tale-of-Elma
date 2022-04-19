@@ -47,9 +47,9 @@ class Gui:
         self.element['inv'][0].load_inv()
         self.player.allinputoff(False)
 
-    def inventory_chest(self, name, inve):
+    def inventory_chest(self, name):
         self.currentGui = "Invc"
-        self.element['inv'] = [inv.invdouble("c", "p", "chest"), True]
+        self.element['inv'] = [inv.invdouble("c", "p", name), True]
         self.element['inv'][0].load_inv()
         print(f'{name} Ouvert')
         self.player.allinputoff(False)
