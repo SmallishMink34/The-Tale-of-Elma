@@ -11,7 +11,7 @@ class fight():
         self.tour = False
         self.joueur = joueur
         self.mobid = mobid
-        self.armid = armid
+        self.armid = 1
         self.lvlmob = lvlmob
         self.read()
         pygame.init()
@@ -98,8 +98,8 @@ class fight():
             for events in pygame.event.get():
                 if events.type == pygame.QUIT:
                     running = False
-                if event.type == MOUSEBUTTONDOWN and self.tour == True :
-                    if event.button == 1: # 1= clique gauche
+                if events.type == pygame.MOUSEBUTTONDOWN and self.tour == True :
+                    if events.button == 1: # 1= clique gauche
                         if batk_rect(events.pos):
                             self.Pv -= self.realdmg
                             self.tour = False 
@@ -118,21 +118,9 @@ class fight():
                     self.tour == True 
                 
             Img.iblit(self.screen)
-            self.screen.blit(bottom, bottom_rect) 
+            self.screen.blit(bottom, bottom_rect)
+            self.screen.blit(bf, bf_rect)
+
+            pygame.display.update()
             self.screen.blit(batk, batk_rect)
             self.screen.blit(bobj,bobj_rect)
-            self.screen.blit(bf, bf_rect) 
-              
-            pygame.display.update()
-            
-b=fight("a", 2, 3)    
- 
-     
-        
-        
-    
-               
-        
-        
-
-        
