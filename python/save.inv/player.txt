@@ -3,13 +3,13 @@ c2: [2, 'plastron', 8, 'armure', 1]
 c3: None
 c4: None
 c5: None
-p6: [4, 'briquet', 1, 'item', 1]
-p7: None
-p8: None
-p9: None
-p10: None
-p11: None
-p12: None
+c6: [4, 'briquet', 1, 'item', 1]
+c7: [2, 'plastron', 4, 'armure', 1]
+c8: None
+c9: None
+c10: None
+c11: None
+c12: None
 c13: None
 c14: None
 c15: None

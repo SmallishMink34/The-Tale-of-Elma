@@ -16,7 +16,7 @@ class game:
         pygame.init()
 
         # Création de la fenetre de jeux
-        if fullscreen is None:
+        if fullscreen is False:
             self.screen = pygame.display.set_mode(size)
         else:
             self.screen = pygame.display.set_mode((0,0), FULLSCREEN)
@@ -128,7 +128,7 @@ class Texte:
 class bouton:
     """Class qui permet de crée des boutons facilement"""
 
-    def __init__(self, image, x, y, w, h):
+    def __init__(self, image, x, y, w, h, toggle=False, toggletrue=None):
         self.link = image
 
         self.x = x
@@ -136,6 +136,8 @@ class bouton:
         self.w = w
         self.h = h
 
+        self.toggle = toggle
+        self.toggle_verif = toggletrue
         self.image = pygame.image.load(self.link).convert_alpha()
         self.image = pygame.transform.scale(self.image, (w, h))
         self.rect = self.image.get_rect()
@@ -150,8 +152,27 @@ class bouton:
     def click(self, mousepos, event):
         """Detection du click de la souris et du survol"""
         self.ihover(mousepos)
+
+        if self.toggle_verif == False:
+            self.image = pygame.image.load(self.link[:-4]+"_off.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
+            self.rect = self.image.get_rect()
+        else:
+            self.image = pygame.image.load(self.link).convert_alpha()
+            self.image = pygame.transform.scale(self.image, (self.w, self.h))
+            self.rect = self.image.get_rect()
+
+        self.rect.centerx = self.x
+        self.rect.centery = self.y
+
+
         if self.rect.collidepoint(mousepos):
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.toggle:
+                    if self.toggle_verif:
+                        self.toggle_verif = False
+                    else:
+                        self.toggle_verif = True
                 return True
 
     def ihover(self, mousepos, imglink=None):
@@ -177,10 +198,11 @@ class son:
     def __init__(self, music, type):
         self.music = music  # Lien de la music
         self.type = type  # Type music ou song
+        self.playing = False
         if self.type == 'song':
-            self.song = pygame.mixer.Sound('song/' + self.music)
+            self.song = pygame.mixer.Sound(self.music)
         elif self.type == 'music':
-            self.song = pygame.mixer.music.load('song/' + self.music)
+            self.song = pygame.mixer.music.load(self.music)
 
     def volume(self, number):
         """Modification du volume"""
@@ -191,15 +213,18 @@ class son:
 
     def play(self):
         """Jouer la musique ou le song"""
-        if self.type == 'song':
-            self.song.play()
-        elif self.type == "music":
-            self.music = pygame.mixer.music.play(-1)
+        self.playing = True
+        if self.playing == True:
+            if self.type == 'song':
+                self.song.play()
+            elif self.type == "music":
+                self.music = pygame.mixer.music.play(-1)
 
     def stop(self):
         """Stoper le song"""
         if self.type == 'music':
             self.music = pygame.mixer.music.stop()
+            self.playing = False
 
 
 class rectangle():

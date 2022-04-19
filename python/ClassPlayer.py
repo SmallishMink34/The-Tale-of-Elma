@@ -169,14 +169,13 @@ class PlayerTopDown(AnimateSprite):
         self.hp = 100
         self.deffence = 0
         self.attaque = 0
-        
 
         self.type = 'Joueur'
         self.image = self.get_coords_image(0, 0)
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
 
-        self.inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png","inv","player")
+        self.inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png","inv","player", self.screen.get_size())
 
         self.pressed = {}
         self.speed = 3
@@ -189,7 +188,7 @@ class PlayerTopDown(AnimateSprite):
         self.KeyAction = True
         self.canPressKey = True
 
-        self.gui = Gui.Gui('Normal', self)
+        self.gui = Gui.Gui('Normal', self, self.screen.get_size())
 
     def get_inventory(self):
         return self.inventaire.c

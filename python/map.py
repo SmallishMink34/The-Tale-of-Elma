@@ -44,7 +44,7 @@ class Mapmanager:
         self.alltiles()
         self.mapdata = pyscroll.data.TiledMapData(self.tmx)
         self.map_layer = pyscroll.orthographic.BufferedRenderer(self.mapdata, self.screen.get_size())
-        self.map_layer.zoom = 1.6
+        self.map_layer.zoom = 1.6 * (self.screen.get_size()[0]/1280)
         self.walls = []
         self.objects_input = {}
 

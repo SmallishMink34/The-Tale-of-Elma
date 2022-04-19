@@ -46,19 +46,22 @@ class case:
 
 
 class inv:
-    def __init__(self, text: str, personnage: str, inv: str, name: str):
+    def __init__(self, text: str, personnage: str, inv: str, name: str, size: tuple):
         """[class pour l'inventaire]
         Args:
             text (str): [le texte que l'on veut afficher au dessus du personnage dans l'inventaire]
             personnage (str): [lien de l'image en png du personnage]
         """
-        self.text = pg.Texte(text, 500, 175, True, size=80, color=(0, 0, 0))
-        self.personnage = pg.img(personnage, 540, 360, 230, 230, True)
+        self.facteur = size[0] / 1280
+        self.text = pg.Texte(text, 300*self.facteur, 105*self.facteur, True, size=80, color=(0, 0, 0))
+        self.personnage = pg.img(personnage, 540*self.facteur, 360*self.facteur, 230*self.facteur, 230*self.facteur, True)
         self.type = inv
         self.name = name
         # On crée un dictionnaire qui gère l'integraliter de l'inventaire
+
         self.c = self.lire_inv(f"inv.case/{inv}.txt")
         self.lettre = "c"
+
 
     def load_inv(self):
         self.import_save(self.name)
@@ -68,7 +71,7 @@ class inv:
         if self.type == "inv":
             self.text.iblit(screen)  # on blit deja le texte
             self.personnage.iblit(screen)  # on blit le personnage
-        pg.img("../img/img.inv/INV.png", 0, 0, 1280, 720, False).iblit(screen)  # on blit deja le fond
+        pg.img("../img/img.inv/INV.png", 0, 0, 1280*self.facteur, 720*self.facteur, False).iblit(screen)  # on blit deja le fond
 
         for c in self.c.keys():  # on blit toute les cases
             self.c[c].iblit(screen)
@@ -79,7 +82,7 @@ class inv:
         c = {}
         for i in L:
             c[i.split(":")[0]] = case(
-                (float((i.split(":")[1].split(",")[0]).strip()), float((i.split(":")[1].split(",")[1].strip()))))
+                (float((i.split(":")[1].split(",")[0]).strip())*self.facteur, float((i.split(":")[1].split(",")[1].strip()))*self.facteur))
         return c
 
     def save(self, name):
@@ -185,11 +188,14 @@ class inv:
 
 
 class invdouble:
-    def __init__(self, case1, playercase, name):
+    def __init__(self, case1, playercase, name, size):
         self.case1 = case1
         self.playercase = playercase
         self.name = name
-        self.text = pg.Texte(name, 500, 175, True, size=80, color=(0, 0, 0))
+        self.text = pg.Texte(name, size[0]/2, 65, True, size=80, color=(0, 0, 0))
+        self.size = size
+
+        self.facteur = self.size[0]/1280
 
         if "Chest" in name:
             self.allcase = self.lire_inv(f"inv.case/chest.txt")
@@ -201,7 +207,7 @@ class invdouble:
 
     def iblit(self, screen):
         self.text.iblit(screen)  # on blit deja le texte
-        pg.img("../img/img.inv/INV.png", 0, 0, 1280, 720, False).iblit(screen)
+        pg.img("../img/img.inv/INV.png", 0, 0, self.size[0], self.size[1], False).iblit(screen)
 
         for c in self.allcase.keys():  # on blit toute les cases
             self.allcase[c].iblit(screen)
@@ -212,7 +218,7 @@ class invdouble:
         c = {}
         for i in L:
             c[i.split(":")[0]] = case(
-                (float((i.split(":")[1].split(",")[0]).strip()), float((i.split(":")[1].split(",")[1].strip()))), None,str((i.split(":")[0].split(",")[0]).strip())[0])
+                (float((i.split(":")[1].split(",")[0]).strip())*self.facteur, float((i.split(":")[1].split(",")[1].strip()))*self.facteur), None,str((i.split(":")[0].split(",")[0]).strip())[0])
         return c
 
     def save(self, name):

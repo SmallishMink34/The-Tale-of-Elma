@@ -10,10 +10,10 @@ class Game():
     """
     Class du jeux
     """
-    def __init__(self):
-        self.display_w, self.display_h = 1280, 720
+    def __init__(self, size=(1280,720, False)):
+        self.display_w, self.display_h = size[0], size[1]
 
-        self.game = ClassPG.game("Ingame", (self.display_w, self.display_h), 60)
+        self.game = ClassPG.game("Ingame", (self.display_w, self.display_h), 60, size[2])
 
         self.display = pygame.Surface((self.display_w, self.display_h))
 
@@ -21,9 +21,6 @@ class Game():
 
         self.map_manag = map.Mapmanager(self.display, self.player)
     
-        
-        
-
 
     def run(self):
         """
@@ -59,7 +56,5 @@ class Game():
             pygame.display.update()
         pygame.quit()
 
-
-
-game = Game()
-game.run()
+"""game = Game()
+game.run()"""

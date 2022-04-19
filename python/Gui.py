@@ -4,12 +4,18 @@ import ClassPG, pygame_textbox
 
 
 class Gui:
-    def __init__(self, name, player):
+    def __init__(self, name, player, size=(1280, 720)):
         self.name = name
         self.player = player
 
+        self.w = size[0]
+        self.h = size[1]
+
+        self.facteur = self.w/1280
+
         self.element = {}
         self.InGame()
+
 
         self.currentGui = 'InGame'
 
@@ -19,25 +25,25 @@ class Gui:
         self.currentGui = "InGame"
         self.element = {}
         self.element['Pname'] = [ClassPG.Texte(self.player.name, 20, 20, False, (255, 255, 255), 32), True]
-        self.element['Kaction'] = [ClassPG.Texte("Interagir : E", 640, 700, True, (255, 255, 255), 15),
+        self.element['Kaction'] = [ClassPG.Texte("Interagir : E", self.w/2, self.h-30, True, (255, 255, 255), int(15*self.facteur)),
                                    self.player.KeyAction]
 
     def DialogB(self, name, texte):
         self.currentGui = "DialogB"
         self.element = {}
-        self.element['Dialog'] = [ClassPG.img('../img/Dialog/GrosseBoite.png', 0, 0, 1280, 720, False), True]
-        self.element['name'] = [ClassPG.Texte(name, 70, 42, False, (0, 0, 0), 32), True]
-        self.element['texte'] = [pygame_textbox.textealign(texte, ('Arial', 32), (640, 320), (0, 0, 0)), True]
-        self.element['cross'] = [ClassPG.bouton('../img/imgbutton/cross.png', 1200, 50, 80, 80), True]
+        self.element['Dialog'] = [ClassPG.img('../img/Dialog/GrosseBoite.png', 0, 0, self.w, self.h, False), True]
+        self.element['name'] = [ClassPG.Texte(name, self.w/10, self.h/10, False, (0, 0, 0), 32), True]
+        self.element['texte'] = [pygame_textbox.textealign(texte, ('Arial', int(32*self.facteur)), (self.w/2, self.h/2), (0, 0, 0)), True]
+        self.element['cross'] = [ClassPG.bouton('../img/imgbutton/cross.png', self.w-80, 50, 80, 80), True]
         self.player.allinputoff(False)
 
     def DialogP(self, name, texte):
         self.currentGui = "DialogP"
         self.element = {}
-        self.element['Dialog'] = [ClassPG.img('../img/Dialog/PetiteBoite2.png', 0, 0, 1280, 720, False), True]
-        self.element['name'] = [ClassPG.Texte(name, 110, 460, False, (0, 0, 0), 32), True]
-        self.element['texte'] = [pygame_textbox.textealign(texte, ('Arial', 32), (640, 500), (0, 0, 0)), True]
-        self.element['cross'] = [ClassPG.bouton('../img/imgbutton/cross.png', 1200, 50, 80, 80), True]
+        self.element['Dialog'] = [ClassPG.img('../img/Dialog/PetiteBoite2.png', 0, 0, self.w, self.h, False), True]
+        self.element['name'] = [ClassPG.Texte(name, 110*self.facteur, (455*self.facteur), False, (0, 0, 0), int(32*self.facteur)), True]
+        self.element['texte'] = [pygame_textbox.textealign(texte, ('Arial', int(32*self.facteur)), (640*self.facteur, 500*self.facteur), (0, 0, 0)), True]
+        self.element['cross'] = [ClassPG.bouton('../img/imgbutton/cross.png', self.w-80, 50, 80, 80), True]
         self.player.allinputoff(False)
 
     def inventory(self, inv):
@@ -49,7 +55,7 @@ class Gui:
 
     def inventory_chest(self, name):
         self.currentGui = "Invc"
-        self.element['inv'] = [inv.invdouble("c", "p", name), True]
+        self.element['inv'] = [inv.invdouble("c", "p", name, self.player.screen.get_size()), True]
         self.element['inv'][0].load_inv()
         print(f'{name} Ouvert')
         self.player.allinputoff(False)
