@@ -4,21 +4,21 @@ import pygame
 import ast
 import pygame_widgets as pw 
 from pygame_widgets.slider import Slider
-from pygame_widgets.button import Button
 from pygame_widgets.dropdown import Dropdown
 from pygame_widgets.toggle import Toggle
 
 
 class menu():
     def __init__(self,val) -> None:
-        self.display_w,self.display_h = 1280,720
-        self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
+        self.start()
+        self.display_w,self.display_h = self.w,self.h
+        self.game = PG.game("Ingame", (self.display_w, self.display_h), 60, self.fullscreen)
         self.display = pygame.Surface((self.display_w, self.display_h))
+
         self.val = val
         self.d = {}
         self.load()
         self.paraa = para(self,self.val)
-
     def gameloop(self, event, screen):
         self.eventpy(event)
         self.iblit(screen)
@@ -39,7 +39,13 @@ class menu():
                 self.continuer = False
                 self.paraa.load()
                 self.paraa.run()
-                
+
+    def start(self):
+        set = open("../python/save/settings.txt", "r")
+        L = set.readlines()
+        self.w, self.h = int(L[1].split(" ")[1].split(",")[0]), int(L[1].split(" ")[1].split(",")[1])
+        self.fullscreen = False if L[2].split(" ")[1] == "False" else True
+        set.close()
 
     def load(self):
         set = open("../python/save/settings.txt","r")
@@ -52,6 +58,7 @@ class menu():
         self.d['Titre'] = PG.Texte("Titre",self.val.screensize[0]//2-175, self.val.screensize[1]//2 - 275,True,color=(255,255,255), size= 125, font='../font/Like Snow.otf')
         self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1], False)
         self.display= pygame.Surface(self.val.screensize)
+        set.close()
         
     def iblit(self, screen):
         self.image_fond.iblit(screen)
@@ -70,8 +77,9 @@ class menu():
 
 class para():
     def __init__(self,menu,val) -> None:
-        self.display_w,self.display_h = 1280,720
-        self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
+        self.display_w,self.display_h = menu.w,menu.h
+
+        self.game = PG.game("Ingame", (self.display_w, self.display_h), 60, menu.fullscreen)
         self.val = val
         self.d = {}
         self.load()
@@ -124,8 +132,8 @@ class para():
     
 class song():
     def __init__(self,menu,val) -> None:
-        self.display_w,self.display_h = 1280,720
-        self.game = PG.game("Ingame", (self.display_w, self.display_h), 60)
+        self.display_w,self.display_h = menu.w,menu.h
+        self.game = PG.game("Ingame", (self.display_w, self.display_h), 60, menu.fullscreen)
         self.val = val
         
         self.slider = Slider(self.game.screen, self.val.screensize[0]//2-400, self.val.screensize[1]//2+30, 800, 40, min=0, max=99, step = 1, initial = 0, curved=True, handleRadius=30)
@@ -133,7 +141,7 @@ class song():
         choices=[
         '1920x1080',
         '1366x768',
-        '1220x720',],borderRadius=3, colour=pygame.Color('white'), values=[(1920,1080), (1366,768), (1220,720)], direction='down', textHAlign='centre')
+        '1280x720',],borderRadius=3, colour=pygame.Color('white'), values=[(1920,1080), (1366,768), (1280,720)], direction='down', textHAlign='centre')
         self.toggle = Toggle(self.game.screen, self.val.screensize[0]//2-25,self.val.screensize[1]//2-55, 60, 20, onColour = (255, 255, 255), offColour =(0, 0, 0), handleOnColour = (200, 200, 200) )
         self.load()
         self.menu = menu
@@ -222,13 +230,13 @@ class val():
         set.close()
     
     def screensize2(self,valeurs, display, fullscreen = False):
-        self.screensize = valeurs
-        self.toggle = fullscreen
-        if fullscreen :
-            display = pygame.display.set_mode(self.screensize, pygame.FULLSCREEN)
-            print(self.toggle)
-        else : 
-            display = pygame.display.set_mode(self.screensize)
+        if valeurs != self.screensize or fullscreen != self.toggle:
+            self.screensize = valeurs
+            self.toggle = fullscreen
+            if fullscreen:
+                display = pygame.display.set_mode(self.screensize, pygame.FULLSCREEN)
+            else :
+                display = pygame.display.set_mode(self.screensize)
         return display 
         
 

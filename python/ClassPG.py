@@ -19,7 +19,7 @@ class game:
         if fullscreen is False:
             self.screen = pygame.display.set_mode(size)
         else:
-            self.screen = pygame.display.set_mode((0,0), FULLSCREEN)
+            self.screen = pygame.display.set_mode((size), FULLSCREEN)
         pygame.display.set_caption(name)  # Choix du nom
 
 
