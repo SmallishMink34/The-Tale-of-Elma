@@ -60,5 +60,5 @@ class Game():
             pygame.display.update()
         pygame.quit()
 
-game = Game()
-game.run()
+"""game = Game()
+game.run()"""

@@ -1,4 +1,4 @@
-c1: [1, 'casque', 7, 'armure', 1]
+c1: None
 c2: None
 c3: None
 c4: None

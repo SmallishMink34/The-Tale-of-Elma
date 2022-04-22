@@ -12,7 +12,7 @@ class fight():
         self.joueur = joueur
         self.mobid = mobid
         try: 
-            self.armid = self.joueur.get_item_in_inventory(5).obj.id
+            self.armid = self.joueur.get_item_in_inventory(5).obj.link
         except AttributeError:
             self.armid = 1
         self.lvlmob = lvlmob

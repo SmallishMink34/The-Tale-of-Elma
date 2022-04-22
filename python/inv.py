@@ -387,11 +387,12 @@ class item:
 
     def recupinfoitem(self):
         data = pd.read_csv(r'info/items.csv', sep=',', low_memory=False)
-        info = data.loc[self.id - 1, ["Id", "name", "type", "imglink", "nbmax"]]
+        info = data.loc[self.id - 1, ["Id", "name", "type", "imglink", "nbmax", "link"]]
         self.nom = str(info["name"])
         self.genre = str(info["type"])
         self.imglink = str(info["imglink"])
         self.nbr_max = int(info["nbmax"])
+        self.link = int(info["link"])
 
     def recup(self):
         return [self.id, self.nom, self.nbr, self.genre, self.nbr_max]
