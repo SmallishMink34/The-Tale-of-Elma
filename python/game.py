@@ -50,11 +50,15 @@ class Game():
                 if self.player.pressed.get(pygame.K_i):
                     self.player.gui.inventory(self.player.inventaire)
                     self.player.pressed[pygame.K_i] = False
-
+                if self.player.pressed.get(pygame.K_l):
+                    fightt = fight.fight(self.player, 3, 3)
+                    fightt.image(self.display)
+                    fightt.FightScreen()
+                    self.player.pressed[pygame.K_l] = False
             self.player.gui.iblit(self.display)
             clock.tick(60)
             pygame.display.update()
         pygame.quit()
 
-"""game = Game()
-game.run()"""
+game = Game()
+game.run()

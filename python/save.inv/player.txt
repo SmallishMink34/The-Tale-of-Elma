@@ -2,8 +2,8 @@ c1: [1, 'casque', 2, 'armure', 1]
 c2: [2, 'plastron', 8, 'armure', 1]
 c3: None
 c4: None
-c5: None
-c6: [4, 'briquet', 1, 'item', 1]
+c5: [4, 'briquet', 1, 'item', 1]
+c6: None
 c7: [2, 'plastron', 4, 'armure', 1]
 c8: None
 c9: None

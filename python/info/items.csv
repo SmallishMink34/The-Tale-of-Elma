@@ -3,4 +3,4 @@ Id,name,type,imglink,nbmax,link
 2,plastron,armure,../img/item/diamond_chestplate.png,1,2
 3,legging,armure,../img/item/diamond_legging.png,1,3
 4,briquet,item,../img/item/briquet.png,1,0
-5,epee,arme,zzz,1,1
+5,epee,arme,../img/item/epee.png,1,1
