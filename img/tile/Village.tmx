@@ -4051,7 +4051,7 @@
   <object id="5" type="Collision" x="2794" y="6158.67" width="237.333" height="30.6667"/>
   <object id="6" type="Collision" x="2694.67" y="6241.33" width="19.3333" height="26.6667"/>
   <object id="7" type="Collision" x="3110" y="6238.67" width="20" height="30.6667"/>
-  <object id="8" type="Collision" x="1989.33" y="4831.33" width="505.333" height="104.667"/>
+  <object id="8" type="Collision" x="1985.33" y="4831.33" width="509.333" height="104.667"/>
   <object id="9" type="Collision" x="1248" y="4740" width="572" height="507"/>
   <object id="10" type="Collision" x="2048" y="5568" width="32" height="96"/>
   <object id="11" type="Collision" x="2048" y="5440" width="32" height="96"/>
