@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="156">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="157">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="Base2 (32).tsx"/>
  <tileset firstgid="1485" source="Shadow.tsx"/>
@@ -336,7 +336,6 @@
   <object id="18" type="Collision" x="832" y="2240" width="64" height="32"/>
   <object id="19" type="Collision" x="928" y="2240" width="63.5" height="32"/>
   <object id="20" type="Collision" x="959" y="2242" width="32" height="128"/>
-  <object id="21" type="Collision" x="1024" y="2080" width="32" height="64"/>
   <object id="22" type="Collision" x="1056" y="2080" width="192" height="32"/>
   <object id="23" type="Collision" x="1216" y="2112" width="96" height="32"/>
   <object id="24" type="Collision" x="1280" y="2144" width="32" height="128"/>
@@ -432,13 +431,13 @@
    <point/>
   </object>
   <object id="34" name="Chest1" type="InputAction" x="746" y="1559" width="72.6667" height="57.3334"/>
-  <object id="36" name="Portail Exit Grotte" type="InputAction" x="859.333" y="2194.67" width="132" height="104">
+  <object id="36" name="Portail Exit Grotte" type="InputAction" x="854.333" y="2191.67" width="132" height="104">
    <properties>
     <property name="TeleportPoint" value="GrottePos"/>
     <property name="To?" value="Lobby"/>
    </properties>
   </object>
-  <object id="142" name="Portail In Grotte" type="InputAction" x="2320" y="1617.34" width="60" height="58">
+  <object id="142" name="Portail In Grottee" type="InputAction" x="2320" y="1617.34" width="60" height="58">
    <properties>
     <property name="TeleportPoint" value="TunnelPos"/>
     <property name="To?" value="Grotte"/>
@@ -528,7 +527,7 @@
     <property name="c4:" value="1,1"/>
    </properties>
   </object>
-  <object id="153" name="Portail Exit Grotte" type="InputAction" x="2789.67" y="774.333" width="60" height="58">
+  <object id="153" name="Portail Exit Grotte2" type="InputAction" x="2789.67" y="774.333" width="60" height="58">
    <properties>
     <property name="TeleportPoint" value="Tunnel"/>
     <property name="To?" value="Grotte"/>
@@ -542,6 +541,12 @@
   <object id="155" name="Spike" type="Damage" x="2784" y="384" width="32" height="96">
    <properties>
     <property name="Damage" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="156" name="Portail In Grotte" type="InputAction" x="2687.33" y="1916.33" width="103.333" height="58">
+   <properties>
+    <property name="TeleportPoint" value="VillagePos"/>
+    <property name="To?" value="Village"/>
    </properties>
   </object>
  </objectgroup>

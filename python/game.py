@@ -4,7 +4,7 @@ import ClassPlayer
 import map
 import inv
 import fight
-
+from valeurs import *
 
 class Game():
     """
@@ -47,9 +47,9 @@ class Game():
                     self.player.pressed[event.key] = False
                 self.player.gui.event((x, y), event)
 
-                if self.player.pressed.get(pygame.K_i):
+                if self.player.pressed.get(valeur.l["inventory"]):
                     self.player.gui.inventory(self.player.inventaire)
-                    self.player.pressed[pygame.K_i] = False
+                    self.player.pressed[valeur.l["inventory"]] = False
 
             self.player.gui.iblit(self.display)
             clock.tick(60)

@@ -1,8 +1,1 @@
 Grotte
-Pont: 5
-Torch1: True
-Torch3: True
-Torch2: True
-Torch4: True
-Torch5: True
-Door: True

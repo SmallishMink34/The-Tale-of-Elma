@@ -1,14 +1,16 @@
 import pygame, pytmx, pyscroll
 import mapscript
 
+
 class Map:
-    def __init__(self, name, walls: list[pygame.Rect], objecte, group, tmx_data, mapdata):
+    def __init__(self, name, walls: list[pygame.Rect], objecte, group, tmx_data, mapdata, mapobject):
         self.name = name
         self.walls = walls
         self.object = objecte
         self.group = group
         self.tmx_data = tmx_data
         self.map_data = mapdata
+        self.mapobject = mapobject
 
 
 class Tuile(pygame.sprite.Sprite):
@@ -19,32 +21,38 @@ class Tuile(pygame.sprite.Sprite):
         self.image = image
         self.type = "tile"
 
+
 class Mapmanager:
     def __init__(self, screen, player):
+        self.mapobject = None
         self.maps = {}
+        self.basemap = "Grotte"
         self.current_map = "Grotte"
         self.screen = screen
         self.player = player
 
-        self.loading = False #Load from the file
+        self.loading = False  # Load from the file
 
         self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
+        self.register_map("Village", mapscript.Village(self))
+
+        self.changemap(self.basemap, "PlayerPos")
 
         self.teleport_player("PlayerPos")
 
     def alltiles(self):
         self.alltiles_d = {}
-
         self.alltiles_d["Base"] = pytmx.util_pygame.load_pygame("../img/tile/alltiles.tmx", load_all_tiles=True)
         self.alltiles_d["Base2"] = pytmx.util_pygame.load_pygame("../img/tile/Base2Tiles.tmx", load_all_tiles=True)
 
     def register_map(self, name, mapobject):
+        self.current_map = name
         self.tmx = pytmx.util_pygame.load_pygame(f"../img/tile/{name}.tmx", load_all_tiles=True)
         self.alltiles()
         self.mapdata = pyscroll.data.TiledMapData(self.tmx)
         self.map_layer = pyscroll.orthographic.BufferedRenderer(self.mapdata, self.screen.get_size())
-        self.map_layer.zoom = 1.6 * (self.screen.get_size()[0]/1280)
+        self.map_layer.zoom = 1.6 * (self.screen.get_size()[0] / 1280)
         self.walls = []
         self.objects_input = {}
 
@@ -61,29 +69,29 @@ class Mapmanager:
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer,
                                             default_layer=u)  # groupe contenant le joueur et la map
         self.group.add(self.player)
-        self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, self.mapdata)
-        mapobject.load()
+        self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, self.mapdata, mapobject)
         self.mapobject = mapobject
+        mapobject.load()
         self.actionnb = mapobject.actionb
+        self.current_map = self.basemap
 
     def reloadmap(self):
         print('reload de la map')
 
         self.map_layer.reload()
         self.map_layer.set_size((1280, 720))
-        
+
         pygame.display.flip()
-        
 
     def zoomIO(self, level):
         self.map_layer.zoom = level
 
     def save(self):
         w = open("save/save.txt", "w")
-        w.write(self.current_map+"\n")
+        w.write(self.current_map + "\n")
 
         for i in self.actionnb.keys():
-            w.write(str(i)+ ": "+ str(self.actionnb[i])+"\n")
+            w.write(str(i) + ": " + str(self.actionnb[i]) + "\n")
         w.close()
 
     def load(self):
@@ -91,12 +99,14 @@ class Mapmanager:
         liste = w.readlines()
         a = {}
         for i in liste:
-            try: 
+            try:
                 a[i.split(":")[0]] = eval(i.split(":")[1])
             except IndexError:
                 pass
-        print(a)
-        return a
+        if a != {}:return a
+        else: return None
+
+
     def get_map(self):
         return self.maps[self.current_map]
 
@@ -154,8 +164,7 @@ class Mapmanager:
         self.group.update()
         self.collision()
 
-
-        try :
+        try:
             self.mapobject.update()
         except KeyError:
             pass
@@ -163,10 +172,10 @@ class Mapmanager:
     def collision(self):
         for i in self.get_group().sprites():
             if i.type == 'Joueur':
-                if i.feet.collidelist(self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
+                if i.feet.collidelist(
+                        self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
                     i.moveback()
                 self.mapobject.collision(i)
-
 
     def checkcollision(self, x, y):
         for element in self.get_walls():
@@ -182,26 +191,27 @@ class Mapmanager:
         :return: Nothing
         """
         self.current_map = name
+        self.mapobject = self.maps[name].mapobject
         self.teleport_player(teleportpoint)
 
     def remove_collision(self, obj):
-        self.walls.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+        self.maps[self.current_map].walls.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
     def add_collision_from_obj(self, obj):
-        self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+        self.maps[self.current_map].walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
     def add_collision_from_rect(self, rect):
-        self.walls.append(rect)
+        self.maps[self.current_map].walls.append(rect)
 
-    def add_element_to_draw_obj(self,name:str ,gid:int, x:int, y:int, layer:int):
-        img = self.alltiles_d[name].get_tile_image_by_gid(gid+1)
-        self.group.add(Tuile(x, y, img, 32), layer=layer)
+    def add_element_to_draw_obj(self, name: str, gid: int, x: int, y: int, layer: int):
+        img = self.alltiles_d[name].get_tile_image_by_gid(gid + 1)
+        self.maps[self.current_map].group.add(Tuile(x, y, img, 32), layer=layer)
 
     def remove_element_to_draw_obj(self, x, y):
-        for element in self.group:
+        for element in self.maps[self.current_map].group:
             if element.name == "tile":
-                if element.rect.x == x*32 and element.rect.y == y*32:
-                    self.group.remove(element)
+                if element.rect.x == x * 32 and element.rect.y == y * 32:
+                    self.maps[self.current_map].group.remove(element)
                     print('removed')
 
     def set_layer_visible(self, layer, Visible):

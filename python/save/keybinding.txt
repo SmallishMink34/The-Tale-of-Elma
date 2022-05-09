@@ -1,0 +1,6 @@
+up: 122
+down: 115
+left: 113
+right: 100
+interact: 103
+inventory: 13

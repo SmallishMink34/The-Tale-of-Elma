@@ -1,5 +1,5 @@
 import pygame, sys, ClassPG, Gui, inv
-
+from valeurs import valeur
 from PlayerAnim import AnimateSprite
 
 
@@ -196,14 +196,12 @@ class PlayerTopDown(AnimateSprite):
     def get_item_in_inventory(self, case:int):
         return self.get_inventory()["c"+str(case)]
 
-
-
     def update(self):
         self.save_old_location()  # Savegarde des position du joueur avant mouvement
         self.dirrection()  # Deplacement joueur
         self.KeyAction = False
 
-        if self.pressed.get(pygame.K_e):
+        if self.pressed.get(valeur.l["interact"]):
             pass
 
     def get_coords_image(self, x, y):
@@ -224,16 +222,16 @@ class PlayerTopDown(AnimateSprite):
         :return: Nothing
         """
         if self.canPressKey:
-            if self.pressed.get(pygame.K_d):
+            if self.pressed.get(valeur.l["right"]):
                 self.move(self.rect.x + self.speed, self.rect.y)
                 self.animation('right')
-            if self.pressed.get(pygame.K_q):
+            if self.pressed.get(valeur.l["left"]):
                 self.move(self.rect.x - self.speed, self.rect.y)
                 self.animation('left')
-            if self.pressed.get(pygame.K_z):
+            if self.pressed.get(valeur.l["up"]):
                 self.move(self.rect.x, self.rect.y - self.speed)
                 self.animation('up')
-            if self.pressed.get(pygame.K_s):
+            if self.pressed.get(valeur.l["down"]):
                 self.move(self.rect.x, self.rect.y + self.speed)
                 self.animation('down')
 
@@ -273,8 +271,8 @@ class PlayerTopDown(AnimateSprite):
         """
         if self.canPressKey:
             self.KeyAction = True
-            if self.pressed.get(pygame.K_e):
-                self.pressed[pygame.K_e] = False
+            if self.pressed.get(valeur.l["interact"]):
+                self.pressed[valeur.l["interact"]] = False
                 return True
 
     def allinputoff(self, switch=None):

@@ -6,7 +6,8 @@ class Grotte:
         self.mm = mapmanager
         self.save = save_load
         if save_load:
-            self.actionb = self.mm.load()
+            self.actionb = self.mm.load() if self.mm.load() != None else {"Pont": 0, "Door": True, "Torch1" : False, "Torch2" : False, "Torch3" : False,
+                                                                          "Torch4" : False, "Torch5": False}
         else:
             self.actionb = {"Pont": 0, "Door": True}
         self.allmap = Allmap(self.mm)
@@ -15,6 +16,9 @@ class Grotte:
         self.opendoor()
         self.pont()
         self.load_tile_map()
+
+    def __str__(self):
+        return "la map actuel est Grotte"
 
     def load_tile_map(self):
         for element in self.mm.get_objectinp("InputAction", "all"):
@@ -56,37 +60,28 @@ class Grotte:
                                 if self.mm.player.get_item_in_inventory(5).obj.nom == element[0].properties[
                                     "needitem"] and self.mm.player.get_item_in_inventory(5).obj.nbr >= \
                                         element[0].properties[
-                                            "quantity"]:  # On regarde si c'est le bonne objet et la bonne quantité
+                                            "quantity"]:  # On regarde si c'est le bon objet et la bonne quantité
                                     pass
                                 else:
+                                    print('pas le bonne objet')
                                     break
                             else:
+                                print('La main est vide')
                                 break
                         else:
-                            break
+                            print('Il na pas la propriété needitem' )
+                            pass
                     except (AttributeError, KeyError):
-                        pass
-                    if "Portail" in element[0].name:  # Si c'est un point de teleportation
-                        try:
-                            var = element[0].properties['To?']
-                        except KeyError:
-                            var = self.mm.current_map
-
-                        try:
-                            var2 = element[0].properties['TeleportPoint']
-                        except KeyError:
-                            var2 = 'PlayerPos'
-                        self.mm.save()
-                        self.mm.changemap(var, var2)
-                    if "Panneau" in element[0].name:
-                        self.mm.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
+                        print("Error")
                     if "Torch" in element[0].name:
+
                         if element[0].name not in self.actionb.keys():
                             self.actionb[element[0].name] = False
                         if not element[0].properties['Infire'] and not self.actionb[element[0].name]:
+                            print("sa marche ?")
                             element[0].properties['Infire'] = True
                             self.actionb[element[0].name] = True
-                            self.mm.actionnb['Pont'] += 1
+                            self.actionb['Pont'] += 1
                             self.mm.add_element_to_draw_obj("Base", 177, element[0].properties['x1'],
                                                             element[0].properties['y1'], 19)
                             self.pont()
@@ -111,8 +106,55 @@ class lobby:
         else:
             pass
 
+        self.allmap = Allmap(self.mm)
+
     def load(self):
         pass
+
+    def __str__(self):
+        return "la map actuel est lobby"
+
+    def collision(self, i):
+        for element in self.mm.get_objectinp("InputAction", "all"):
+
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+
+                if "Portail" in element[0].name:  # Si c'est un point de teleportation
+                    try:
+                        var = element[0].properties['To?']
+                    except KeyError:
+                        var = self.mm.current_map
+                    try:
+                        var2 = element[0].properties['TeleportPoint']
+                    except KeyError:
+                        var2 = 'PlayerPos'
+
+                    self.mm.changemap(var, var2)
+                self.allmap.collision(element)
+
+    def update(self):
+        pass
+
+
+class Village:
+    def __init__(self, mapmanager, save_load=False):
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+
+        if save_load:
+            pass
+        else:
+            pass
+        self.allmap = Allmap(self.mm)
+
+
+    def load(self):
+        pass
+
+    def __str__(self):
+        return "la map actuel est Village"
 
     def collision(self, i):
         for element in self.mm.get_objectinp("InputAction", "all"):
@@ -130,7 +172,7 @@ class lobby:
                         var2 = 'PlayerPos'
 
                     self.mm.changemap(var, var2)
-
+                self.allmap.collision(element)
     def update(self):
         pass
 
@@ -142,6 +184,21 @@ class Allmap():
     def collision(self, element):
         if "Chest" in element[0].name:
             self.mm.player.gui.inventory_chest(element[0].name)
+        if "Panneau" in element[0].name:
+            self.mm.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
+
+        if "Portail" in element[0].name:  # Si c'est un point de teleportation
+            try:
+                var = element[0].properties['To?']
+            except KeyError:
+                var = self.mm.current_map
+
+            try:
+                var2 = element[0].properties['TeleportPoint']
+            except KeyError:
+                var2 = 'PlayerPos'
+            self.mm.save()
+            self.mm.changemap(var, var2)
 
     def collision_without_action(self, element):
         if "Spike" in element[0].name:

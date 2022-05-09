@@ -1,6 +1,7 @@
 import pygame
 import inv
 import ClassPG, pygame_textbox
+from valeurs import valeur
 
 
 class Gui:
@@ -25,7 +26,7 @@ class Gui:
         self.currentGui = "InGame"
         self.element = {}
         self.element['Pname'] = [ClassPG.Texte(self.player.name, 20, 20, False, (255, 255, 255), 32), True]
-        self.element['Kaction'] = [ClassPG.Texte("Interagir : E", self.w/2, self.h-30, True, (255, 255, 255), int(15*self.facteur)),
+        self.element['Kaction'] = [ClassPG.Texte("Interagir : "+str(pygame.key.name(valeur.l["interact"])).upper(), self.w/2, self.h-30, True, (255, 255, 255), int(15*self.facteur)),
                                    self.player.KeyAction]
 
     def DialogB(self, name, texte):
