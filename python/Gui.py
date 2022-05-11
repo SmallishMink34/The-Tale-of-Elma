@@ -47,6 +47,13 @@ class Gui:
         self.element['cross'] = [ClassPG.bouton('../img/imgbutton/cross.png', self.w-80, 50, 80, 80), True]
         self.player.allinputoff(False)
 
+    def Mind(self, texte):
+        self.currentGui = "Mind"
+        self.element = {}
+        self.element['Dialog'] = [ClassPG.img('../img/Dialog/Mind.png', 0, 0, self.w, self.h, False), True]
+        self.element['texte'] = [pygame_textbox.textealign(texte, ('Arial', int(32*self.facteur)), (640*self.facteur, 500*self.facteur), (255, 255, 255)), True]
+        self.player.allinputoff(False)
+
     def inventory(self, inv):
         self.currentGui = "Inv"
         self.element['inv'] = [inv, True]

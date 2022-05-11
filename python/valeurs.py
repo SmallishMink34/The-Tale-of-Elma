@@ -6,7 +6,6 @@ class val():
         self.screensize = (1280,720)
         self.volume = 0
         self.musique = PG.son('../Sons/poke-chill.mp3',"music")
-        self.musique.play()
         self.toggle = False
         self.l = {"up":pygame.K_z, "down" : pygame.K_s, "left":pygame.K_q, "right":pygame.K_d, "interact":pygame.K_e, "inventory":pygame.K_i}
 

@@ -26,8 +26,8 @@ class Mapmanager:
     def __init__(self, screen, player):
         self.mapobject = None
         self.maps = {}
-        self.basemap = "Grotte"
-        self.current_map = "Grotte"
+        self.basemap = "Village"
+        self.current_map = self.basemap
         self.screen = screen
         self.player = player
 

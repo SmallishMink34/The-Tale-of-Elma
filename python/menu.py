@@ -19,6 +19,8 @@ class menu():
         self.val = val
         self.d = {}
         self.load()
+        self.val.musique.play()
+
         self.paraa = para(self, self.val)
 
     def gameloop(self, event, screen):
@@ -241,6 +243,8 @@ class Touches():
         self.menu = menu
         self.stat = False
 
+        self.last_key = None
+
     def gameloop(self, event, screen):
         self.iblit(screen)
         self.eventpy(event)
@@ -258,17 +262,24 @@ class Touches():
             for i in self.touchec:
                 if i.click((x, y), event) and self.stat == False:
                     self.stat = True
-                    i.stats = True
+                    i.change_stats(True)
+                    self.last_key = i
+                if i.click((x, y), event) and self.stat:
+                    self.last_key.change_stats(False)
+                    i.change_stats(True)
+                    self.last_key = i
 
             if self.stat == True:
                 for i in self.touchec:
                     if i.stats == True:
                         if event.type == pygame.KEYDOWN:
                             i.change(str(pygame.key.name(event.key)))
-                            i.stats = False
+                            i.change_stats(False)
                             self.val.l[i.name] = pygame.key.key_code(pygame.key.name(event.key))
                             self.stat = False
                             print(self.val.l)
+
+
 
     def iblit(self, screen):
         self.image_fond.iblit(screen)
@@ -322,14 +333,23 @@ class keys():
     def __init__(self, name, x, y, keys: str):
         self.x, self.y = x, y
         self.name = name
-        self.txt = PG.Texte(name + ' : ' + str(keys), x, y, False)
+        self.texte = name + ' : ' + str(keys).upper()
+        self.txt = PG.Texte(self.texte, x, y, False, (255,255,255), 32, '../font/Like Snow.otf')
         self.stats = False
+
+    def change_stats(self, boole):
+        self.stats = boole
+        if self.stats:
+            self.txt = PG.Texte(self.texte, self.x, self.y, False, (255,0,255), 32, '../font/Like Snow.otf')
+        else:
+            self.txt = PG.Texte(self.texte, self.x, self.y, False, (255, 255, 255), 32, '../font/Like Snow.otf')
 
     def click(self, mousepos, event):
         return self.txt.click(mousepos, event)
 
     def change(self, keys):
-        self.txt = PG.Texte(self.name + ' : ' + str(keys), self.x, self.y, False)
+        self.texte = self.name + ' : ' + str(keys).upper()
+        self.txt = PG.Texte(self.texte, self.x, self.y, False, (255,255,255), 32, '../font/Like Snow.otf')
 
     def iblit(self, screen):
         self.txt.iblit(screen)
