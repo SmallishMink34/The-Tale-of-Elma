@@ -64,6 +64,7 @@ class inv:
 
 
     def load_inv(self):
+
         self.import_save(self.name)
 
     def iblit(self, screen):

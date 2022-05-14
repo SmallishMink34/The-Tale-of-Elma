@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="96">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="98">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="TX Props (32).tsx"/>
  <tileset firstgid="677" source="Base2 (32).tsx"/>
@@ -1333,16 +1333,13 @@
   <object id="95" type="Collision" x="235" y="430.5" width="9.5" height="15.5"/>
  </objectgroup>
  <objectgroup id="11" name="Element">
-  <object id="57" name="PlayerPos" type="PlayerPos" x="194.667" y="226.667">
-   <point/>
-  </object>
   <object id="75" name="Portail" type="InputAction" x="1742.17" y="465" width="129.333" height="121.167">
    <properties>
-    <property name="TeleportPoint" value="PlayerPos"/>
+    <property name="TeleportPoint" value="IntoGrotte"/>
     <property name="To?" value="Grotte"/>
    </properties>
   </object>
-  <object id="92" name="GrottePos" type="PlayerPos" x="1794.67" y="544">
+  <object id="92" name="GrottePos" type="PlayerPos" x="1806.67" y="550.727">
    <point/>
   </object>
   <object id="93" name="Panneau4" type="InputAction" x="198" y="387.333" width="77.3333" height="100.667">
@@ -1357,5 +1354,9 @@
     <property name="Texte" value="Statut d'Ancien guerrier Piégé dans la roche"/>
    </properties>
   </object>
+  <object id="96" name="PlayerPos" type="PlayerPos" x="208.37" y="241.63">
+   <point/>
+  </object>
+  <object id="97" name="Lobby" type="SpawnPoint" x="131.75" y="184.25" width="146.5" height="110"/>
  </objectgroup>
 </map>

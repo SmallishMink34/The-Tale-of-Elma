@@ -34,6 +34,8 @@ class Game():
 
             self.game.screen.blit(self.display, (0, 0))
 
+
+
             self.map_manag.updating() # Met a jour la carte et le joueur
             self.map_manag.draw() # Dessine la carte
 
@@ -52,6 +54,7 @@ class Game():
                     self.player.pressed[valeur.l["inventory"]] = False
 
             self.player.gui.iblit(self.display)
+
             clock.tick(60)
             pygame.display.update()
         pygame.quit()

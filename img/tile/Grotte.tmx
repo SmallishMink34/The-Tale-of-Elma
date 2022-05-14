@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="157">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="161">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="Base2 (32).tsx"/>
  <tileset firstgid="1485" source="Shadow.tsx"/>
@@ -366,11 +366,7 @@
   <object id="78" type="Collision" x="1225.33" y="1641.67" width="77" height="75.3333"/>
   <object id="79" type="Collision" x="1281.67" y="1671.33" width="85.3333" height="77"/>
   <object id="85" type="Collision" x="1513.25" y="1803.25" width="310.5" height="212.75"/>
-  <object id="86" name="Pont" type="Collision" x="1513.25" y="1735.5" width="41.5" height="69.5">
-   <properties>
-    <property name="Enable" type="bool" value="true"/>
-   </properties>
-  </object>
+  <object id="86" name="Ponte" type="Collision" x="1512.75" y="1745" width="41.5" height="69.5"/>
   <object id="88" type="Collision" x="1512.5" y="1719.5" width="403.167" height="32"/>
   <object id="91" type="Collision" x="769.818" y="1570" width="27.8182" height="29.0909"/>
   <object id="93" type="Collision" x="1824" y="2304" width="160" height="32"/>
@@ -419,15 +415,22 @@
   <object id="149" type="Collision" x="2720" y="32" width="160" height="64"/>
   <object id="150" type="Collision" x="2848" y="96" width="32" height="800"/>
   <object id="151" type="Collision" x="2720" y="832" width="160" height="64"/>
-  <object id="152" name="TunnelPos" x="2816" y="798.667">
+  <object id="152" name="TunnelPos" x="2827.25" y="800.667">
    <point/>
+  </object>
+  <object id="160" name="Pont" type="Info" x="1464" y="1741.5" width="41.5" height="3.25">
+   <properties>
+    <property name="Enable" type="bool" value="true"/>
+    <property name="default" type="int" value="0"/>
+    <property name="save" type="bool" value="true"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="5" name="Element">
   <properties>
    <property name="inv" value="c4: 1"/>
   </properties>
-  <object id="1" name="PlayerPos" type="PlayerPos" x="916.21" y="2183.46">
+  <object id="1" name="PlayerPos" type="PlayerPos" x="1104.37" y="2347.13">
    <point/>
   </object>
   <object id="34" name="Chest1" type="InputAction" x="746" y="1559" width="72.6667" height="57.3334"/>
@@ -441,6 +444,7 @@
    <properties>
     <property name="TeleportPoint" value="TunnelPos"/>
     <property name="To?" value="Grotte"/>
+    <property name="anim?" type="bool" value="false"/>
    </properties>
   </object>
   <object id="40" name="Panneau1" type="InputAction" x="981" y="1880.67" width="53" height="66">
@@ -454,8 +458,10 @@
    <properties>
     <property name="Infire" type="bool" value="false"/>
     <property name="consume" type="bool" value="false"/>
+    <property name="default" type="bool" value="false"/>
     <property name="needitem" value="briquet"/>
     <property name="quantity" type="int" value="1"/>
+    <property name="save" type="bool" value="true"/>
     <property name="x1" type="int" value="29"/>
     <property name="y1" type="int" value="57"/>
    </properties>
@@ -464,8 +470,10 @@
    <properties>
     <property name="Infire" type="bool" value="false"/>
     <property name="consume" type="bool" value="false"/>
+    <property name="default" type="bool" value="false"/>
     <property name="needitem" value="briquet"/>
     <property name="quantity" type="int" value="1"/>
+    <property name="save" type="bool" value="true"/>
     <property name="x1" type="int" value="29"/>
     <property name="y1" type="int" value="46"/>
    </properties>
@@ -474,8 +482,10 @@
    <properties>
     <property name="Infire" type="bool" value="false"/>
     <property name="consume" type="bool" value="false"/>
+    <property name="default" type="bool" value="false"/>
     <property name="needitem" value="briquet"/>
     <property name="quantity" type="int" value="1"/>
+    <property name="save" type="bool" value="true"/>
     <property name="x1" type="int" value="23"/>
     <property name="y1" type="int" value="46"/>
    </properties>
@@ -484,8 +494,10 @@
    <properties>
     <property name="Infire" type="bool" value="false"/>
     <property name="consume" type="bool" value="false"/>
+    <property name="default" type="bool" value="false"/>
     <property name="needitem" value="briquet"/>
     <property name="quantity" type="int" value="1"/>
+    <property name="save" type="bool" value="true"/>
     <property name="x1" type="int" value="39"/>
     <property name="y1" type="int" value="41"/>
    </properties>
@@ -494,8 +506,10 @@
    <properties>
     <property name="Infire" type="bool" value="false"/>
     <property name="consume" type="bool" value="false"/>
+    <property name="default" type="bool" value="false"/>
     <property name="needitem" value="briquet"/>
     <property name="quantity" type="int" value="1"/>
+    <property name="save" type="bool" value="true"/>
     <property name="x1" type="int" value="43"/>
     <property name="y1" type="int" value="38"/>
    </properties>
@@ -512,14 +526,15 @@
     <property name="Texte" value="Coucou"/>
    </properties>
   </object>
-  <object id="127" name="Door" type="InputAction" x="2688" y="2084.5" width="96" height="64">
+  <object id="127" name="Door" type="InputAction" x="2688.91" y="2039.59" width="96" height="105.091">
    <properties>
     <property name="consume" type="bool" value="true"/>
+    <property name="default" type="bool" value="true"/>
     <property name="needitem" value="briquet"/>
     <property name="quantity" type="int" value="1"/>
    </properties>
   </object>
-  <object id="143" name="Tunnel" type="Tunnel" x="2351.33" y="1644.67">
+  <object id="143" name="Tunnel" type="Tunnel" x="2351.83" y="1647.17">
    <point/>
   </object>
   <object id="147" name="Chest2" type="InputAction" x="2733.67" y="106.667" width="98" height="73.3334">
@@ -531,6 +546,7 @@
    <properties>
     <property name="TeleportPoint" value="Tunnel"/>
     <property name="To?" value="Grotte"/>
+    <property name="anim?" type="bool" value="false"/>
    </properties>
   </object>
   <object id="154" name="Spike" type="Damage" x="2720" y="352" width="64" height="160">
@@ -548,6 +564,13 @@
     <property name="TeleportPoint" value="VillagePos"/>
     <property name="To?" value="Village"/>
    </properties>
+  </object>
+  <object id="157" name="Grotteee" type="Tunnel" x="2734.67" y="1944">
+   <point/>
+  </object>
+  <object id="158" name="Grotte" type="SpawnPoint" x="1027.75" y="2289.75" width="146.5" height="110"/>
+  <object id="159" name="IntoGrotte" type="PlayerPos" x="911.25" y="2210.08">
+   <point/>
   </object>
  </objectgroup>
  <layer id="2" name="walls" width="100" height="100">
@@ -1788,7 +1811,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1567,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

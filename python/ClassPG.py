@@ -196,6 +196,11 @@ class son:
     """Class qui permet de crée une music ou un son"""
 
     def __init__(self, music, type):
+        """
+
+        :param music: str [link]
+        :param type: str [song | music]
+        """
         self.music = music  # Lien de la music
         self.type = type  # Type music ou song
         self.playing = False
@@ -258,6 +263,8 @@ class img(pygame.sprite.Sprite):
         self.w = w  # Largeur de l'image
         self.h = h  # Hauteur de l'image
         self.center = center
+        self.name = "aaa" #Nothing
+        self.type = "Collision"#Nothing
 
         self.iupdate(self.link)
 
