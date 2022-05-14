@@ -55,7 +55,7 @@ class menu():
         self.d['text_Play'] = PG.Texte("Jouer",self.val.screensize[0]//2-100, self.val.screensize[1]//2-10,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
         self.d['text_Para']= PG.Texte("Parametres",self.val.screensize[0]//2-100, self.val.screensize[1]//2+100,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
         self.d['text_Quit'] = PG.Texte("Quitter",self.val.screensize[0]//2-100, self.val.screensize[1]//2+210,True,color=(255,255,255), size= 50, font='../font/Like Snow.otf')
-        self.d['Titre'] = PG.Texte("Titre",self.val.screensize[0]//2-175, self.val.screensize[1]//2 - 275,True,color=(255,255,255), size= 125, font='../font/Like Snow.otf')
+        self.d['Titre'] = PG.Texte("The Tale of Elma",self.val.screensize[0]//2-325, self.val.screensize[1]//2 - 275,True,color=(255,255,255), size= 75, font='../font/Like Snow.otf')
         self.image_fond= PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1], False)
         self.display= pygame.Surface(self.val.screensize)
         set.close()

@@ -167,6 +167,7 @@ class PlayerTopDown(AnimateSprite):
         
         # Stats du joueur 
         self.hp = 100
+        self.hpmax = 100
         self.deffence = 0
         self.attaque = 0
         self.speedfight = 200000

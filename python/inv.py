@@ -7,13 +7,14 @@ import ast  # Module transforme representation of list into list
 
 
 class case:
-    def __init__(self, coord, obj=None, casename = "c"):
+    def __init__(self, coord, obj=None, casename = "c", casenumber = 0 ):
         self.coord = coord
         self.img = pg.img("../img/img.inv/case.png", self.coord[0], self.coord[1], 80, 80, False)
         self.rect = self.img.get_recte()
         self.obj = obj
         self.casename = casename
-
+        self.casenumber = casenumber
+        
     def __str__(self):
         if self.obj != None:
             return str([self.obj.nom, self.obj.nbr])
@@ -43,8 +44,26 @@ class case:
     def add_nb(self, nbr):
         self.obj.nbr += nbr
         self.obj.update_txt((self.rect.centerx, self.rect.centery))
-
-
+        
+    def changecoord(self, x, y):
+        print(x)
+        self.rect.x = x
+        self.rect.y = y
+        self.obj.update_coord((self.rect.centerx, self.rect.centery))
+        self.obj.update_txt((self.rect.centerx, self.rect.centery))
+        
+    def click(self, events, mousepos):
+        if events.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(mousepos):
+                return True
+            
+    def suppr_nb(self, nbr):
+        self.obj.nbr -= 1 
+        if self.obj.nbr == 0 :
+            self.supr_obj()
+        
+        
+        
 class inv:
     def __init__(self, text: str, personnage: str, inv: str, name: str, size: tuple):
         """[class pour l'inventaire]
@@ -62,9 +81,18 @@ class inv:
         self.c = self.lire_inv(f"inv.case/{inv}.txt")
         self.lettre = "c"
 
+    def suppr_nb_obj(self, nbr, case):
+        """[Méthode qui ajoute un objet à l'inv]"""
+        print(case)
+        case = case.replace(self.lettre, "") if isinstance(case, str) else case
+        self.c[self.lettre + str(case)].suppr_nb(nbr)
+        self.save(self.name)
+        
 
     def load_inv(self):
+        self.c = self.lire_inv(f"inv.case/{self.type}.txt")
         self.import_save(self.name)
+
 
     def iblit(self, screen):
         """[Methode qui blit tout ce qu'il a afficher]"""
@@ -82,7 +110,7 @@ class inv:
         c = {}
         for i in L:
             c[i.split(":")[0]] = case(
-                (float((i.split(":")[1].split(",")[0]).strip())*self.facteur, float((i.split(":")[1].split(",")[1].strip()))*self.facteur))
+                (float((i.split(":")[1].split(",")[0]).strip())*self.facteur, float((i.split(":")[1].split(",")[1].strip()))*self.facteur), None,  'c', i.split(":")[0])
         return c
 
     def save(self, name):
@@ -374,7 +402,6 @@ class item:
             nbr_max (int): [le nombre d'objet à empiler maximum]
             genre (str): [le genre d'objet par (ex "armure")]
             img (str): [le lien de l'image]
-            pos_inv (optional): [on precise la position de l'objet dans l'inventaire]. Defaults to None.
         """
         self.id = ID
         self.nbr = nb

@@ -11,6 +11,10 @@ class fight():
         self.enfight = True
         self.joueur = joueur
         self.mobid = mobid
+        self.gui = False 
+        self.dico = {"heal":self.heal}
+        self.w = []
+        
         try: 
             self.armid = self.joueur.get_item_in_inventory(5).obj.link
         except AttributeError:
@@ -34,9 +38,6 @@ class fight():
         
         pygame.display.set_caption("FightScreen")
 
-        
-        
-        
     def read(self):
         #Permet de récuperer les stats des armes 
         Armes = pd.read_csv("../python/info/Armes.csv", sep=";", low_memory=False)
@@ -45,7 +46,7 @@ class fight():
         self.name = info2["Nom"]
         self.dmg = info2["Dmg"]
         self.imga = info2["img"]
-        print(self.id2, self.name, self.dmg)
+
         
         self.ennemii = ennemi.mob(self.mobid, self.lvlmob)
         self.ennemii.imgload(self.facteur)
@@ -55,7 +56,6 @@ class fight():
         self.dmgmob = self.ennemii.Atk//1.3 - self.joueur.deffence/4
         if self.dmgmob < 0:
             self.dmgmob = 0
-        print(self.dmgmob, self.realdmg, self.ennemii.Pv)
 
     # Image de fond
     def image(self, ancien):
@@ -63,16 +63,55 @@ class fight():
         image = Image.open("../img/temp/screen.png")
         image = image.filter(ImageFilter.GaussianBlur(radius=4))
         image.save("../img/temp/screen.png")
-        
-        
+
+    
+    def afficherinv(self): # Affichage obj
+        x = 150*self.facteur
+        y = 480*self.facteur
+        self.w = []
+        for i in self.joueur.inventaire.c.keys():
+            if self.joueur.get_item_in_inventory(i.replace("c", "")).obj != None:                    
+                t = self.joueur.get_item_in_inventory(i.replace("c", "")).obj.genre
+                if t in ["potions"]:
+                    self.joueur.get_item_in_inventory(i.replace("c", "")).changecoord(x, y)
+                    self.w.append(self.joueur.get_item_in_inventory(i.replace("c", ""))) # on recupere la case et l'objet in 
+                    y += 100
+                    if y > 580*self.facteur:
+                        x += 100
+                        y = 480*self.facteur
+                        
+                        
+    def potions(self, Id):
+        potions2 = pd.read_csv("../python/info/Potions.csv", sep=",", low_memory=False)
+        info3 = potions2.loc[Id-1, ["Id","name","img","effect","valuestype","val"]]
+        id4 = info3["Id"]
+        name4 = info3["name"]
+        img4 = info3["img"]
+        effect = info3["effect"]
+        valuestype = info3["valuestype"]
+        val = info3["val"]
+        return [id4, name4, img4, effect, valuestype, val]
+    
+
+    def heal(self,potions):
+        if self.joueur.hpmax == self.joueur.hp :
+            return False 
+        if self.joueur.hp + potions[5] <= self.joueur.hpmax :
+            self.joueur.hp = self.joueur.hp + potions[5]
+            return True 
+        else : 
+            self.joueur.hp = self.joueur.hpmax
+            return True 
+     
     def FightScreen(self):
         running = True
-        
         bottom = pygame.image.load("../img/Fight/bas.png").convert_alpha()
         bottom = pygame.transform.scale(bottom,(self.size[0], self.size[1]))
         bottom_rect = bottom.get_rect()
         bottom_rect.x = 0
         bottom_rect.y = self.size[1]//6*0.025
+        
+        
         # Bouton Atk
         
         batk = pygame.image.load("../img/Fight/Attaques.png").convert_alpha()
@@ -117,7 +156,7 @@ class fight():
         
         # texte hp 
         
-        pv = ClassPG.Texte("PV : "+str(self.joueur.hp), 20*self.facteur, 20*self.facteur, False)
+        pv = ClassPG.Texte("PV : "+str(self.joueur.hp), 575*self.facteur, 400*self.facteur, False)
         
         
         Hp_mob = ClassPG.progressbar(self.ennemii.Pv/self.ennemii.PvMax,  925*self.facteur, 130*self.facteur, 110*self.facteur,20*self.facteur)
@@ -132,20 +171,40 @@ class fight():
         while running : 
             if not self.enfight: 
                 running = False 
+            
             for events in pygame.event.get():
                 if events.type == pygame.QUIT:
                     running = False
+                if events.type == pygame.KEYDOWN : 
+                    if events.key == pygame.K_ESCAPE :
+                        self.gui = False 
+                mousepos = pygame.mouse.get_pos()
                 if events.type == pygame.MOUSEBUTTONDOWN and self.tour == True :
                     if events.button == 1: # 1= clique gauche
-                        # Bouton atk
-                        if batk_rect.collidepoint(events.pos) :
-                            self.ennemii.Pv -= self.realdmg
-                            self.tour = False 
-                            if self.ennemii.Pv <= 0 : 
+                        if self.gui == False :
+                            # Bouton atk
+                            if batk_rect.collidepoint(events.pos) :
+                                self.ennemii.Pv -= self.realdmg
+                                self.tour = False 
+                                if self.ennemii.Pv <= 0 : 
+                                    self.enfight = False
+                            # Bouton fuir 
+                            if bf_rect.collidepoint(events.pos):
                                 self.enfight = False
-                        # Bouton fuir 
-                        if bf_rect.collidepoint(events.pos):
-                            self.enfight = False
+                            if bobj_rect.collidepoint(events.pos):
+                                self.afficherinv()
+                                self.gui = True 
+                if self.gui == True : 
+                    for i in self.w :
+                        if i.click(events, mousepos):
+                            if i.obj.genre in ["potions"]:  
+                                if self.dico[self.potions(i.obj.link)[3]](self.potions(i.obj.link)):
+                                    pv.iupdate("PV : "+str(self.joueur.hp), (255, 255, 255), (pv.x, pv.y))
+                                    self.tour = False 
+                                    self.gui = False 
+                                    self.joueur.inventaire.suppr_nb_obj(1, i.casenumber)
+                            
+                        
             # Tour du mob
             if self.tour == False:
                 compteur +=1
@@ -157,17 +216,25 @@ class fight():
                 elif compteur == 800:
                     compteur = 0
                     self.tour = True 
-                
+        
+
             Img.iblit(self.screen)
-            pv.iblit(self.screen)
             Hp_mob.blit(self.screen, self.ennemii.Pv, self.ennemii.PvMax)
             self.screen.blit(self.ennemii.mobimg, self.ennemii.mobimg_rect)
             self.screen.blit(jimg, jimg_rect)
             self.screen.blit(aimg, aimg_rect)
             self.screen.blit(bottom, bottom_rect)
-            self.screen.blit(bf, bf_rect)
-            self.screen.blit(batk, batk_rect)
-            self.screen.blit(bobj,bobj_rect)
-
+            pv.iblit(self.screen)
+            
+            if self.gui == False :
+                self.screen.blit(bf, bf_rect)
+                self.screen.blit(batk, batk_rect)
+                self.screen.blit(bobj,bobj_rect)
+            else : 
+                for i in self.w:
+                    i.iblit(self.screen)
+                    
+                    
+            
             pygame.display.update()
          

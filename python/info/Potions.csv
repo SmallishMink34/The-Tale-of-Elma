@@ -1,0 +1,2 @@
+Id,name,img,effect,valuestype,val
+1,Healpotion,../img/item/potion.png,heal,int,20
