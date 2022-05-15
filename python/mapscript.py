@@ -29,7 +29,7 @@ class Grotte:
         self.allmap.load()
 
     def __str__(self):
-        return "la map actuel est Grotte"
+        return "la map actuelle est Grotte"
 
     def load_tile_map(self):
         for element in self.mm.get_objectinp("InputAction", "all"):
