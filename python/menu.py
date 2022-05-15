@@ -76,6 +76,7 @@ class menu():
         for i in self.d.keys():
             self.d[i].iblit(screen)
 
+
     def run(self):
         self.continuer = True
         while self.continuer:
@@ -100,6 +101,7 @@ class para():
     def gameloop(self, event, screen):
         self.eventpy(event)
         self.iblit(screen)
+        
 
     def eventpy(self, events):
         for event in events:
@@ -135,6 +137,7 @@ class para():
         self.image_fond.iblit(screen)
         for i in self.d.keys():
             self.d[i].iblit(screen)
+
 
     def run(self):
         self.continuer = True
