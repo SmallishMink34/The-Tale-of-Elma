@@ -69,11 +69,11 @@ class inv:
         """[class pour l'inventaire]
         Args:
             text (str): [le texte que l'on veut afficher au dessus du personnage dans l'inventaire]
-            personnage (str): [lien de l'image en png du personnage]
+            personnage (str): [lpien de l'image en png du personnage]
         """
         self.facteur = size[0] / 1280
-        self.text = pg.Texte(text, 300*self.facteur, 105*self.facteur, True, size=80, color=(0, 0, 0))
-        self.personnage = pg.img(personnage, 540*self.facteur, 360*self.facteur, 230*self.facteur, 230*self.facteur, True)
+        self.text = pg.Texte(text, 300*self.facteur, 105*self.facteur, True, size=80, color=(255, 255, 255), font="../font/Like Snow.otf")
+        self.personnage = pg.img("../img/img.inv/player.png", 540*self.facteur, 360*self.facteur, 230*self.facteur, 230*self.facteur, True)
         self.type = inv
         self.name = name
         # On crée un dictionnaire qui gère l'integraliter de l'inventaire
@@ -96,10 +96,11 @@ class inv:
 
     def iblit(self, screen):
         """[Methode qui blit tout ce qu'il a afficher]"""
+        pg.img("../img/img.inv/INV.png", 0, 0, 1280*self.facteur, 720*self.facteur, False).iblit(screen)  # on blit deja le fond
         if self.type == "inv":
             self.text.iblit(screen)  # on blit deja le texte
             self.personnage.iblit(screen)  # on blit le personnage
-        pg.img("../img/img.inv/INV.png", 0, 0, 1280*self.facteur, 720*self.facteur, False).iblit(screen)  # on blit deja le fond
+        
 
         for c in self.c.keys():  # on blit toute les cases
             self.c[c].iblit(screen)
@@ -220,7 +221,6 @@ class invdouble:
         self.case1 = case1
         self.playercase = playercase
         self.name = name
-        self.text = pg.Texte(name, size[0]/2, 65, True, size=80, color=(0, 0, 0))
         self.size = size
 
         self.facteur = self.size[0]/1280
@@ -234,11 +234,13 @@ class invdouble:
         self.import_save(self.name)
 
     def iblit(self, screen):
-        self.text.iblit(screen)  # on blit deja le texte
+        
         pg.img("../img/img.inv/INV.png", 0, 0, self.size[0], self.size[1], False).iblit(screen)
-
         for c in self.allcase.keys():  # on blit toute les cases
             self.allcase[c].iblit(screen)
+        
+
+        
 
     def lire_inv(self, file):
         self.file = open(file, "r")
