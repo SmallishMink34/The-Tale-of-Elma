@@ -12,7 +12,7 @@ class fight():
         self.joueur = joueur
         self.mobid = mobid
         self.gui = False 
-        self.dico = {"heal":self.heal}
+        self.dico = {"heal":self.heal, "degat":self.damage}
         self.w = []
         
         try: 
@@ -92,7 +92,9 @@ class fight():
         val = info3["val"]
         return [id4, name4, img4, effect, valuestype, val]
     
+    """---Potion fonction---"""
 
+    # Potion de heal
     def heal(self,potions):
         if self.joueur.hpmax == self.joueur.hp :
             return False 
@@ -102,6 +104,13 @@ class fight():
         else : 
             self.joueur.hp = self.joueur.hpmax
             return True 
+        
+    # Potion de dégat  
+    def damage(self,potions):
+        if potions[4] == "pourcent" :
+            potions[5] = self.ennemii.Pv * (potions[5]/100)
+        self.ennemii.Pv = self.ennemii.Pv - potions[5]
+        return True 
      
     def FightScreen(self):
         running = True
@@ -203,6 +212,7 @@ class fight():
                                     self.tour = False 
                                     self.gui = False 
                                     self.joueur.inventaire.suppr_nb_obj(1, i.casenumber)
+                                
                             
                         
             # Tour du mob

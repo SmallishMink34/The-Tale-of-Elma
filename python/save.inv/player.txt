@@ -1,13 +1,13 @@
-c1: [1, 'casque', 70, 'armure', 1]
-c2: [2, 'plastron', 134, 'armure', 1]
+c1: [10, 'PetitDmg', 3, 'potions', 1]
+c2: [11, 'GrosDmg', 6, 'potions', 1]
 c3: None
 c4: None
 c5: [5, 'epee', 2, 'arme', 1]
-c6: None
-c7: [4, 'briquet', 1, 'item', 1]
-c8: [4, 'briquet', 1, 'item', 1]
-c9: [4, 'briquet', 1, 'item', 1]
-c10: [4, 'briquet', 1, 'item', 1]
+c6: [6, 'healpotions', 2, 'potions', 1]
+c7: [8, 'PetitHeal', 3, 'potions', 1]
+c8: [9, 'GrosHeal', 8, 'potions', 1]
+c9: None
+c10: None
 c11: None
 c12: None
 c13: None

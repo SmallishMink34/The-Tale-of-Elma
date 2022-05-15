@@ -1,2 +1,7 @@
 Id,name,img,effect,valuestype,val
-1,Healpotion,../img/item/potion.png,heal,int,20
+1,Healpotion,../img/item/moyen_heal.png,heal,int,20
+2,DamagePotion,..img/item/potion_dmg.png,degat,pourcent,20
+3,PetitHeal,../img/item/PetitHeal.png,heal,int,10
+4,GrosHeal,../img/item/GrosHeal.png,heal,int,40
+5,PetitDmg,../img/item/petit_dmg.png,degat,pourcent,10
+6,GrosDmg,../img/item/grosse_dmg.png,degat,pourcent,40
