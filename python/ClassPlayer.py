@@ -158,13 +158,14 @@ class PlayerTopDown(AnimateSprite):
     """
     Class créant un joueur TopDown
     """
+
     def __init__(self, name, spawncoords, screen):
         super(PlayerTopDown, self).__init__()
         self.name = name
         self.tilesize = 16
         self.tilesizescale = 2
         self.screen = screen
-        
+
         # Stats du joueur 
         self.hp = 100
         self.hpmax = 100
@@ -177,7 +178,8 @@ class PlayerTopDown(AnimateSprite):
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
 
-        self.inventaire = inv.inv("Inventaire","../img/img.inv/personnage_test.png","inv","player", self.screen.get_size())
+        self.inventaire = inv.inv("Inventaire", "../img/img.inv/personnage_test.png", "inv", "player",
+                                  self.screen.get_size())
 
         self.pressed = {}
         self.speed = 3
@@ -195,8 +197,8 @@ class PlayerTopDown(AnimateSprite):
     def get_inventory(self):
         return self.inventaire.c
 
-    def get_item_in_inventory(self, case:int):
-        return self.get_inventory()["c"+str(case)]
+    def get_item_in_inventory(self, case: int):
+        return self.get_inventory()["c" + str(case)]
 
     def update(self):
         self.save_old_location()  # Savegarde des position du joueur avant mouvement
@@ -249,14 +251,13 @@ class PlayerTopDown(AnimateSprite):
 
         self.feet.midbottom = self.rect.midbottom
 
-
-
     def save_old_location(self):
         """
         Recuperer l'ancienne position du joueur
         :return: Nothing
         """
         self.old_position = (self.rect.x, self.rect.y)
+        return self.old_position
 
     def moveback(self):
         """

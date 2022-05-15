@@ -1,5 +1,5 @@
-c1: [1, 'casque', 4, 'armure', 1]
-c2: [2, 'plastron', 12, 'armure', 1]
+c1: [10, 'PetitDmg', 1, 'potions', 1]
+c2: [11, 'GrosDmg', 2, 'potions', 1]
 c3: None
 c4: None
 c5: [4, 'briquet', 1, 'item', 1]

@@ -22,6 +22,9 @@ class Gui:
 
         self.move = None
 
+    def Game(self, name):
+        pass
+
     def InGame(self):
         self.currentGui = "InGame"
         self.element = {}

@@ -10,3 +10,4 @@ Id,name,type,imglink,nbmax,link
 9,GrosHeal,potions,../img/item/gros_Heal.png,1,4
 10,PetitDmg,potions,../img/item/petit_dmg.png,1,5
 11,GrosDmg,potions,../img/item/grosse_dmg.png,1,6
+12,Casquette Pong,item,../img/item/casette.png,1,0

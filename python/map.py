@@ -27,7 +27,7 @@ class Mapmanager:
     def __init__(self, screen, player):
         self.mapobject = None
         self.maps = {}
-        self.basemap = "Village"
+        self.basemap = "Maison"
         self.load_localtion()
         self.current_map = self.basemap
         self.screen = screen
@@ -38,6 +38,7 @@ class Mapmanager:
         self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
+        self.register_map("Maison", mapscript.Maison(self))
 
         self.changemap(self.basemap, "PlayerPos")
 
@@ -75,7 +76,9 @@ class Mapmanager:
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
                 if self.seecollision:self.group.add(PG.img("../img/menu/background.jpg", obj.x, obj.y, obj.width, obj.height, False))
             if obj.type != "Collision":
-                self.objects_input[obj.name] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), obj.type]
+                self.objects_input[obj.id] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), obj.type]
+                if self.seecollision: self.group.add(
+                    PG.img("../img/img.inv/case.png", obj.x, obj.y, obj.width, obj.height, False))
 
           # groupe contenant le joueur et la map
         self.group.add(self.player)
@@ -180,8 +183,8 @@ class Mapmanager:
                 l.append(self.get_map().object[i])
         return l
 
-    def get_object(self, name):
-        return self.get_map().tmx_data.get_object_by_name(name)
+    def get_object(self, id):
+        return self.get_map().tmx_data.get_object_by_name(id)
 
     def teleport_player(self, name):
         point = self.get_object(name)

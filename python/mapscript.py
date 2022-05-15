@@ -119,17 +119,6 @@ class lobby:
                 if i.feet.colliderect(element[1]) and self.mm.player.inputaction():
                     if self.allmap.hand(element) is False: break
 
-                if "Portail" in element[0].name:  # Si c'est un point de teleportation
-                    try:
-                        var = element[0].properties['To?']
-                    except KeyError:
-                        var = self.mm.current_map
-                    try:
-                        var2 = element[0].properties['TeleportPoint']
-                    except KeyError:
-                        var2 = 'PlayerPos'
-
-                    self.mm.changemap(var, var2)
                 self.allmap.collision(element)
 
     def update(self):
@@ -156,22 +145,46 @@ class Village:
             if element[0].type != "InputAction":
                 if i.feet.colliderect(element[1]):
                     self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
-                if "Portail" in element[0].name:  # Si c'est un point de teleportation
-                    try:
-                        var = element[0].properties['To?']
-                    except KeyError:
-                        var = self.mm.current_map
-
-                    try:
-                        var2 = element[0].properties['TeleportPoint']
-                    except KeyError:
-                        var2 = 'PlayerPos'
-
-                    self.mm.changemap(var, var2)
                 self.allmap.collision(element)
+
+    def update(self):
+        pass
+
+class Maison:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "Maison"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+
+        self.allmap = Allmap(self.mm)
+
+    def load(self):
+        self.allmap.load()
+
+    def __str__(self):
+        return "la map actuel est Maison"
+
+    def collision(self, i):
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                self.allmap.collision(element)
+                if element[0].name == "Game":
+                    self.mm.player.gui.Game(self.mm.player.get_item_in_inventory(5).obj)
 
     def update(self):
         pass
@@ -185,7 +198,7 @@ class Allmap():
         self.Ms_Spawn = PG.son("../song/Ingame/spawnpoint.mp3", "song")
         self.Ms_Spawn.volume(valeurs.valeur.volume)
 
-
+        self.in_a_zone = False
 
     def load(self):
         if self.mm.current_map == self.mm.load_localtion():
@@ -266,8 +279,6 @@ class Allmap():
                 self.mm.Animation.one_by_one_iblit(self.mm.screen, "fade_out")
             self.mm.player.allinputoff(True)
 
-
-
     def save_spawnpoint(self, spawn):
         w = open("save/spawnpoint.txt", "w")
         w.write("SpawnPoint: " + str(spawn) + "\n")
@@ -281,9 +292,16 @@ class Allmap():
             print("test")
 
     def collision_without_action(self, element):
-        if "Spike" in element[0].name:
+        a = element[0].name if isinstance(element[0].name, str) else ""
+        b = element[0].type if isinstance(element[0].type, str) else ""
+        if "Spike" in a:
             print('Sa pique de : ', element[0].properties['Damage'])
-        if "SpawnPoint" in element[0].type:
+        if "SpawnPoint" in b:
             if self.mm.current_map != self.spawnpoint:
                 self.load()
-                self.save_spawnpoint(element[0].name)
+                self.save_spawnpoint(a)
+        if "effect" in b:
+            if "Boue" in b:
+                print(element[0].id, b)
+                self.mm.player.speed = int(element[0].properties["ralenti"])
+

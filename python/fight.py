@@ -52,7 +52,7 @@ class fight():
         self.ennemii.imgload(self.facteur)
         self.realdmg = self.dmg//1.3 - self.ennemii.Def/4 # degat que le joueur inflige
         if self.realdmg < 0 :
-            self.realdmg == 0
+            self.realdmg = 0
         self.dmgmob = self.ennemii.Atk//1.3 - self.joueur.deffence/4
         if self.dmgmob < 0:
             self.dmgmob = 0
