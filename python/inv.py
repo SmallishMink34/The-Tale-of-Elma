@@ -1,3 +1,4 @@
+from re import A
 import pygame
 import pygame
 import ClassPG as pg
@@ -9,11 +10,23 @@ import ast  # Module transforme representation of list into list
 class case:
     def __init__(self, coord, obj=None, casename = "c", casenumber = 0 ):
         self.coord = coord
+        self.coord_save = coord
         self.img = pg.img("../img/img.inv/case.png", self.coord[0], self.coord[1], 80, 80, False)
         self.rect = self.img.get_recte()
         self.obj = obj
         self.casename = casename
         self.casenumber = casenumber
+        if self.casenumber == "c1":
+            self.genre = "casque"
+        elif self.casenumber == "c2":
+            self.genre = "plastron"
+        elif self.casenumber == "c3":
+            self.genre = "jambiere"
+        elif self.casenumber == "c4":
+            self.genre = "botte"
+        else :
+            self.genre = "None"
+            
 
     def __str__(self):
         if self.obj != None:
@@ -23,8 +36,9 @@ class case:
 
     def add_obj(self, obj):
         if self.obj != None:
-            if self.obj.id == obj.id:
+            if self.obj.id == obj.id :
                 self.add_nb(obj.nbr)
+
             else:
                 self.obj = obj
                 self.obj.update_coord((self.rect.centerx, self.rect.centery))
@@ -41,7 +55,10 @@ class case:
         if self.obj != None:
             self.obj.iblit(screen)
 
+    
     def add_nb(self, nbr):
+        print(self.obj.nbr,self.obj.nbr_max)
+        print("c'est ajouter")
         self.obj.nbr += nbr
         self.obj.update_txt((self.rect.centerx, self.rect.centery))
 
@@ -142,6 +159,7 @@ class inv:
 
     def add(self, obj, case):
         """[Méthode qui ajoute un objet à l'inv]"""
+        print(obj.nbr,obj.nbr_max)
         case = case.replace(self.lettre, "")
         self.c[self.lettre + str(case)].add_obj(obj)
 
@@ -196,17 +214,23 @@ class inv:
             elif case1 == case2:  # si c'est la meme case
                 self.c[self.lettre + str(case1)].obj.update_coord(
                     (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-            elif self.c[self.lettre + str(case2)].obj is None:  # si la deuxieme case est vide
+            elif self.c[self.lettre + str(case2)].obj is None and self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None":  # si la deuxieme case est vide
+                print("1")
                 self.add(self.c[self.lettre + str(case1)].obj, case2)
                 self.suppr(case1)
-            elif self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
+            elif self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" and self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
+                print("2")
                 self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr)
                 self.suppr(case1)
-            elif self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
+            elif self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" and self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
+                print("3")
                 c1 = self.c[self.lettre + str(case1)].obj
                 c2 = self.c[self.lettre + str(case2)].obj
                 self.add(c2, case1)
                 self.add(c1, case2)
+            else:
+                self.c[self.lettre + str(case1)].obj.update_coord(
+                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
         self.save(self.name)
 
     def info_case(self, mouse_pos, event):
@@ -402,7 +426,7 @@ class item:
         Args:
             nom (str): [le nom de l'objet]
             nbr_max (int): [le nombre d'objet à empiler maximum]
-            genre (str): [le genre d'objet par (ex "armure")]
+            genre (str): [le genre d'objet par (ex "p")]
             img (str): [le lien de l'image]
         """
         self.id = ID
@@ -419,8 +443,9 @@ class item:
         info = data.loc[self.id - 1, ["Id", "name", "type", "imglink", "nbmax", "link"]]
         self.nom = str(info["name"])
         self.genre = str(info["type"])
+        print(info["type"])
         self.imglink = str(info["imglink"])
-        self.nbr_max = int(info["nbmax"])
+        self.nbr_max = int(info["nbmax"])   
         self.link = int(info["link"])
 
     def recup(self):

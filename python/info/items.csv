@@ -1,13 +1,13 @@
 Id,name,type,imglink,nbmax,link
-1,casque,armure,../img/item/diamond_helmet.png,1,1
-2,plastron,armure,../img/item/diamond_chestplate.png,1,2
-3,legging,armure,../img/item/diamond_legging.png,1,3
+1,casque diams,casque,../img/item/diamond_helmet.png,1,1
+2,plastron diams,plastron,../img/item/diamond_chestplate.png,1,2
+3,legging diams,jambiere,../img/item/diamond_legging.png,1,3
 4,briquet,item,../img/item/briquet.png,1,0
-5,epee,arme,../img/item/epee.png,1,1
-6,healpotions,potions,../img/item/moyen_heal.png,1,1
-7,DamagePotion,potions,../img/item/potion_dmg.png,1,2
-8,PetitHeal,potions,../img/item/petit_Heal.png,1,3
-9,GrosHeal,potions,../img/item/gros_Heal.png,1,4
-10,PetitDmg,potions,../img/item/petit_dmg.png,1,5
-11,GrosDmg,potions,../img/item/grosse_dmg.png,1,6
+5,epee,arme,../img/item/epee.png,64,1
+6,healpotions,potions,../img/item/moyen_heal.png,64,1
+7,DamagePotion,potions,../img/item/potion_dmg.png,64,2
+8,PetitHeal,potions,../img/item/petit_Heal.png,64,3
+9,GrosHeal,potions,../img/item/gros_Heal.png,64,4
+10,PetitDmg,potions,../img/item/petit_dmg.png,64,5
+11,GrosDmg,potions,../img/item/grosse_dmg.png,64,6
 12,Casquette Pong,item,../img/item/casette.png,1,0

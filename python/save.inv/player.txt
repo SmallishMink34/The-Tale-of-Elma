@@ -1,19 +1,19 @@
 c1: None
-c2: [10, 'PetitDmg', 1, 'potions', 1]
-c3: [2, 'plastron', 4, 'armure', 1]
+c2: None
+c3: None
 c4: None
-c5: [11, 'GrosDmg', 2, 'potions', 1]
-c6: None
+c5: None
+c6: [11, 'GrosDmg', 94, 'potions', 64]
 c7: None
 c8: None
-c9: None
-c10: [4, 'briquet', 1, 'item', 1]
+c9: [10, 'PetitDmg', 10, 'potions', 64]
+c10: None
 c11: None
-c12: None
+c12: [11, 'GrosDmg', 10, 'potions', 64]
 c13: None
 c14: None
 c15: None
-c16: None
+c16: [4, 'briquet', 1, 'item', 1]
 c17: None
 c18: None
 c19: None
