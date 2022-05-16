@@ -57,8 +57,6 @@ class case:
 
     
     def add_nb(self, nbr):
-        print(self.obj.nbr,self.obj.nbr_max)
-        print("c'est ajouter")
         self.obj.nbr += nbr
         self.obj.update_txt((self.rect.centerx, self.rect.centery))
 
@@ -100,7 +98,6 @@ class inv:
 
     def suppr_nb_obj(self, nbr, case):
         """[Méthode qui ajoute un objet à l'inv]"""
-        print(case)
         case = case.replace(self.lettre, "") if isinstance(case, str) else case
         self.c[self.lettre + str(case)].suppr_nb(nbr)
         self.save(self.name)
@@ -159,7 +156,6 @@ class inv:
 
     def add(self, obj, case):
         """[Méthode qui ajoute un objet à l'inv]"""
-        print(obj.nbr,obj.nbr_max)
         case = case.replace(self.lettre, "")
         self.c[self.lettre + str(case)].add_obj(obj)
 
@@ -214,23 +210,33 @@ class inv:
             elif case1 == case2:  # si c'est la meme case
                 self.c[self.lettre + str(case1)].obj.update_coord(
                     (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-            elif self.c[self.lettre + str(case2)].obj is None and self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None":  # si la deuxieme case est vide
-                print("1")
-                self.add(self.c[self.lettre + str(case1)].obj, case2)
-                self.suppr(case1)
-            elif self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" and self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
-                print("2")
-                self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr)
-                self.suppr(case1)
-            elif self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" and self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
-                print("3")
-                c1 = self.c[self.lettre + str(case1)].obj
-                c2 = self.c[self.lettre + str(case2)].obj
-                self.add(c2, case1)
-                self.add(c1, case2)
-            else:
-                self.c[self.lettre + str(case1)].obj.update_coord(
+            elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
+                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
+                    print("déplacer")
+                    self.add(self.c[self.lettre + str(case1)].obj, case2)
+                    self.suppr(case1)
+                else: # sinon on la remet au meme endroit
+                    self.c[self.lettre + str(case1)].obj.update_coord(
                         (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+            elif self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
+                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" : 
+                    print("empliler")
+                    self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr)
+                    self.suppr(case1)
+                else: # sinon on la remet au meme endroit
+                    self.c[self.lettre + str(case1)].obj.update_coord(
+                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+            
+            elif self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
+                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre and  self.c[self.lettre + str(case1)].genre == self.c[self.lettre + str(case2)].genre:
+                    print("échanger")
+                    c1 = self.c[self.lettre + str(case1)].obj
+                    c2 = self.c[self.lettre + str(case2)].obj
+                    self.add(c2, case1)
+                    self.add(c1, case2)
+                else:
+                    self.c[self.lettre + str(case1)].obj.update_coord(
+                            (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
         self.save(self.name)
 
     def info_case(self, mouse_pos, event):
