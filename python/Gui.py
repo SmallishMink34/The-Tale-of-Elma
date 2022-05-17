@@ -100,7 +100,7 @@ class Gui:
             self.close()
 
         if self.currentGui == "Inv" or self.currentGui == "Invc":
-            self.element['inv'][0].info_case(mousepos, event)
+            # self.element['inv'][0].info_case(mousepos, event)
             if self.move:
                 self.element['inv'][0].image_suivie(self.c, mousepos)
             if self.sep :

@@ -227,7 +227,12 @@ class inv:
                 self.c[self.lettre + str(case)].divise()
                 
         
-                
+    
+    def update(self):
+        self.save(self.name) # on enregistre l'inventaire
+        self.load_inv() # on recharge l'inventaire
+        
+    
     def retourner_case(self, case):
         """
         retourner_case est un fonction simple utilser dans move pour retourner la case dans laquelle on est
@@ -267,11 +272,22 @@ class inv:
             elif (self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id): # si les deux objets des deux cases sont identique 
                 if (self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre # si le genre de l'objet de la case 1 est identique au genre de l'objet de la case 2
                 or self.c[self.lettre + str(case2)].genre == "None" # ou que le genre de la case 2 est vide
-                and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr <= self.c[self.lettre + str(case2)].obj.nbr_max): # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
+                and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr <= self.c[self.lettre + str(case2)].obj.nbr_max): # si la somme des nombre de l'objet de la case 1 et de l'objet de la case 2 est inferieur ou egal a la quantité max de l'objet de la case 2
                     
                     print("on empile dans l'inventaire")
                     self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr)
                     self.suppr(case1)
+                
+                elif (self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre # si le genre de l'objet de la case 1 est identique au genre de l'objet de la case 2
+                or self.c[self.lettre + str(case2)].genre == "None"
+                and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr >= self.c[self.lettre + str(case2)].obj.nbr_max): # si la somme des objets dépasse le chiffre max
+                    
+                    print(abs(self.c[self.lettre + str(case2)].obj.nbr_max - self.c[self.lettre + str(case2)].obj.nbr ))
+                    tmp = abs(self.c[self.lettre + str(case2)].obj.nbr_max - self.c[self.lettre + str(case2)].obj.nbr ) # on enregistre un variable temporaire qui correspond a la dif entre le nbr max et la c1
+                    self.c[self.lettre + str(case2)].add_nb(tmp) # on ajoute la dif
+                    self.update()
+                    self.c[self.lettre + str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
+                    self.update()
                     
                 else: 
                     self.retourner_case(case1)
@@ -316,8 +332,7 @@ class inv:
                         tmp = self.c[self.lettre + str(case1)].obj.nbr % 2
                         self.c[self.lettre + str(case1)].obj.nbr = self.c[self.lettre + str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
                         self.add(self.c[self.lettre + str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
-                        self.save(self.name) # on enregistre l'inventaire
-                        self.load_inv() # on recharge l'inventaire
+                        self.update()
                         self.c[self.lettre + str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
                         
                     else:
@@ -331,11 +346,9 @@ class inv:
                         print("on emplile la motié")
                         tmp = self.c[self.lettre + str(case1)].obj.nbr // 2 # on enregiste dans un var temporaire la moitié de la case 1
                         self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr // 2 ) # on divise par 2 le nombre d'objet de la case 1
-                        self.save(self.name) # on enregistre l'inventaire
-                        self.load_inv() # on recharge l'inventaire
+                        self.update()
                         self.c[self.lettre + str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
-                        self.save(self.name) # on enregistre l'inventaire
-                        self.load_inv() # on recharge l'inventaire
+                        self.update()
                         
                     else: 
                         self.retourner_case(case1)
