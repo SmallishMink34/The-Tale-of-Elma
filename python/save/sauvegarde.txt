@@ -1,2 +1,1 @@
-SpawnPoint: Village
-Money: 0
+SpawnPoint: Grotte

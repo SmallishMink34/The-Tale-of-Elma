@@ -1,3 +1,4 @@
+from re import A
 import pygame
 import pygame
 import ClassPG as pg
@@ -9,11 +10,23 @@ import ast  # Module transforme representation of list into list
 class case:
     def __init__(self, coord, obj=None, casename = "c", casenumber = 0 ):
         self.coord = coord
+        self.coord_save = coord
         self.img = pg.img("../img/img.inv/case.png", self.coord[0], self.coord[1], 80, 80, False)
         self.rect = self.img.get_recte()
         self.obj = obj
         self.casename = casename
         self.casenumber = casenumber
+        if self.casenumber == "c1":
+            self.genre = "casque"
+        elif self.casenumber == "c2":
+            self.genre = "plastron"
+        elif self.casenumber == "c3":
+            self.genre = "jambiere"
+        elif self.casenumber == "c4":
+            self.genre = "botte"
+        else :
+            self.genre = "None"
+            
 
     def __str__(self):
         if self.obj != None:
@@ -23,7 +36,7 @@ class case:
 
     def add_obj(self, obj):
         if self.obj != None:
-            if self.obj.id == obj.id:
+            if self.obj.id == obj.id :
                 self.add_nb(obj.nbr)
             else:
                 self.obj = obj
@@ -41,9 +54,16 @@ class case:
         if self.obj != None:
             self.obj.iblit(screen)
 
+    
     def add_nb(self, nbr):
         self.obj.nbr += nbr
         self.obj.update_txt((self.rect.centerx, self.rect.centery))
+        
+    def divise(self):
+        l = (self.obj.nbr) // 2
+        reste = l + (self.obj.nbr) % 2
+        self.obj.nbr = l
+        return reste
 
     def changecoord(self, x, y):
         print(x)
@@ -57,8 +77,8 @@ class case:
             if self.rect.collidepoint(mousepos):
                 return True
 
-    def suppr_nb(self, nbr):
-        self.obj.nbr -= 1
+    def supr_nb(self, nbr):
+        self.obj.nbr -= nbr
         if self.obj.nbr == 0 :
             self.supr_obj()
 
@@ -69,11 +89,11 @@ class inv:
         """[class pour l'inventaire]
         Args:
             text (str): [le texte que l'on veut afficher au dessus du personnage dans l'inventaire]
-            personnage (str): [lien de l'image en png du personnage]
+            personnage (str): [lpien de l'image en png du personnage]
         """
         self.facteur = size[0] / 1280
-        self.text = pg.Texte(text, 300*self.facteur, 105*self.facteur, True, size=80, color=(0, 0, 0))
-        self.personnage = pg.img(personnage, 540*self.facteur, 360*self.facteur, 230*self.facteur, 230*self.facteur, True)
+        self.text = pg.Texte(text, 300*self.facteur, 105*self.facteur, True, size=80, color=(255, 255, 255), font="../font/Like Snow.otf")
+        self.personnage = pg.img("../img/img.inv/player.png", 540*self.facteur, 360*self.facteur, 230*self.facteur, 230*self.facteur, True)
         self.type = inv
         self.name = name
         # On crée un dictionnaire qui gère l'integraliter de l'inventaire
@@ -83,7 +103,6 @@ class inv:
 
     def suppr_nb_obj(self, nbr, case):
         """[Méthode qui ajoute un objet à l'inv]"""
-        print(case)
         case = case.replace(self.lettre, "") if isinstance(case, str) else case
         self.c[self.lettre + str(case)].suppr_nb(nbr)
         self.save(self.name)
@@ -96,10 +115,11 @@ class inv:
 
     def iblit(self, screen):
         """[Methode qui blit tout ce qu'il a afficher]"""
+        pg.img("../img/img.inv/INV.png", 0, 0, 1280*self.facteur, 720*self.facteur, False).iblit(screen)  # on blit deja le fond
         if self.type == "inv":
             self.text.iblit(screen)  # on blit deja le texte
             self.personnage.iblit(screen)  # on blit le personnage
-        pg.img("../img/img.inv/INV.png", 0, 0, 1280*self.facteur, 720*self.facteur, False).iblit(screen)  # on blit deja le fond
+        
 
         for c in self.c.keys():  # on blit toute les cases
             self.c[c].iblit(screen)
@@ -176,7 +196,7 @@ class inv:
                 return i.replace(self.lettre, "")
         return False
 
-    def click(self, event, case: str):
+    def left_click(self, event, case: str):
         """[Méthode qui permet de renvoyer si on click sur un casse]
         Args:
             case (str): [nom de la case]
@@ -189,28 +209,149 @@ class inv:
                     return True
             else:
                 return False
-
-    def move(self, case1: int, case2: int):
-
-        if self.lettre + str(case1) in self.c.keys():
-            if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None
+            
+    def right_click(self, event, case: str):
+        """[Méthode qui permet de renvoyer si on click sur un casse]
+        Args:
+            case (str): [nom de la case]
+        Returns:
+            (bool): [renvoie true si on clique sur case]
+        """
+        if self.lettre + str(case) in self.c.keys():
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.c[self.lettre + str(case)].rect.collidepoint(event.pos):
+                    return True
+            else:
                 return False
-            elif case1 == case2:  # si c'est la meme case
-                self.c[self.lettre + str(case1)].obj.update_coord(
-                    (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-            elif self.c[self.lettre + str(case2)].obj is None:  # si la deuxieme case est vide
-                self.add(self.c[self.lettre + str(case1)].obj, case2)
-                self.suppr(case1)
-            elif self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
-                self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr)
-                self.suppr(case1)
-            elif self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
-                c1 = self.c[self.lettre + str(case1)].obj
-                c2 = self.c[self.lettre + str(case2)].obj
-                self.add(c2, case1)
-                self.add(c1, case2)
-        self.save(self.name)
+            
+    def separateur(self, case):
+        if self.lettre + str(case) in self.c.keys():
+            if self.c[self.lettre + str(case)].obj.nbr > 1:
+                self.c[self.lettre + str(case)].divise()
+                
+        
+    
+    def update(self):
+        self.save(self.name) # on enregistre l'inventaire
+        self.load_inv() # on recharge l'inventaire
+        
+    
+    def retourner_case(self, case):
+        """
+        retourner_case est un fonction simple utilser dans move pour retourner la case dans laquelle on est
+        Args: case (int): le chiffre de la case
+        """
+        self.c[self.lettre + str(case)].obj.update_coord(
+                    (self.c[self.lettre + str(case)].rect.centerx, self.c[self.lettre + str(case)].rect.centery)) # On ramene l'objet a sa position
+    
+    
+    def move(self, case1: int, case2: int):
+        """
+        move est un fontion utiliser pour bouger les items dans l'inventaire
 
+        Args:
+            case1 (int): la case qu'on veut déplacer
+            case2 (int): vers ou on veut déplacer l'item
+
+        """
+
+        if self.lettre + str(case1) in self.c.keys(): 
+            
+            if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None ( = rien )
+                return False
+            
+            elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case
+                                
+            elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
+                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
+                    
+                    print("on deplace dans l'inventaire")
+                    self.add(self.c[self.lettre + str(case1)].obj, case2)
+                    self.suppr(case1)
+                    
+                else:
+                    self.retourner_case(case1)
+                    
+            elif (self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id): # si les deux objets des deux cases sont identique 
+                if (self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre # si le genre de l'objet de la case 1 est identique au genre de l'objet de la case 2
+                or self.c[self.lettre + str(case2)].genre == "None" # ou que le genre de la case 2 est vide
+                and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr <= self.c[self.lettre + str(case2)].obj.nbr_max): # si la somme des nombre de l'objet de la case 1 et de l'objet de la case 2 est inferieur ou egal a la quantité max de l'objet de la case 2
+                    
+                    print("on empile dans l'inventaire")
+                    self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr)
+                    self.suppr(case1)
+                
+                elif (self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre # si le genre de l'objet de la case 1 est identique au genre de l'objet de la case 2
+                or self.c[self.lettre + str(case2)].genre == "None"
+                and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr >= self.c[self.lettre + str(case2)].obj.nbr_max): # si la somme des objets dépasse le chiffre max
+                    
+                    print(abs(self.c[self.lettre + str(case2)].obj.nbr_max - self.c[self.lettre + str(case2)].obj.nbr ))
+                    tmp = abs(self.c[self.lettre + str(case2)].obj.nbr_max - self.c[self.lettre + str(case2)].obj.nbr ) # on enregistre un variable temporaire qui correspond a la dif entre le nbr max et la c1
+                    self.c[self.lettre + str(case2)].add_nb(tmp) # on ajoute la dif
+                    self.update()
+                    self.c[self.lettre + str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
+                    self.update()
+                    
+                else: 
+                    self.retourner_case(case1)
+            
+            else :  # sinon soit = si la deuxieme case est un autre objet que la première
+                
+                if (self.c[self.lettre + str(case1)].obj.genre not in ["casque","plastron","jambiere","botte"] 
+                    and  self.c[self.lettre + str(case1)].genre == self.c[self.lettre + str(case2)].genre):
+                    print("on echange dans l'inventaire")
+                    c1, c2= self.c[self.lettre + str(case1)].obj , self.c[self.lettre + str(case2)].obj
+                    self.add(c2, case1)
+                    self.add(c1, case2)
+                    
+                else:
+                    
+                    self.retourner_case(case1)
+                    
+        self.save(self.name) # on enrefistre l'inventaire
+        
+        
+    def move_sep(self, case1: int, case2: int):
+            """
+            move_sep est un fontion utiliser pour séparer les items dans l'inventaire
+
+            Args:
+                case1 (int): la case qu'on veut déplacer
+                case2 (int): vers ou on veut déplacer l'item
+
+            """
+            if self.lettre + str(case1) in self.c.keys(): 
+                if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None ( = rien )
+                    return False
+                elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case            
+                elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
+                    if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
+                        print("on sépare dans l'inventaire")
+                        tmp = self.c[self.lettre + str(case1)].obj.nbr % 2
+                        self.c[self.lettre + str(case1)].obj.nbr = self.c[self.lettre + str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
+                        self.add(self.c[self.lettre + str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
+                        self.update()
+                        self.c[self.lettre + str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
+                    else:
+                        self.retourner_case(case1)  
+                elif (self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id): # si les deux objets des deux cases sont identique 
+                    if (self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre # si le genre de l'objet de la case 1 est identique au genre de l'objet de la case 2
+                    or self.c[self.lettre + str(case2)].genre == "None" # ou que le genre de la case 2 est vide
+                    and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr <= self.c[self.lettre + str(case2)].obj.nbr_max): # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
+                        print("on emplile la motié")
+                        tmp = self.c[self.lettre + str(case1)].obj.nbr // 2 # on enregiste dans un var temporaire la moitié de la case 1
+                        self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr // 2 ) # on divise par 2 le nombre d'objet de la case 1
+                        self.update()
+                        self.c[self.lettre + str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
+                        self.update()
+                    else: 
+                        self.retourner_case(case1)
+                else :  # sinon soit = si la deuxieme case est un autre objet que la première
+                    self.retourner_case(case1)
+            self.save(self.name) # on enrefistre l'inventaire        
+        
+
+    
     def info_case(self, mouse_pos, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
             for i in self.c.keys():
@@ -223,7 +364,6 @@ class invdouble:
         self.case1 = case1
         self.playercase = playercase
         self.name = name
-        self.text = pg.Texte(name, size[0]/2, 65, True, size=80, color=(0, 0, 0))
         self.size = size
 
         self.facteur = self.size[0]/1280
@@ -237,11 +377,13 @@ class invdouble:
         self.import_save(self.name)
 
     def iblit(self, screen):
-        self.text.iblit(screen)  # on blit deja le texte
+        
         pg.img("../img/img.inv/INV.png", 0, 0, self.size[0], self.size[1], False).iblit(screen)
-
         for c in self.allcase.keys():  # on blit toute les cases
             self.allcase[c].iblit(screen)
+        
+
+        
 
     def lire_inv(self, file):
         self.file = open(file, "r")
@@ -368,26 +510,90 @@ class invdouble:
                     return True
             else:
                 return False
-
+    def retourner_case(self, case):
+        """
+        retourner_case est un fonction simple utilser dans move pour retourner la case dans laquelle on est
+        Args: case (int): le chiffre de la case
+        """
+        self.allcase[str(case)].obj.update_coord(
+                    (self.allcase[str(case)].rect.centerx, self.allcase[str(case)].rect.centery)) # On ramene l'objet a sa position
+    
+    def update(self):
+        self.save(self.name) # on enregistre l'inventaire
+        self.load_inv() # on recharge l'inventaire
+        
     def move(self, case1: int, case2: int):
         if str(case1) in self.allcase.keys():
             if self.allcase[str(case1)].obj == None:  # si on déplace un None
                 return False
-            elif case1 == case2:  # si c'est la meme case
-                self.allcase[str(case1)].obj.update_coord(
-                    (self.allcase[str(case1)].rect.centerx, self.allcase[str(case1)].rect.centery))
+            
+            elif case1 == case2:  self.retourner_case(case1)
+            
             elif self.allcase[str(case2)].obj is None:  # si la deuxieme case est vide
                 self.add(self.allcase[str(case1)].obj, case2)
                 self.suppr(case1)
-            elif self.allcase[str(case1)].obj.id == self.allcase[str(case2)].obj.id:
-                self.allcase[str(case2)].add_nb(self.allcase[str(case1)].obj.nbr)
-                self.suppr(case1)
-            elif self.allcase[str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
+                
+            elif (self.allcase[str(case1)].obj.id == self.allcase[str(case2)].obj.id):
+                
+                if self.allcase[str(case1)].obj.nbr + self.allcase[str(case2)].obj.nbr <= self.allcase[str(case2)].obj.nbr_max:# si la somme des deux objets est inferieur a la valeur max de l'objet
+                
+                    self.allcase[str(case2)].add_nb(self.allcase[str(case1)].obj.nbr)
+                    self.suppr(case1)
+            
+                elif self.allcase[str(case1)].obj.nbr + self.allcase[str(case2)].obj.nbr >= self.allcase[str(case2)].obj.nbr_max: # si la somme des deux objets est superieur a la valeur max de l'objet
+                    tmp = abs(self.allcase[str(case2)].obj.nbr_max - self.allcase[str(case2)].obj.nbr )
+                    self.allcase[str(case2)].add_nb(tmp)
+                    self.update()
+                    self.allcase[str(case1)].supr_nb(tmp)
+                    self.update()
+                
+                else: 
+                    self.retourner_case(case1)
+                    
+            else:  
                 c1 = self.allcase[str(case1)].obj
                 c2 = self.allcase[str(case2)].obj
                 self.add(c2, case1)
                 self.add(c1, case2)
-        self.save(self.name)
+                
+            self.save(self.name)
+
+    def move_sep(self, case1: int, case2: int):
+            """
+            move_sep est un fontion utiliser pour séparer les items dans l'inventaire
+
+            Args:
+                case1 (int): la case qu'on veut déplacer
+                case2 (int): vers ou on veut déplacer l'item
+
+            """
+            if str(case1) in self.allcase.keys():
+                if self.allcase[str(case1)].obj == None:  # si on déplace un None ( = rien )
+                    return False
+                
+                elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case      
+                      
+                elif self.allcase[str(case2)].obj is None :  # si la deuxieme case est vide
+                    print("on sépare dans le coffre")
+                    tmp = self.allcase[str(case1)].obj.nbr % 2
+                    self.allcase[str(case1)].obj.nbr = self.allcase[str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
+                    self.add(self.allcase[str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
+                    self.update()
+                    self.allcase[str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
+                        
+                elif (self.allcase[str(case1)].obj.id == self.allcase[str(case2)].obj.id): # si les deux objets des deux cases sont identique 
+                    if self.allcase[str(case1)].obj.nbr + self.allcase[str(case2)].obj.nbr <= self.allcase[str(case2)].obj.nbr_max: # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
+                        print("on emplile la motié dans le coffre")
+                        tmp = self.allcase[str(case1)].obj.nbr // 2 # on enregiste dans un var temporaire la moitié de la case 1
+                        self.allcase[str(case2)].add_nb(self.allcase[str(case1)].obj.nbr // 2 ) # on divise par 2 le nombre d'objet de la case 1
+                        self.update()
+                        self.allcase[str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
+                        self.update()
+                    else: 
+                        self.retourner_case(case1)
+                else :  # sinon soit = si la deuxieme case est un autre objet que la première
+                    self.retourner_case(case1)
+            self.save(self.name) # on enrefistre l'inventaire        
 
     def info_case(self, mouse_pos, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
@@ -403,7 +609,7 @@ class item:
         Args:
             nom (str): [le nom de l'objet]
             nbr_max (int): [le nombre d'objet à empiler maximum]
-            genre (str): [le genre d'objet par (ex "armure")]
+            genre (str): [le genre d'objet par (ex "p")]
             img (str): [le lien de l'image]
         """
         self.id = ID
@@ -420,8 +626,9 @@ class item:
         info = data.loc[self.id - 1, ["Id", "name", "type", "imglink", "nbmax", "link"]]
         self.nom = str(info["name"])
         self.genre = str(info["type"])
+        print(info["type"])
         self.imglink = str(info["imglink"])
-        self.nbr_max = int(info["nbmax"])
+        self.nbr_max = int(info["nbmax"])   
         self.link = int(info["link"])
 
     def recup(self):
