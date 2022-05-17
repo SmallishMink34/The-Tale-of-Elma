@@ -1,3 +1,4 @@
+from turtle import right
 import pygame
 import inv
 import ClassPG, pygame_textbox
@@ -21,6 +22,7 @@ class Gui:
         self.currentGui = 'InGame'
 
         self.move = None
+        self.sep = None
 
     def Game(self, name):
         pass
@@ -101,7 +103,8 @@ class Gui:
             self.element['inv'][0].info_case(mousepos, event)
             if self.move:
                 self.element['inv'][0].image_suivie(self.c, mousepos)
-
+            if self.sep :
+                self.element['inv'][0].image_suivie(self.c, mousepos)
             LEFT = 1
             RIGHT = 3
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
@@ -115,8 +118,24 @@ class Gui:
                     self.c2 = self.c
                 self.element["inv"][0].move(self.c, self.c2)
 
+            # if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
+            #     objet = inv.item(10, 1)
+            #     objet2 = inv.item(11, 2)
+            #     self.element['inv'][0].add(objet, "c1")
+            #     self.element['inv'][0].add(objet2, "c2")
+
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                objet = inv.item(10, 1)
-                objet2 = inv.item(11, 2)
-                self.element['inv'][0].add(objet, "c1")
-                self.element['inv'][0].add(objet2, "c2")
+                self.sep = True
+                self.c = self.element['inv'][0].hover(mousepos)
+
+                # self.c = self   .element['inv'][0].hover(mousepos)
+                # obj = self.element['inv'][0].separateur(self.c)
+                # self.element['inv'][0].image_suivie(self.c, mousepos)
+                # self.element['inv'][0].add(obj, self.c)
+
+            if event.type == pygame.MOUSEBUTTONUP and event.button == RIGHT:
+                self.sep = False
+                self.c2 = self.element['inv'][0].hover(mousepos)
+                if not self.c2:
+                    self.c2 = self.c
+                self.element["inv"][0].move_sep(self.c, self.c2)

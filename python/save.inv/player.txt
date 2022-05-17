@@ -3,18 +3,18 @@ c2: None
 c3: None
 c4: None
 c5: None
-c6: [11, 'GrosDmg', 6, 'potions', 64]
+c6: None
 c7: None
 c8: None
-c9: [11, 'GrosDmg', 2, 'potions', 64]
-c10: [11, 'GrosDmg', 16, 'potions', 64]
+c9: None
+c10: [10, 'PetitDmg', 1, 'potions', 64]
 c11: None
-c12: [10, 'PetitDmg', 12, 'potions', 64]
-c13: [11, 'GrosDmg', 12, 'potions', 64]
+c12: [11, 'GrosDmg', 130, 'potions', 64]
+c13: None
 c14: None
-c15: [10, 'PetitDmg', 1, 'potions', 64]
-c16: [10, 'PetitDmg', 1, 'potions', 64]
+c15: None
+c16: None
 c17: None
 c18: None
-c19: [11, 'GrosDmg', 2, 'potions', 64]
+c19: None
 c20: None

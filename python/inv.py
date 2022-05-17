@@ -38,7 +38,6 @@ class case:
         if self.obj != None:
             if self.obj.id == obj.id :
                 self.add_nb(obj.nbr)
-
             else:
                 self.obj = obj
                 self.obj.update_coord((self.rect.centerx, self.rect.centery))
@@ -59,6 +58,12 @@ class case:
     def add_nb(self, nbr):
         self.obj.nbr += nbr
         self.obj.update_txt((self.rect.centerx, self.rect.centery))
+        
+    def divise(self):
+        l = (self.obj.nbr) // 2
+        reste = l + (self.obj.nbr) % 2
+        self.obj.nbr = l
+        return reste
 
     def changecoord(self, x, y):
         print(x)
@@ -72,8 +77,8 @@ class case:
             if self.rect.collidepoint(mousepos):
                 return True
 
-    def suppr_nb(self, nbr):
-        self.obj.nbr -= 1
+    def supr_nb(self, nbr):
+        self.obj.nbr -= nbr
         if self.obj.nbr == 0 :
             self.supr_obj()
 
@@ -188,7 +193,7 @@ class inv:
                 return i.replace(self.lettre, "")
         return False
 
-    def click(self, event, case: str):
+    def left_click(self, event, case: str):
         """[Méthode qui permet de renvoyer si on click sur un casse]
         Args:
             case (str): [nom de la case]
@@ -201,7 +206,29 @@ class inv:
                     return True
             else:
                 return False
-
+            
+    def right_click(self, event, case: str):
+        """[Méthode qui permet de renvoyer si on click sur un casse]
+        Args:
+            case (str): [nom de la case]
+        Returns:
+            (bool): [renvoie true si on clique sur case]
+        """
+        if self.lettre + str(case) in self.c.keys():
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.c[self.lettre + str(case)].rect.collidepoint(event.pos):
+                    return True
+            else:
+                return False
+            
+    def separateur(self, case):
+        if self.lettre + str(case) in self.c.keys():
+            if self.c[self.lettre + str(case)].obj.nbr > 1:
+                self.c[self.lettre + str(case)].divise()
+                
+        
+                
+        
     def move(self, case1: int, case2: int):
 
         if self.lettre + str(case1) in self.c.keys():
@@ -228,7 +255,9 @@ class inv:
                         (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
             
             elif self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
-                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre and  self.c[self.lettre + str(case1)].genre == self.c[self.lettre + str(case2)].genre:
+                print(self.c[self.lettre + str(case1)].obj.genre, self.c[self.lettre + str(case2)].genre, self.c[self.lettre + str(case1)].genre, self.c[self.lettre + str(case2)].genre)
+                if (self.c[self.lettre + str(case1)].obj.genre not in ["casque","plastron","jambiere","botte"] 
+                    and  self.c[self.lettre + str(case1)].genre == self.c[self.lettre + str(case2)].genre):
                     print("échanger")
                     c1 = self.c[self.lettre + str(case1)].obj
                     c2 = self.c[self.lettre + str(case2)].obj
@@ -237,6 +266,49 @@ class inv:
                 else:
                     self.c[self.lettre + str(case1)].obj.update_coord(
                             (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+        self.save(self.name)
+
+    def move_sep(self, case1: int, case2: int):
+
+        if self.lettre + str(case1) in self.c.keys():
+            if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None
+                return False
+            elif case1 == case2:  # si c'est la meme case
+                self.c[self.lettre + str(case1)].obj.update_coord(
+                    (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+            elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
+                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
+                    print("séparé")
+                    tmp = self.c[self.lettre + str(case1)].obj.nbr % 2
+                    self.c[self.lettre + str(case1)].obj.nbr = self.c[self.lettre + str(case1)].obj.nbr // 2
+                    self.add(self.c[self.lettre + str(case1)].obj, case2)
+                    self.save(self.name) 
+                    self.load_inv()
+                    self.c[self.lettre + str(case2)].add_nb(tmp)
+                    
+                else: # sinon on la remet au meme endroit
+                    self.c[self.lettre + str(case1)].obj.update_coord(
+                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+                    
+            elif self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
+                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" : 
+                    print("empliler la motié")
+                    tmp = self.c[self.lettre + str(case1)].obj.nbr // 2
+                    self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr // 2 )
+                    self.save(self.name) 
+                    self.load_inv()
+                    self.c[self.lettre + str(case1)].supr_nb(tmp)
+                    self.save(self.name) 
+                    self.load_inv()
+                    
+                else: # sinon on la remet au meme endroit
+                    self.c[self.lettre + str(case1)].obj.update_coord(
+                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+            
+            elif self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide et pas le meme objet
+                    self.c[self.lettre + str(case1)].obj.update_coord(
+                            (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+                    
         self.save(self.name)
 
     def info_case(self, mouse_pos, event):
