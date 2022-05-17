@@ -31,7 +31,7 @@ class mob():
     # image du mob pdt le fight 
 
         self.mobimg = self.get_coords_image(0, 0)
-        self.mobimg = pygame.transform.scale(self.mobimg, (600*facteur, 600*facteur))
+        self.mobimg = pygame.transform.scale(self.mobimg, (int(600*facteur), int(600*facteur)))
         self.mobimg = pygame.transform.flip(self.mobimg, 180, 0)
         self.mobimg.set_colorkey((0, 0, 0))
         self.mobimg_rect = self.mobimg.get_rect()

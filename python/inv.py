@@ -114,13 +114,16 @@ class inv:
         return c
 
     def save(self, name):
-        file = open(f"save.inv/{name}.txt", "w")
-        for c in self.c.keys():
-            if self.c[c].obj != None:
-                file.write((str(c) + ": ") + str(self.c[c].obj.recup()) + "\n")
-            else:
-                file.write((str(c) + ": ") + str(None) + "\n")
-        file.close()
+        try:
+            file = open(f"save.inv/{name}.txt", "w")
+            for c in self.c.keys():
+                if self.c[c].obj != None:
+                    file.write((str(c) + ": ") + str(self.c[c].obj.recup()) + "\n")
+                else:
+                    file.write((str(c) + ": ") + str(None) + "\n")
+            file.close()
+        except PermissionError:
+            pass
 
     def import_save(self, name):
         self.clear()

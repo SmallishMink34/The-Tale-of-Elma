@@ -1,0 +1,7 @@
+c1: None
+c2: [11, 'GrosDmg', 8, 'potions', 1]
+c3: None
+c4: None
+c5: None
+c6: None
+c7: [11, 'GrosDmg', 2, 'potions', 1]

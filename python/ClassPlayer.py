@@ -172,6 +172,7 @@ class PlayerTopDown(AnimateSprite):
         self.deffence = 0
         self.attaque = 0
         self.speedfight = 200000
+        self.money = 0
 
         self.type = 'Joueur'
         self.image = self.get_coords_image(0, 0)
@@ -180,7 +181,7 @@ class PlayerTopDown(AnimateSprite):
 
         self.inventaire = inv.inv("Inventaire", "../img/img.inv/personnage_test.png", "inv", "player",
                                   self.screen.get_size())
-
+        self.inventaire.load_inv()
         self.pressed = {}
         self.speed = 3
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
@@ -193,6 +194,7 @@ class PlayerTopDown(AnimateSprite):
         self.canPressKey = True
 
         self.gui = Gui.Gui('Normal', self, self.screen.get_size())
+        self.load_info()
 
     def get_inventory(self):
         return self.inventaire.c
@@ -291,3 +293,17 @@ class PlayerTopDown(AnimateSprite):
                 self.canPressKey = True
         else:
             self.canPressKey = switch
+
+    def load_info(self):
+        try:
+            w = open("save/sauvegarde.txt", "r")
+        except FileNotFoundError:
+            w = open("save/sauvegarde.txt", "w")
+            w.close()
+            self.load_info()
+            return
+        liste = w.readlines()
+        try:
+            self.money = int(liste[1].split(": ")[1].strip())
+        except IndexError:
+            self.money = 0

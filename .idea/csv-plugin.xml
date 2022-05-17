@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\python\info\Potions.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\python\info\armures.csv">
           <value>
             <Attribute>
@@ -18,13 +25,6 @@
           </value>
         </entry>
         <entry key="\python\info\items.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="diff.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

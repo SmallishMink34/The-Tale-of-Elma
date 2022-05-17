@@ -3,8 +3,9 @@ import mapscript
 import transition
 import ClassPG as PG
 
+
 class Map:
-    def __init__(self, name, walls: list[pygame.Rect], objecte, group, tmx_data, mapdata, mapobject):
+    def __init__(self, name, walls, objecte, group, tmx_data, mapdata, mapobject):
         self.name = name
         self.walls = walls
         self.object = objecte
@@ -44,8 +45,6 @@ class Mapmanager:
 
         self.Animation = transition.Animation(3)
 
-
-
         self.teleport_player("PlayerPos")
 
     def alltiles(self):
@@ -74,13 +73,14 @@ class Mapmanager:
         for obj in self.tmx.objects:  # Ajout des collsion dans des listes
             if obj.type == "Collision":
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-                if self.seecollision:self.group.add(PG.img("../img/menu/background.jpg", obj.x, obj.y, obj.width, obj.height, False))
+                if self.seecollision: self.group.add(
+                    PG.img("../img/menu/background.jpg", obj.x, obj.y, obj.width, obj.height, False))
             if obj.type != "Collision":
                 self.objects_input[obj.id] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), obj.type]
                 if self.seecollision: self.group.add(
                     PG.img("../img/img.inv/case.png", obj.x, obj.y, obj.width, obj.height, False))
 
-          # groupe contenant le joueur et la map
+        # groupe contenant le joueur et la map
         self.group.add(self.player)
         self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, self.mapdata, mapobject)
         self.mapobject = mapobject
@@ -98,6 +98,9 @@ class Mapmanager:
 
     def zoomIO(self, level):
         self.map_layer.zoom = level
+
+    def save_all(self, name):
+        self.maps[name].allmap.save_player_info()
 
     def save(self, name):
         w = open(f"save/{name}.txt", "w")
@@ -121,12 +124,14 @@ class Mapmanager:
             except IndexError:
                 pass
 
-        if a != {}:return a
-        else: return None
+        if a != {}:
+            return a
+        else:
+            return None
 
     def load_localtion(self):
         """ Fonction qui change la location du spawnpoint"""
-        a = open("save/spawnpoint.txt", "r")
+        a = open("save/sauvegarde.txt", "r")
         liste = a.readlines()
         try:
             self.basemap = liste[0].split(": ")[1].strip()
@@ -227,7 +232,6 @@ class Mapmanager:
         self.current_map = name
         self.mapobject = self.maps[name].mapobject
         self.teleport_player(teleportpoint)
-
 
     def remove_collision(self, obj):
         self.maps[self.current_map].walls.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))

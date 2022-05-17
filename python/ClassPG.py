@@ -90,10 +90,10 @@ class Texte:
             self.font = pygame.font.Font(font, self.size)
         except FileNotFoundError:
             self.font = pygame.font.SysFont("Arial", self.size)
+        self.center = center
 
         self.iupdate(self.texte, self.color)
-
-        if center == 'center':  # Detecte si on veut que les coordonées sois centré ou non
+        if center == 'center' or center == True:  # Detecte si on veut que les coordonées sois centré ou non
             self.rect.centerx, self.rect.centery = x, y
         else:
             self.rect.x, self.rect.y = x, y
@@ -101,7 +101,13 @@ class Texte:
     def iupdate(self, texte, color,coord=(0,0)):
         self.txt = self.font.render(str(texte), True, color)
         self.rect = self.txt.get_rect()
-        self.rect.x , self.rect.y = coord[0], coord[1]
+
+        if self.center == 'center' or self.center == True:  # Detecte si on veut que les coordonées sois centré ou non
+            self.rect.centerx, self.rect.centery = coord[0], coord[1]
+        else:
+            self.rect.x, self.rect.y = coord[0], coord[1]
+
+
 
     def updatecoords(self, x, y):
         self.rect.x, self.rect.y = x, y
@@ -204,6 +210,7 @@ class son:
         self.music = music  # Lien de la music
         self.type = type  # Type music ou song
         self.playing = False
+        pygame.mixer.init()
         if self.type == 'song':
             self.song = pygame.mixer.Sound(self.music)
         elif self.type == 'music':
@@ -272,7 +279,7 @@ class img(pygame.sprite.Sprite):
         """Met a jour l'image"""
         self.image = pygame.image.load(image).convert_alpha()
         if upscale:
-            self.image = pygame.transform.scale(self.image, (self.w, self.h))
+            self.image = pygame.transform.scale(self.image, (int(self.w), int(self.h)))
         if upcoords:
             self.rect = self.image.get_rect()
             if self.center:
@@ -280,7 +287,7 @@ class img(pygame.sprite.Sprite):
             else:
                 self.rect.x, self.rect.y = self.x, self.y
 
-    def iblit(self, screen):
+    def iblit(self, screen, flags=False):
         """Affiche de l'image"""
         screen.blit(self.image, self.rect)
 

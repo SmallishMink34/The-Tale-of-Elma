@@ -6,6 +6,7 @@ import inv
 import fight
 from valeurs import *
 
+
 class Game():
     """
     Class du jeux
@@ -20,7 +21,8 @@ class Game():
         self.player = ClassPlayer.PlayerTopDown("SmallIshMink",(0, 0), self.display)
 
         self.map_manag = map.Mapmanager(self.display, self.player)
-    
+
+        self.nuit = PG.img("../img/transition/fade/Fade_00000.png", 0, 0, self.display_w, self.display_h, False)
 
     def run(self):
         """
@@ -33,9 +35,6 @@ class Game():
         while running:
 
             self.game.screen.blit(self.display, (0, 0))
-
-
-
             self.map_manag.updating() # Met a jour la carte et le joueur
             self.map_manag.draw() # Dessine la carte
 
@@ -66,5 +65,5 @@ class Game():
             pygame.display.update()
         pygame.quit()
 
-"""game = Game()
-game.run()"""
+"""gamee = Game()
+gamee.run()"""

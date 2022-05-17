@@ -6,7 +6,7 @@ import pygame_widgets as pw
 from pygame_widgets.slider import Slider
 from pygame_widgets.dropdown import Dropdown
 from pygame_widgets.toggle import Toggle
-from valeurs import *
+import valeurs
 
 
 class menu():
@@ -34,8 +34,8 @@ class menu():
             x, y = pygame.mouse.get_pos()
             if self.d['text_Play'].click((x, y), event, color=(128, 255, 0)):
                 self.continuer = False
-                gamee = game.Game((self.val.screensize[0], self.val.screensize[1], self.val.toggle))
                 self.val.musique.stop()
+                gamee = game.Game((self.val.screensize[0], self.val.screensize[1], self.val.toggle))
                 gamee.run()
             if self.d['text_Quit'].click((x, y), event, color=(128, 255, 0)):
                 pygame.quit()
@@ -57,14 +57,14 @@ class menu():
         self.val.musique.volume(round(float(L[0].split(" ")[1]), 2))
         self.val.screensize2((int(L[1].split(" ")[1].split(",")[0]), int(L[1].split(" ")[1].split(",")[1])),
                              self.game.screen, self.val.toggle)
-        self.d['text_Play'] = PG.Texte("Jouer", self.val.screensize[0] // 2 - 100, self.val.screensize[1] // 2 - 10,
+        self.d['text_Play'] = PG.Texte("Jouer", self.val.screensize[0] // 2, self.val.screensize[1] // 2 - 10,
                                        True, color=(255, 255, 255), size=50, font='../font/Like Snow.otf')
-        self.d['text_Para'] = PG.Texte("Parametres", self.val.screensize[0] // 2 - 100,
+        self.d['text_Para'] = PG.Texte("Parametres", self.val.screensize[0] // 2,
                                        self.val.screensize[1] // 2 + 100, True, color=(255, 255, 255), size=50,
                                        font='../font/Like Snow.otf')
-        self.d['text_Quit'] = PG.Texte("Quitter", self.val.screensize[0] // 2 - 100, self.val.screensize[1] // 2 + 210,
+        self.d['text_Quit'] = PG.Texte("Quitter", self.val.screensize[0] // 2, self.val.screensize[1] // 2 + 210,
                                        True, color=(255, 255, 255), size=50, font='../font/Like Snow.otf')
-        self.d['Titre'] = PG.Texte("Titre", self.val.screensize[0] // 2 - 175, self.val.screensize[1] // 2 - 275, True,
+        self.d['Titre'] = PG.Texte("Titre", self.val.screensize[0] // 2, self.val.screensize[1] // 2 - 275, True,
                                    color=(255, 255, 255), size=125, font='../font/Like Snow.otf')
         self.image_fond = PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1],
                                  False)
@@ -124,11 +124,11 @@ class para():
         self.val.screensize2(self.val.screensize, self.game.screen, self.val.toggle)
 
         self.d['Quitter'] = PG.bouton('../img/menu/Quit.png', 40, self.val.screensize[1] - 40, 50, 50)
-        self.d['Musique'] = PG.Texte("General", self.val.screensize[0] // 2 - 100, self.val.screensize[1] // 2 - 10,
+        self.d['Musique'] = PG.Texte("General", self.val.screensize[0] // 2, self.val.screensize[1] // 2 - 10,
                                      True, color=(255, 255, 255), size=50, font='../font/Like Snow.otf')
-        self.d['Touche'] = PG.Texte("Touches", self.val.screensize[0] // 2 - 100, self.val.screensize[1] // 2 + 100,
+        self.d['Touche'] = PG.Texte("Touches", self.val.screensize[0] // 2, self.val.screensize[1] // 2 + 100,
                                     True, color=(255, 255, 255), size=50, font='../font/Like Snow.otf')
-        self.d['Skin'] = PG.Texte("Cosmetiques", self.val.screensize[0] // 2 - 100, self.val.screensize[1] // 2 + 210,
+        self.d['Skin'] = PG.Texte("Cosmetiques", self.val.screensize[0] // 2, self.val.screensize[1] // 2 + 210,
                                   True, color=(255, 255, 255), size=50, font='../font/Like Snow.otf')
         self.image_fond = PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1],
                                  False)
@@ -175,7 +175,7 @@ class song():
     def eventpy(self, events):
         for event in events:
             self.d['Volume'].iupdate("Volume : " + str(self.slider.getValue()) + "%", (255, 255, 255),
-                                     (self.val.screensize[0] // 2 - 85, self.val.screensize[1] // 2 + 130))
+                                     (self.val.screensize[0] // 2, self.val.screensize[1] // 2 + 130))
             self.val.volume = self.slider.getValue() / 100
             if event.type == pygame.QUIT:
                 self.continuer = False
@@ -212,11 +212,11 @@ class song():
         self.toggle._y = self.val.screensize[1] // 2 - 55
         self.d = {}
         self.d['Quitter'] = PG.bouton('../img/menu/Quit.png', 40, self.val.screensize[1] - 40, 50, 50)
-        self.d['Volume'] = PG.Texte('Volume : 0', self.val.screensize[0] // 2 - 85, self.val.screensize[1] // 2 + 130,
-                                    False)
-        self.d['Valider'] = PG.Texte("Valider", self.val.screensize[0] / 2 - 40, self.val.screensize[1] - 100, True,
+        self.d['Volume'] = PG.Texte('Volume : 0', self.val.screensize[0] // 2, self.val.screensize[1] // 2 + 130,
+                                    True)
+        self.d['Valider'] = PG.Texte("Valider", self.val.screensize[0] / 2, self.val.screensize[1] - 100, True,
                                      color=(0, 0, 0), size=32)
-        self.d['Toggle'] = PG.Texte("Fullscreen : ", self.val.screensize[0] // 2 - 85,
+        self.d['Toggle'] = PG.Texte("Fullscreen : ", self.val.screensize[0] // 2,
                                     self.val.screensize[1] // 2 - 135, True, color=(255, 255, 255), size=32)
         self.image_fond = PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1],
                                  False)
@@ -357,6 +357,5 @@ class keys():
     def iblit(self, screen):
         self.txt.iblit(screen)
 
-
-menue = menu(valeur)
-menue.run()
+Menu = menu(valeurs.valeur)
+Menu.run()

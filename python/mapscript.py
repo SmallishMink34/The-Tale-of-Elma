@@ -10,7 +10,7 @@ class Grotte:
         self.mm = mapmanager
         self.save = save_load
 
-        self.allmap = Allmap(self.mm)
+        self.allmap = Allmap(self.mm, self)
 
     def default(self):
         a = {}
@@ -38,7 +38,7 @@ class Grotte:
                     self.mm.add_element_to_draw_obj("Base", 177, element[0].properties['x1'],
                                                     element[0].properties['y1'], 19)
         for element in self.mm.get_objectinp("add", "all"):
-            self.mm.add_element_to_draw_obj("Base", 3,
+            self.mm.add_element_to_draw_obj(element[0].properties["tilename"], element[0].properties["idtile"],
                                             int(element[0].x / 32), int(element[0].y / 32), 8)
 
     def pont(self):
@@ -100,7 +100,7 @@ class lobby:
         else:
             pass
 
-        self.allmap = Allmap(self.mm)
+        self.allmap = Allmap(self.mm, self)
 
     def load(self):
         self.allmap.load()
@@ -132,9 +132,19 @@ class Village:
         self.actionb = {}
         self.liste_obj = {}
 
-        self.allmap = Allmap(self.mm)
+        self.allmap = Allmap(self.mm, self)
+
+    def default(self):
+        a = {}
+        for i in self.mm.get_allobject("all"):
+            try:
+                a[i[0].name] = i[0].properties["default"]
+            except KeyError:
+                pass
+        return a
 
     def load(self):
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
         self.allmap.load()
 
     def __str__(self):
@@ -151,6 +161,7 @@ class Village:
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
+                if self.allmap.check_price(element) is False: break
                 self.allmap.collision(element)
 
     def update(self):
@@ -163,7 +174,7 @@ class Maison:
         self.actionb = {}
         self.liste_obj = {}
 
-        self.allmap = Allmap(self.mm)
+        self.allmap = Allmap(self.mm, self)
 
     def load(self):
         self.allmap.load()
@@ -185,14 +196,16 @@ class Maison:
                 self.allmap.collision(element)
                 if element[0].name == "Game":
                     self.mm.player.gui.Game(self.mm.player.get_item_in_inventory(5).obj)
-
+                if "Map" in element[0].name:
+                    self.mm.player.gui.Carte(element[0].properties['Stage'])
     def update(self):
         pass
 
 
 class Allmap():
-    def __init__(self, mapmanager):
+    def __init__(self, mapmanager, map=None):
         self.mm = mapmanager
+        self.map = map
         self.spawnpoint = None
 
         self.Ms_Spawn = PG.son("../song/Ingame/spawnpoint.mp3", "song")
@@ -239,19 +252,23 @@ class Allmap():
                         return False
                 else:
                     print('La main est vide')
+                    self.action_help(element)
                     return False
-            else:
-                print('Il na pas la propriété needitem')
-                pass
         except (AttributeError, KeyError):
             print("Error")
+
+    def check_price(self, element):
+        if "Buy" in element[0].name:
+            if not self.map.actionb[element[0].name]:  # On regarde si on a pas déja acheter l'item / Maison
+                self.mm.player.gui.buy(element[0], self)
+                return False
+            return True
 
     def collision(self, element):
         if "Chest" in element[0].name:
             self.mm.player.gui.inventory_chest(element[0].name)
         if "Panneau" in element[0].name:
             self.mm.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
-
         if "Portail" in element[0].name:  # Si c'est un point de teleportation
 
             try:
@@ -279,9 +296,18 @@ class Allmap():
                 self.mm.Animation.one_by_one_iblit(self.mm.screen, "fade_out")
             self.mm.player.allinputoff(True)
 
-    def save_spawnpoint(self, spawn):
-        w = open("save/spawnpoint.txt", "w")
-        w.write("SpawnPoint: " + str(spawn) + "\n")
+    def buy(self, element):
+        if int(self.mm.player.money) >= int(element.properties['money']):
+            self.map.actionb[element.name] = True
+            self.mm.player.money -= int(element.properties['money'])
+            self.save_player_info()
+        else:
+            print('pas assez dargent')
+
+    def save_player_info(self):
+        w = open("save/sauvegarde.txt", "w")
+        w.write("SpawnPoint: " + str(self.map.name) + "\n")
+        w.write("Money: " + str(self.mm.player.money) + "\n")
         w.close()
 
         self.mm.save(self.mm.maps[self.mm.current_map].name)
@@ -299,7 +325,7 @@ class Allmap():
         if "SpawnPoint" in b:
             if self.mm.current_map != self.spawnpoint:
                 self.load()
-                self.save_spawnpoint(a)
+                self.save_player_info()
         if "effect" in b:
             if "Boue" in b:
                 print(element[0].id, b)

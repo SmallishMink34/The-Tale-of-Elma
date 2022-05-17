@@ -62,6 +62,7 @@ class Gui:
         self.element['inv'] = [inv, True]
         print('Inventaire Ouvert')
         self.element['inv'][0].load_inv()
+        self.element['money'] = [ClassPG.Texte(str(self.player.money), 845*self.facteur, 110*self.facteur, True), True]
         self.player.allinputoff(False)
 
     def inventory_chest(self, name):
@@ -69,6 +70,23 @@ class Gui:
         self.element['inv'] = [inv.invdouble("c", "p", name, self.player.screen.get_size()), True]
         self.element['inv'][0].load_inv()
         print(f'{name} Ouvert')
+        self.player.allinputoff(False)
+
+    def Carte(self, stade:int):
+        self.currentGui = "Carte"
+        self.element["Carte"] = [ClassPG.img(f"../img/Carte/Carte_{str(stade)}.jpg", 10, 10, 1260*self.facteur, 700*self.facteur, False), True]
+        self.player.allinputoff(False)
+
+    def buy(self, item, map):
+        self.currentGui = "Buy"
+        self.oldmap = map
+        self.item = item
+        self.element['texte'] = [ClassPG.Texte("Voulez vous achetez "+str(item.name)+" ?", 640*self.facteur, 300*self.facteur, True), True]
+        self.element['texte2'] = [
+            ClassPG.Texte("Prix : " + str(item.properties['money']) + " $", 640 * self.facteur, 340 * self.facteur, True),
+            True]
+        self.element["Valider"] = [ClassPG.Texte("Valider", 690*self.facteur, 380*self.facteur, True), True]
+        self.element["Annulerr"] = [ClassPG.Texte("Annuler", 590 * self.facteur, 380 * self.facteur, True), True]
         self.player.allinputoff(False)
 
     def Pause(self):
@@ -116,7 +134,12 @@ class Gui:
                 self.element["inv"][0].move(self.c, self.c2)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                objet = inv.item(10, 1)
-                objet2 = inv.item(11, 2)
+                objet = inv.item(4, 1)
                 self.element['inv'][0].add(objet, "c1")
-                self.element['inv'][0].add(objet2, "c2")
+
+        if self.currentGui == "Buy":
+            if self.element['Valider'][0].click(mousepos, event):
+                self.oldmap.buy(self.item)
+                self.close()
+            elif self.element["Annulerr"][0].click(mousepos, event):
+                self.close()
