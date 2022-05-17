@@ -228,89 +228,126 @@ class inv:
                 
         
                 
-        
+    def retourner_case(self, case):
+        """
+        retourner_case est un fonction simple utilser dans move pour retourner la case dans laquelle on est
+        Args: case (int): le chiffre de la case
+        """
+        self.c[self.lettre + str(case)].obj.update_coord(
+                    (self.c[self.lettre + str(case)].rect.centerx, self.c[self.lettre + str(case)].rect.centery)) # On ramene l'objet a sa position
+    
+    
     def move(self, case1: int, case2: int):
+        """
+        move est un fontion utiliser pour bouger les items dans l'inventaire
 
-        if self.lettre + str(case1) in self.c.keys():
-            if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None
+        Args:
+            case1 (int): la case qu'on veut déplacer
+            case2 (int): vers ou on veut déplacer l'item
+
+        """
+
+        if self.lettre + str(case1) in self.c.keys(): 
+            
+            if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None ( = rien )
                 return False
-            elif case1 == case2:  # si c'est la meme case
-                self.c[self.lettre + str(case1)].obj.update_coord(
-                    (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+            
+            elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case
+                                
             elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
                 if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
-                    print("déplacer")
+                    
+                    print("on deplace dans l'inventaire")
                     self.add(self.c[self.lettre + str(case1)].obj, case2)
                     self.suppr(case1)
-                else: # sinon on la remet au meme endroit
-                    self.c[self.lettre + str(case1)].obj.update_coord(
-                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-            elif self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
-                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" : 
-                    print("empliler")
+                    
+                else:
+                    self.retourner_case(case1)
+                    
+            elif (self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id): # si les deux objets des deux cases sont identique 
+                if (self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre # si le genre de l'objet de la case 1 est identique au genre de l'objet de la case 2
+                or self.c[self.lettre + str(case2)].genre == "None" # ou que le genre de la case 2 est vide
+                and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr <= self.c[self.lettre + str(case2)].obj.nbr_max): # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
+                    
+                    print("on empile dans l'inventaire")
                     self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr)
                     self.suppr(case1)
-                else: # sinon on la remet au meme endroit
-                    self.c[self.lettre + str(case1)].obj.update_coord(
-                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
+                    
+                else: 
+                    self.retourner_case(case1)
             
-            elif self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide
-                print(self.c[self.lettre + str(case1)].obj.genre, self.c[self.lettre + str(case2)].genre, self.c[self.lettre + str(case1)].genre, self.c[self.lettre + str(case2)].genre)
+            else :  # sinon soit = si la deuxieme case est un autre objet que la première
+                
                 if (self.c[self.lettre + str(case1)].obj.genre not in ["casque","plastron","jambiere","botte"] 
                     and  self.c[self.lettre + str(case1)].genre == self.c[self.lettre + str(case2)].genre):
-                    print("échanger")
-                    c1 = self.c[self.lettre + str(case1)].obj
-                    c2 = self.c[self.lettre + str(case2)].obj
+                    print("on echange dans l'inventaire")
+                    c1, c2= self.c[self.lettre + str(case1)].obj , self.c[self.lettre + str(case2)].obj
                     self.add(c2, case1)
                     self.add(c1, case2)
+                    
                 else:
-                    self.c[self.lettre + str(case1)].obj.update_coord(
-                            (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-        self.save(self.name)
-
+                    
+                    self.retourner_case(case1)
+                    
+        self.save(self.name) # on enrefistre l'inventaire
+        
+        
     def move_sep(self, case1: int, case2: int):
+            """
+            move_sep est un fontion utiliser pour séparer les items dans l'inventaire
 
-        if self.lettre + str(case1) in self.c.keys():
-            if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None
-                return False
-            elif case1 == case2:  # si c'est la meme case
-                self.c[self.lettre + str(case1)].obj.update_coord(
-                    (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-            elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
-                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
-                    print("séparé")
-                    tmp = self.c[self.lettre + str(case1)].obj.nbr % 2
-                    self.c[self.lettre + str(case1)].obj.nbr = self.c[self.lettre + str(case1)].obj.nbr // 2
-                    self.add(self.c[self.lettre + str(case1)].obj, case2)
-                    self.save(self.name) 
-                    self.load_inv()
-                    self.c[self.lettre + str(case2)].add_nb(tmp)
-                    
-                else: # sinon on la remet au meme endroit
-                    self.c[self.lettre + str(case1)].obj.update_coord(
-                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-                    
-            elif self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id:
-                if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None" : 
-                    print("empliler la motié")
-                    tmp = self.c[self.lettre + str(case1)].obj.nbr // 2
-                    self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr // 2 )
-                    self.save(self.name) 
-                    self.load_inv()
-                    self.c[self.lettre + str(case1)].supr_nb(tmp)
-                    self.save(self.name) 
-                    self.load_inv()
-                    
-                else: # sinon on la remet au meme endroit
-                    self.c[self.lettre + str(case1)].obj.update_coord(
-                        (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-            
-            elif self.c[self.lettre + str(case2)].obj is not None:  # si la deuxieme case n'est pas vide et pas le meme objet
-                    self.c[self.lettre + str(case1)].obj.update_coord(
-                            (self.c[self.lettre + str(case1)].rect.centerx, self.c[self.lettre + str(case1)].rect.centery))
-                    
-        self.save(self.name)
+            Args:
+                case1 (int): la case qu'on veut déplacer
+                case2 (int): vers ou on veut déplacer l'item
 
+            """
+
+            if self.lettre + str(case1) in self.c.keys(): 
+                
+                if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None ( = rien )
+                    return False
+                
+                elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case
+                                    
+                elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
+                    if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
+                        
+                        print("on sépare dans l'inventaire")
+                        tmp = self.c[self.lettre + str(case1)].obj.nbr % 2
+                        self.c[self.lettre + str(case1)].obj.nbr = self.c[self.lettre + str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
+                        self.add(self.c[self.lettre + str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
+                        self.save(self.name) # on enregistre l'inventaire
+                        self.load_inv() # on recharge l'inventaire
+                        self.c[self.lettre + str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
+                        
+                    else:
+                        self.retourner_case(case1)
+                        
+                elif (self.c[self.lettre + str(case1)].obj.id == self.c[self.lettre + str(case2)].obj.id): # si les deux objets des deux cases sont identique 
+                    if (self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre # si le genre de l'objet de la case 1 est identique au genre de l'objet de la case 2
+                    or self.c[self.lettre + str(case2)].genre == "None" # ou que le genre de la case 2 est vide
+                    and self.c[self.lettre + str(case1)].obj.nbr + self.c[self.lettre + str(case2)].obj.nbr <= self.c[self.lettre + str(case2)].obj.nbr_max): # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
+                        
+                        print("on emplile la motié")
+                        tmp = self.c[self.lettre + str(case1)].obj.nbr // 2 # on enregiste dans un var temporaire la moitié de la case 1
+                        self.c[self.lettre + str(case2)].add_nb(self.c[self.lettre + str(case1)].obj.nbr // 2 ) # on divise par 2 le nombre d'objet de la case 1
+                        self.save(self.name) # on enregistre l'inventaire
+                        self.load_inv() # on recharge l'inventaire
+                        self.c[self.lettre + str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
+                        self.save(self.name) # on enregistre l'inventaire
+                        self.load_inv() # on recharge l'inventaire
+                        
+                    else: 
+                        self.retourner_case(case1)
+                
+                else :  # sinon soit = si la deuxieme case est un autre objet que la première
+                        
+                    self.retourner_case(case1)
+                        
+            self.save(self.name) # on enrefistre l'inventaire        
+        
+
+    
     def info_case(self, mouse_pos, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
             for i in self.c.keys():
