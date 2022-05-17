@@ -1,1 +1,1 @@
-SpawnPoint: Grotte
+SpawnPoint: Village

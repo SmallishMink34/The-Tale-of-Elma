@@ -1,4 +1,4 @@
-c1: None
+c1: [11, 'GrosDmg', 64, 'potions', 64]
 c2: None
 c3: None
 c4: None

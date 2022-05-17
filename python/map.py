@@ -39,6 +39,7 @@ class Mapmanager:
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
         self.register_map("Maison", mapscript.Maison(self))
+        self.register_map("Foret",mapscript.Foret(self))
 
         self.changemap(self.basemap, "PlayerPos")
 
