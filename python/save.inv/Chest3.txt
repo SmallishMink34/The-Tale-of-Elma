@@ -1,7 +1,0 @@
-c1: None
-c2: None
-c3: None
-c4: None
-c5: None
-c6: None
-c7: None

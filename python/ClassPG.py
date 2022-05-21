@@ -1,3 +1,5 @@
+import math
+
 import pygame
 import sys
 
@@ -22,7 +24,6 @@ class game:
             self.screen = pygame.display.set_mode((size), FULLSCREEN)
         pygame.display.set_caption(name)  # Choix du nom
 
-
         self.w, self.h = self.screen.get_size()
 
         # Variable boolean Boucle de jeux
@@ -44,7 +45,7 @@ class game:
 
     def gameloop(self):
         """Fonction de la boucle de jeu"""
-        self.clock.tick(self.tick) # Vitesse du jeux
+        self.clock.tick(self.tick)  # Vitesse du jeux
 
     def eventpy(self):
         for event in pygame.event.get():  # parcours de tous les event pygame dans cette fenêtre
@@ -59,7 +60,7 @@ class game:
                 self.pressed[event.key] = False
             for i in self.telement:
                 if i.click((x, y), event):
-                    print('button click '+str(i.texte))
+                    print('button click ' + str(i.texte))
 
     def iblitall(self):
         """Fonction pour 'blit' les éléments sur l'écran"""
@@ -98,7 +99,7 @@ class Texte:
         else:
             self.rect.x, self.rect.y = x, y
 
-    def iupdate(self, texte, color,coord=(0,0)):
+    def iupdate(self, texte, color, coord=(0, 0)):
         self.txt = self.font.render(str(texte), True, color)
         self.rect = self.txt.get_rect()
 
@@ -106,8 +107,6 @@ class Texte:
             self.rect.centerx, self.rect.centery = coord[0], coord[1]
         else:
             self.rect.x, self.rect.y = coord[0], coord[1]
-
-
 
     def updatecoords(self, x, y):
         self.rect.x, self.rect.y = x, y
@@ -134,7 +133,7 @@ class Texte:
 class bouton:
     """Class qui permet de crée des boutons facilement"""
 
-    def __init__(self, image, x, y, w, h, toggle=False, toggletrue=None):
+    def __init__(self, image, x, y, w, h, center=False, toggle=False, toggletrue=None):
         self.link = image
 
         self.x = x
@@ -146,40 +145,56 @@ class bouton:
         self.toggle_verif = toggletrue
         self.image = pygame.image.load(self.link).convert_alpha()
         self.image = pygame.transform.scale(self.image, (w, h))
-        self.rect = self.image.get_rect()
 
-        self.rect.centerx = x
-        self.rect.centery = y
+        self.img_copy = self.image.copy()
+
+        self.shakesprite = {'-1': pygame.transform.rotate(self.image, 2), '0': self.image ,'1': pygame.transform.rotate(self.image, -2)}
+
+        self.rect = self.image.get_rect()
+        self.center = center
+
+        if self.center:
+            self.rect.centerx = x
+            self.rect.centery = y
+        else:
+            self.rect.x, self.rect.y = x, y
 
     def iblit(self, screen):
         """Affichage du bouton"""
         screen.blit(self.image, self.rect)
 
-    def click(self, mousepos, event):
+    def click(self, mousepos, event, hover=False):
         """Detection du click de la souris et du survol"""
-        self.ihover(mousepos)
-
-        if self.toggle_verif == False:
-            self.image = pygame.image.load(self.link[:-4]+"_off.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (self.w, self.h))
-            self.rect = self.image.get_rect()
-        else:
-            self.image = pygame.image.load(self.link).convert_alpha()
-            self.image = pygame.transform.scale(self.image, (self.w, self.h))
-            self.rect = self.image.get_rect()
-
-        self.rect.centerx = self.x
-        self.rect.centery = self.y
-
+        if hover:
+            self.ihover(mousepos)
 
         if self.rect.collidepoint(mousepos):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.toggle:
                     if self.toggle_verif:
+                        self.image = pygame.image.load(self.link[:-4] + "_off.png").convert_alpha()
+                        self.image = pygame.transform.scale(self.image, (self.w, self.h))
+                        self.rect = self.image.get_rect()
+                        if self.center:
+                            self.rect.centerx = self.x
+                            self.rect.centery = self.y
+                        else:
+                            self.rect.x, self.rect.y = self.x, self.y
                         self.toggle_verif = False
                     else:
                         self.toggle_verif = True
+                        self.image = pygame.image.load(self.link).convert_alpha()
+                        self.image = pygame.transform.scale(self.image, (self.w, self.h))
+                        self.rect = self.image.get_rect()
+                        if self.center:
+                            self.rect.centerx = self.x
+                            self.rect.centery = self.y
+                        else:
+                            self.rect.x, self.rect.y = self.x, self.y
                 return True
+
+    def shake(self, x):
+        self.image = self.shakesprite[str(int(math.cos(x)*2))]
 
     def ihover(self, mousepos, imglink=None):
         """Detection du survol de la souris"""
@@ -187,15 +202,21 @@ class bouton:
             self.image = pygame.image.load(imglink).convert_alpha()
             self.image = pygame.transform.scale(self.image, (self.w, self.h))
             self.rect = self.image.get_rect()
-            self.rect.centerx = self.x
-            self.rect.centery = self.y
+            if self.center:
+                self.rect.centerx = self.x
+                self.rect.centery = self.y
+            else:
+                self.rect.x, self.rect.y = self.x, self.y
 
         else:
             self.image = pygame.image.load(self.link).convert_alpha()
             self.image = pygame.transform.scale(self.image, (self.w, self.h))
             self.rect = self.image.get_rect()
-            self.rect.centerx = self.x
-            self.rect.centery = self.y
+            if self.center:
+                self.rect.centerx = self.x
+                self.rect.centery = self.y
+            else:
+                self.rect.x, self.rect.y = self.x, self.y
 
 
 class son:
@@ -270,8 +291,8 @@ class img(pygame.sprite.Sprite):
         self.w = w  # Largeur de l'image
         self.h = h  # Hauteur de l'image
         self.center = center
-        self.name = "aaa" #Nothing
-        self.type = "Collision"#Nothing
+        self.name = "aaa"  # Nothing
+        self.type = "Collision"  # Nothing
 
         self.iupdate(self.link)
 
@@ -319,3 +340,82 @@ class animate_img(pygame.sprite.Sprite):
         """Animation de l'image a mettre dans une boucle"""
         self.counter += self.vitesse
         image.iupdate(self.sprites[self.counter], True)
+
+
+class TextEntry:
+    def __init__(self, win, couleur, rect, type, center=False, sizetxt=30):
+        self.text = ""
+        self.couleur = couleur
+        self.font = pygame.font.SysFont("Arial", sizetxt)
+        self.blit_text = None
+        self.center = center
+        self.rect = pygame.Rect(rect)
+        if self.center:
+            self.rect.centerx, self.rect.centery = rect[0], rect[1]
+
+        self.sizetxt = sizetxt
+
+        self.h = rect[3]
+        self.w = rect[2]
+
+        self.text_autorise = """ azertyuiopqsdfghjklmwxcvbn&éABCDEFGHIJKLMOPQRSTUVWXYZ"'(-è_çà)=^$*ù!:;,?./§%µ1478963250&éç"""
+        self.select = False
+        self.type = type
+
+    def get_text(self):
+        '''Return le texte'''
+        return self.text
+
+    def set_selection(self, events):
+        '''Permet de selectioner l'entry'''
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.rect.collidepoint(event.pos):
+                    self.select = True
+                else:
+                    self.select = False
+
+    def generer_affichage(self):
+        """Permet de generer l'affichage """
+        if self.type == "text":
+            self.blit_text = self.font.render(self.text, True, (0, 0, 0))
+        if self.type == "password":
+            self.blit_text = self.font.render(str(len(self.text) * "*"), True, (0, 0, 0))
+        self.recttxt = self.blit_text.get_rect()
+        self.recttxt.x, self.recttxt.centery = self.rect[0], self.rect[1] + self.font.size("j")[1] / 2
+
+    def get_keyboard_input(self, events):
+        """Permet de recuperer les inputs"""
+        pygame.key.set_repeat(300, 20)
+
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+
+                if event.unicode in self.text_autorise and self.font.size(self.text + "M")[0] < self.w:
+                    self.text += event.unicode
+                    if len(self.text) > 25:
+                        self.font = pygame.font.Font("../font/Like Snow.otf", self.sizetxt // 3 * 2)
+                    else:
+                        self.font = pygame.font.Font("../font/Like Snow.otf", self.sizetxt)
+                    self.generer_affichage()
+
+                elif event.key == pygame.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                    self.generer_affichage()
+
+    def iblit(self, events, screen):
+        """Permet l'affichage finale"""
+        self.set_selection(events)
+        if self.select:
+            self.get_keyboard_input(events)
+
+        pygame.draw.rect(screen, self.couleur, self.rect)
+        if self.text:
+            screen.blit(self.blit_text, self.recttxt)
+
+        if self.select:
+            if self.text:
+                text_rect = self.blit_text.get_rect()
+                pygame.draw.rect(screen, (0, 140, 200), [self.rect[0] + text_rect[2], self.rect[1], 1, self.rect[3]])
+            else:
+                pygame.draw.rect(screen, (0, 150, 200), [self.rect[0], self.rect[1], 1, self.rect[3]])

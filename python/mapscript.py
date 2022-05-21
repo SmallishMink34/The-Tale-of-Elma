@@ -135,6 +135,11 @@ class Village:
         self.allmap = Allmap(self.mm, self)
 
     def default(self):
+        """
+        Il renvoie un dictionnaire de tous les objets de la scène, avec le nom de l'objet comme clé et la propriété par
+        défaut de l'objet comme valeur
+        :return: Dictionnaire de toutes les valeurs par défaut de tous les objets du modèle.
+        """
         a = {}
         for i in self.mm.get_allobject("all"):
             try:
@@ -179,10 +184,17 @@ class Maison:
     def load(self):
         self.allmap.load()
 
+
     def __str__(self):
         return "la map actuel est Maison"
 
     def collision(self, i):
+        """
+        La fonction vérifie si le joueur entre en collision avec un objet, et si c'est le cas, elle vérifie si le joueur
+        appuie sur le bouton d'action
+
+        :param i: le joueur
+        """
         for element in self.mm.get_allobject("all"):
             if element[0].type != "InputAction":
                 if i.feet.colliderect(element[1]):
@@ -237,6 +249,13 @@ class Allmap():
                                                self.mm.get_object("PlayerPos").y // 32 + 1)
 
     def hand(self, element):
+        """
+        Si l'élément a une propriété appelée "needitem" et que le joueur a l'objet dans son inventaire, et que l'objet est
+        le bon objet, et que le joueur a la bonne quantité de l'objet, alors l'objet est consommé
+
+        :param element: L'élément avec lequel on interagit
+        :return: une valeur booléenne.
+        """
         try:
             if element[0].properties["needitem"] != 0:  # On regarde si on a besoin de la propriété needitem
                 if self.mm.player.get_item_in_inventory(
@@ -245,7 +264,9 @@ class Allmap():
                         "needitem"] and self.mm.player.get_item_in_inventory(5).obj.nbr >= \
                             element[0].properties[
                                 "quantity"]:  # On regarde si c'est le bon objet et la bonne quantité
-                        pass
+                        if element[0].properties["consume"]:
+                            print('supprimer obj')
+                            self.mm.player.inventaire.suppr_nb_obj(1, 5)
                     else:
                         print('pas le bonne objet')
                         self.action_help(element)
@@ -258,6 +279,7 @@ class Allmap():
             print("Error")
 
     def check_price(self, element):
+        # Vérifier si le joueur a déjà acheté l'article.
         if "Buy" in element[0].name:
             if not self.map.actionb[element[0].name]:  # On regarde si on a pas déja acheter l'item / Maison
                 self.mm.player.gui.buy(element[0], self)
@@ -297,6 +319,11 @@ class Allmap():
             self.mm.player.allinputoff(True)
 
     def buy(self, element):
+        """
+        Si le joueur a assez d'argent, l'objet est acheté et l'argent du joueur est réduit du coût de l'objet
+
+        :param element: l'élément que le joueur essaie d'acheter
+        """
         if int(self.mm.player.money) >= int(element.properties['money']):
             self.map.actionb[element.name] = True
             self.mm.player.money -= int(element.properties['money'])
@@ -305,9 +332,13 @@ class Allmap():
             print('pas assez dargent')
 
     def save_player_info(self):
-        w = open("save/sauvegarde.txt", "w")
+        """
+        Il enregistre les informations du joueur dans un fichier
+        """
+        w = open(valeurs.valeur.save_l+"/save/sauvegarde.txt", "w")
         w.write("SpawnPoint: " + str(self.map.name) + "\n")
         w.write("Money: " + str(self.mm.player.money) + "\n")
+        w.write("Pseudo: " + str(self.mm.player.name) + "\n")
         w.close()
 
         self.mm.save(self.mm.maps[self.mm.current_map].name)

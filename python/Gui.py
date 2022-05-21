@@ -135,11 +135,11 @@ class Gui:
                     self.c2 = self.c
                 self.element["inv"][0].move(self.c, self.c2)
 
-            # if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-            #     objet = inv.item(10, 1)
-            #     objet2 = inv.item(11, 2)
-            #     self.element['inv'][0].add(objet, "c1")
-            #     self.element['inv'][0].add(objet2, "c2")
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
+                objet = inv.item(23, 1)
+                objet2 = inv.item(24, 1)
+                self.element['inv'][0].add(objet, "c9")
+                self.element['inv'][0].add(objet2, "c10")
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
                 self.sep = True

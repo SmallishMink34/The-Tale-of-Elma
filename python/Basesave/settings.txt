@@ -1,0 +1,4 @@
+volume: 0.1
+resolution: 1280,720
+FullScreen: False
+Name: None

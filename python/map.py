@@ -2,6 +2,7 @@ import pygame, pytmx, pyscroll
 import mapscript
 import transition
 import ClassPG as PG
+import valeurs
 
 
 class Map:
@@ -28,19 +29,19 @@ class Mapmanager:
     def __init__(self, screen, player):
         self.mapobject = None
         self.maps = {}
-        self.basemap = "Maison"
+        self.basemap = "Lobby"
         self.load_localtion()
         self.current_map = self.basemap
         self.screen = screen
         self.player = player
 
+        print(valeurs.valeur.save_l)
         self.loading = False  # Load from the file
         self.seecollision = False
         self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
         self.register_map("Maison", mapscript.Maison(self))
-
         self.changemap(self.basemap, "PlayerPos")
 
         self.Animation = transition.Animation(3)
@@ -55,55 +56,63 @@ class Mapmanager:
 
     def register_map(self, name, mapobject):
         self.current_map = name
-        self.tmx = pytmx.util_pygame.load_pygame(f"../img/tile/{name}.tmx", load_all_tiles=True)
+        tmx = pytmx.util_pygame.load_pygame(f"../img/tile/{name}.tmx", load_all_tiles=True)
         self.alltiles()
-        self.mapdata = pyscroll.data.TiledMapData(self.tmx)
-        self.map_layer = pyscroll.orthographic.BufferedRenderer(self.mapdata, self.screen.get_size())
-        self.map_layer.zoom = 1.6 * (self.screen.get_size()[0] / 1280)
+        mapdata = pyscroll.data.TiledMapData(tmx)
+        map_layer = pyscroll.orthographic.BufferedRenderer(mapdata, self.screen.get_size())
+        map_layer.zoom = 1.6 * (self.screen.get_size()[0] / 1280)
         self.walls = []
-        self.objects_input = {}
+        objects_input = {}
 
-        player_layer = self.tmx.layers
+        player_layer = tmx.layers
+        liste = []
         for element in range(len(player_layer)):
+            liste.append(player_layer[element].name)
             if player_layer[element].name == "PlayerCalque":
                 u = element
-        self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer,
-                                            default_layer=u)
+        group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=int(u))
 
-        for obj in self.tmx.objects:  # Ajout des collsion dans des listes
+        for obj in tmx.objects:  # Ajout des collsion dans des listes
             if obj.type == "Collision":
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-                if self.seecollision: self.group.add(
+                if self.seecollision: group.add(
                     PG.img("../img/menu/background.jpg", obj.x, obj.y, obj.width, obj.height, False))
             if obj.type != "Collision":
-                self.objects_input[obj.id] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), obj.type]
-                if self.seecollision: self.group.add(
+                objects_input[obj.id] = [obj, pygame.Rect(obj.x, obj.y, obj.width, obj.height), obj.type]
+                if self.seecollision: group.add(
                     PG.img("../img/img.inv/case.png", obj.x, obj.y, obj.width, obj.height, False))
 
         # groupe contenant le joueur et la map
-        self.group.add(self.player)
-        self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, self.mapdata, mapobject)
-        self.mapobject = mapobject
+        group.add(self.player)
+        group.change_layer(self.player, u)
+
+        self.maps[name] = Map(name, self.walls, objects_input, group, tmx, mapdata, mapobject)
         mapobject.load()
         self.actionnb = mapobject.actionb
         self.current_map = self.basemap
 
+
     def reloadmap(self):
         print('reload de la map')
 
-        self.map_layer.reload()
-        self.map_layer.set_size((1280, 720))
+        self.maps[self.current_map].map_layer.reload()
+        self.maps[self.current_map].map_layer.set_size((1280, 720))
 
         pygame.display.flip()
 
     def zoomIO(self, level):
-        self.map_layer.zoom = level
+        self.maps[self.current_map].zoom = level
 
     def save_all(self, name):
         self.maps[name].allmap.save_player_info()
 
     def save(self, name):
-        w = open(f"save/{name}.txt", "w")
+        """
+        Il écrit la carte actuelle et le dictionnaire actionb dans un fichier
+
+        :param name: Le nom du fichier de sauvegarde
+        """
+        w = open(valeurs.valeur.save_l + f"/save/{name}.txt", "w")
         w.write(self.current_map + "\n")
 
         for i in self.maps[self.current_map].mapobject.actionb.keys():
@@ -112,10 +121,10 @@ class Mapmanager:
 
     def load(self, name):
         try:
-            w = open(f"save/{name}.txt", "r")
+            w = open(valeurs.valeur.save_l + f"/save/{name}.txt", "r")
         except FileNotFoundError:
-            open(f"save/{name}.txt", "w")
-            w = open(f"save/{name}.txt", "r")
+            open(valeurs.valeur.save_l + f"/save/{name}.txt", "w")
+            w = open(valeurs.valeur.save_l + f"/save/{name}.txt", "r")
         liste = w.readlines()
         a = {}
         for i in liste:
@@ -131,7 +140,7 @@ class Mapmanager:
 
     def load_localtion(self):
         """ Fonction qui change la location du spawnpoint"""
-        a = open("save/sauvegarde.txt", "r")
+        a = open(valeurs.valeur.save_l +"/save/sauvegarde.txt", "r")
         liste = a.readlines()
         try:
             self.basemap = liste[0].split(": ")[1].strip()
@@ -201,11 +210,11 @@ class Mapmanager:
         self.get_group().center(self.player.rect.center)
 
     def updating(self):
-        self.group.update()
+        self.maps[self.current_map].group.update()
         self.collision()
 
         try:
-            self.mapobject.update()
+            self.maps[self.current_map].mapobject.update()
         except KeyError:
             pass
 
@@ -215,7 +224,7 @@ class Mapmanager:
                 if i.feet.collidelist(
                         self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
                     i.moveback()
-                self.mapobject.collision(i)
+                self.maps[self.current_map].mapobject.collision(i)
 
     def checkcollision(self, x, y):
         for element in self.get_walls():

@@ -161,7 +161,7 @@ class PlayerTopDown(AnimateSprite):
 
     def __init__(self, name, spawncoords, screen):
         super(PlayerTopDown, self).__init__()
-        self.name = name
+        self.name = valeur.name
         self.tilesize = 16
         self.tilesizescale = 2
         self.screen = screen
@@ -179,11 +179,13 @@ class PlayerTopDown(AnimateSprite):
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
 
+        # Création d'un objet d'inventaire.
         self.inventaire = inv.inv("Inventaire", "../img/img.inv/personnage_test.png", "inv", "player",
                                   self.screen.get_size())
         self.inventaire.load_inv()
         self.pressed = {}
         self.speed = 3
+        # Il crée un rectangle qui fait la moitié de la largeur du rectangle du joueur et 12 pixels de haut.
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
 
         self.old_position = spawncoords
@@ -296,9 +298,9 @@ class PlayerTopDown(AnimateSprite):
 
     def load_info(self):
         try:
-            w = open("save/sauvegarde.txt", "r")
+            w = open(valeur.save_l+"/save/sauvegarde.txt", "r")
         except FileNotFoundError:
-            w = open("save/sauvegarde.txt", "w")
+            w = open(valeur.save_l+"/save/sauvegarde.txt", "w")
             w.close()
             self.load_info()
             return

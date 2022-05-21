@@ -18,7 +18,7 @@ class Game():
 
         self.display = pygame.Surface((self.display_w, self.display_h))
 
-        self.player = ClassPlayer.PlayerTopDown("SmallIshMink",(0, 0), self.display)
+        self.player = ClassPlayer.PlayerTopDown(valeur.name,(0, 0), self.display)
 
         self.map_manag = map.Mapmanager(self.display, self.player)
 

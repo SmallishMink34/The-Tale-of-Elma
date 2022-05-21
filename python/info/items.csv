@@ -1,13 +1,26 @@
-Id,name,type,imglink,nbmax,link
-1,casque diams,casque,../img/item/diamond_helmet.png,1,1
-2,plastron diams,plastron,../img/item/diamond_chestplate.png,1,2
-3,legging diams,jambiere,../img/item/diamond_legging.png,1,3
-4,briquet,item,../img/item/briquet.png,1,0
-5,epee,arme,../img/item/epee.png,64,1
-6,healpotions,potions,../img/item/moyen_heal.png,64,1
-7,DamagePotion,potions,../img/item/potion_dmg.png,64,2
-8,PetitHeal,potions,../img/item/petit_Heal.png,64,3
-9,GrosHeal,potions,../img/item/gros_Heal.png,64,4
-10,PetitDmg,potions,../img/item/petit_dmg.png,64,5
-11,GrosDmg,potions,../img/item/grosse_dmg.png,64,6
-12,Casquette Pong,item,../img/item/casette.png,1,0
+﻿Id,name,type,imglink,nbmax,link,Description
+1,casque,armure,../img/item/diamond_helmet.png,1,1,casque
+2,plastron,armure,../img/item/diamond_chestplate.png,1,2,plastron
+3,legging,armure,../img/item/diamond_legging.png,1,3,legging
+4,briquet,item,../img/item/lighter.png,1,0,briquet
+5,epee,arme,../img/item/epee.png,1,1,epee
+6,healpotions,potions,../img/item/moyen_heal.png,1,1,healpotions
+7,DamagePotion,potions,../img/item/potion_dmg.png,1,2,DamagePotion
+8,PetitHeal,potions,../img/item/petit_Heal.png,1,3,PetitHeal
+9,GrosHeal,potions,../img/item/gros_Heal.png,1,4,GrosHeal
+10,PetitDmg,potions,../img/item/petit_dmg.png,1,5,PetitDmg
+11,GrosDmg,potions,../img/item/grosse_dmg.png,1,6,GrosDmg
+12,Casquette Pong,item,../img/item/casette.png,1,0,Casquette Pong
+13,Corde,item,../img/item/corde.png,1,0,Corde
+14,hache,item,../img/item/hache.png,1,0,hache
+15,marteau,item,../img/item/marteau.png,1,0,marteau
+16,tournevis,item,../img/item/tournevis.png,1,0,tournevis
+17,lance pierre,item,../img/item/lancepierre.png,1,0,lance pierre
+18,Chaussure de vitesse,item,../img/item/speedboots.png,1,0,Chaussure de vitesse
+19,Fiole d'eau,item,../img/item/fiole d'eau.png,1,0,Fiole d'eau
+20,Clé Rouge,item,../img/item/redkey.png,1,0,Clé Rouge
+21,Clé Bleue,item,../img/item/bluekey.png,1,0,Clé Bleue
+22,Clé Jaune,item,../img/item/yellowkey.png,1,0,Clé Jaune
+23,Mattheo,item,../img/item/Mattheo.png,1,0,Mattheo
+24,Louis,item,../img/item/Louis.png,1,0,Louis
+25,Matthieu,item,../img/item/Matthieu.png,1,0,Matthieu
