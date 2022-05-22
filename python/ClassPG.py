@@ -130,12 +130,12 @@ class Texte:
         screen.blit(self.txt, self.rect)
 
 
-class bouton:
+class bouton(pygame.sprite.Sprite):
     """Class qui permet de crée des boutons facilement"""
 
     def __init__(self, image, x, y, w, h, center=False, toggle=False, toggletrue=None):
         self.link = image
-
+        super().__init__()
         self.x = x
         self.y = y
         self.w = w

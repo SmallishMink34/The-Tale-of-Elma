@@ -2,6 +2,7 @@
 import game
 import ClassPG as PG
 import pygame
+import moviepy.editor
 import ast
 import pygame_widgets as pw
 from pygame_widgets.slider import Slider
@@ -10,6 +11,7 @@ from pygame_widgets.toggle import Toggle
 import valeurs
 import math
 import os
+import threading
 
 
 class menu():
@@ -81,6 +83,7 @@ class menu():
 
     def run(self):
         self.continuer = True
+        print(self.val.screensize)
         while self.continuer:
             self.game.screen.blit(self.display, (0, 0))
             self.gameloop(pygame.event.get(), self.display)
@@ -332,17 +335,23 @@ class ChoosePlayer():
     def __init__(self, menu, val, save: str) -> None:
         self.val = val
         self.display_w, self.display_h = self.val.screensize[0], self.val.screensize[1]
+        print(self.display_w, self.display_h)
 
         self.game = PG.game("ChoosePlayer", (self.display_w, self.display_h), 60, self.val.toggle)
 
         self.d = {}
 
         self.menuu = menu
-        self.touche = Touches(menu, self.val)
 
         self.savee = save
-
+        self.movie()
         self.load()
+
+    def movie(self):
+        self.Film = moviepy.editor.VideoFileClip("../img/Intro.mp4")
+        self.Film_resized = self.Film.resize(self.val.screensize)
+        self.Film = self.Film_resized
+        self.Film.set_fps(60)
 
     def gameloop(self, event, screen):
         self.iblit(screen)
@@ -373,6 +382,7 @@ class ChoosePlayer():
             if self.d["TextName"].select:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
+                        self.Film.preview(fullscreen=self.val.toggle)
                         self.val.name = self.d['TextName'].get_text()
                         self.change_save_stat()
                         gamee = game.Game((self.val.screensize[0], self.val.screensize[1], self.val.toggle))
@@ -416,7 +426,7 @@ class Choose_save():
         self.val = val
         self.display_w, self.display_h = self.val.screensize[0], self.val.screensize[1]
 
-        self.game = PG.game("ChoosePlayer", (self.display_w, self.display_h), 60, self.val.toggle)
+        self.game = PG.game("ChooseSave", (self.display_w, self.display_h), 60, self.val.toggle)
 
         self.d = {}
 
@@ -665,6 +675,7 @@ class carte():
             self.img.image = self.img.img_copy
         self.img.iblit(screen)
         self.txt.iblit(screen)
+
 
 
 Menu = menu(valeurs.valeur)

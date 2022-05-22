@@ -172,18 +172,42 @@ class Village:
     def update(self):
         pass
 
+
 class Maison:
     def __init__(self, mapmanager, save_load=False):
         self.name = "Maison"
         self.mm = mapmanager
         self.actionb = {}
         self.liste_obj = {}
-
         self.allmap = Allmap(self.mm, self)
+        self.load()
+
 
     def load(self):
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.load_img()
         self.allmap.load()
 
+    def load_img(self):
+        for element in self.mm.get_objectinp("InputAction", "all"):
+            if "Pedestale" in element[0].name:
+                if self.actionb[element[0].name]:
+                    self.mm.add_image_to_draw(f"../img/item/{element[0].properties['needitem']}.png",
+                                              int(element[0].properties['Itemx']), int(element[0].properties['Itemy']),
+                                              32, 32)
+    def default(self):
+        """
+        Il renvoie un dictionnaire de tous les objets de la scène, avec le nom de l'objet comme clé et la propriété par
+        défaut de l'objet comme valeur
+        :return: Dictionnaire de toutes les valeurs par défaut de tous les objets du modèle.
+        """
+        a = {}
+        for i in self.mm.get_allobject("all"):
+            try:
+                a[i[0].name] = i[0].properties["default"]
+            except KeyError:
+                pass
+        return a
 
     def __str__(self):
         return "la map actuel est Maison"
@@ -210,6 +234,11 @@ class Maison:
                     self.mm.player.gui.Game(self.mm.player.get_item_in_inventory(5).obj)
                 if "Map" in element[0].name:
                     self.mm.player.gui.Carte(element[0].properties['Stage'])
+                if "Pedestale" in element[0].name:
+                    if not self.actionb[element[0].name]:
+                        self.actionb[element[0].name] = True
+                        self.mm.add_image_to_draw(f"../img/item/{element[0].properties['needitem']}.png", int(element[0].properties['Itemx']), int(element[0].properties['Itemy']), 32, 32)
+
     def update(self):
         pass
 
@@ -265,8 +294,13 @@ class Allmap():
                             element[0].properties[
                                 "quantity"]:  # On regarde si c'est le bon objet et la bonne quantité
                         if element[0].properties["consume"]:
-                            print('supprimer obj')
-                            self.mm.player.inventaire.suppr_nb_obj(1, 5)
+                            if element[0].name in self.map.actionb.keys():
+                                if not self.map.actionb[element[0].name]:
+                                    print('supprimer obj from actionb')
+                                    self.mm.player.inventaire.suppr_nb_obj(1, 5)
+                            else:
+                                print('supprimer obj')
+                                self.mm.player.inventaire.suppr_nb_obj(1, 5)
                     else:
                         print('pas le bonne objet')
                         self.action_help(element)

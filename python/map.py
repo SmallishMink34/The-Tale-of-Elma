@@ -252,6 +252,10 @@ class Mapmanager:
     def add_collision_from_rect(self, rect):
         self.maps[self.current_map].walls.append(rect)
 
+    def add_image_to_draw(self, file, x, y, w, h):
+        img = PG.img(file, x, y, w, h,True)
+        self.maps[self.current_map].group.add(img)
+
     def add_element_to_draw_obj(self, name: str, gid: int, x: int, y: int, layer: int):
         img = self.alltiles_d[name].get_tile_image_by_gid(gid + 1)
         self.maps[self.current_map].group.add(Tuile(x, y, img, 32), layer=layer)
