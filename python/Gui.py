@@ -22,6 +22,9 @@ class Gui:
 
         self.move = None
         self.sep = None
+        
+        self.img_survole = inv.survole(pygame.mouse.get_pos(), "")
+        self.survole = False
 
     def Game(self, name):
         pass
@@ -100,6 +103,10 @@ class Gui:
         for i in self.element.keys():
             if self.element[i][1]:
                 self.element[i][0].iblit(screen)
+        if self.survole:
+            self.img_survole.iblit(screen)
+        else:
+            pass
 
     def close(self):
         self.InGame()
@@ -156,7 +163,16 @@ class Gui:
                 if not self.c2:
                     self.c2 = self.c
                 self.element["inv"][0].move_sep(self.c, self.c2)
-
+            
+            
+            if self.element["inv"][0].present_sur_une_case(mousepos):
+                pos = self.element["inv"][0].blit_info(mousepos).coord_save
+                if self.element["inv"][0].blit_info(pos).obj != None:
+                    self.survole = True
+                    self.img_survole.update(pos,self.element["inv"][0].blit_info(mousepos).return_info())
+                else:
+                    self.survole = False
+                    
         if self.currentGui == "Buy":
             if self.element['Valider'][0].click(mousepos, event):
                 self.oldmap.buy(self.item)

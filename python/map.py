@@ -40,6 +40,9 @@ class Mapmanager:
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
         self.register_map("Maison", mapscript.Maison(self))
+        self.register_map("Foret", mapscript.Foret(self))
+
+        
 
         self.changemap(self.basemap, "PlayerPos")
 
@@ -62,11 +65,13 @@ class Mapmanager:
         self.map_layer.zoom = 1.6 * (self.screen.get_size()[0] / 1280)
         self.walls = []
         self.objects_input = {}
+        
 
         player_layer = self.tmx.layers
         for element in range(len(player_layer)):
             if player_layer[element].name == "PlayerCalque":
                 u = element
+                
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer,
                                             default_layer=u)
 

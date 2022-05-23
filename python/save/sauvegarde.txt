@@ -1,1 +1,2 @@
-SpawnPoint: Grotte
+SpawnPoint: Lobby
+Money: 0
