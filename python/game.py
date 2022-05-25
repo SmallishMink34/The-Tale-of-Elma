@@ -24,6 +24,7 @@ class Game():
 
         self.nuit = PG.img("../img/transition/fade/Fade_00000.png", 0, 0, self.display_w, self.display_h, False)
 
+
     def run(self):
         """
         Mise en marche du jeux

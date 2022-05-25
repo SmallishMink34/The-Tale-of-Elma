@@ -1251,7 +1251,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="8" name="Collision" visible="0">
+ <objectgroup id="8" name="Collision">
   <object id="1" type="Collision" x="0" y="864" width="96" height="288"/>
   <object id="2" type="Collision" x="96" y="896" width="160" height="256"/>
   <object id="3" type="Collision" x="256" y="928" width="256" height="224"/>
@@ -1332,7 +1332,7 @@
   <object id="91" type="Collision" x="1440" y="64" width="32" height="32"/>
   <object id="95" type="Collision" x="235" y="430.5" width="9.5" height="15.5"/>
  </objectgroup>
- <objectgroup id="11" name="Element" visible="0">
+ <objectgroup id="11" name="Element">
   <object id="75" name="Portail" type="InputAction" x="1742.17" y="465" width="129.333" height="121.167">
    <properties>
     <property name="TeleportPoint" value="IntoGrotte"/>

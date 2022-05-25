@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\python\info\MobsStats.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\python\info\Potions.csv">
           <value>
             <Attribute>

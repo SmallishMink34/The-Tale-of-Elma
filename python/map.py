@@ -3,7 +3,9 @@ import mapscript
 import transition
 import ClassPG as PG
 import valeurs
-
+import Ennemis
+import random
+import fight
 
 class Map:
     def __init__(self, name, walls, objecte, group, tmx_data, mapdata, mapobject):
@@ -42,6 +44,7 @@ class Mapmanager:
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
         self.register_map("Maison", mapscript.Maison(self))
+        self.register_map("Puit", mapscript.Maison(self))
 
         self.changemap(self.basemap, "PlayerPos")
 
@@ -220,12 +223,25 @@ class Mapmanager:
             pass
 
     def collision(self):
+
         for i in self.get_group().sprites():
+            colide = []
+            for i2 in self.get_group().sprites():
+                if i2.type == "entity": colide.append(i2)
             if i.type == 'Joueur':
                 if i.feet.collidelist(
                         self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
                     i.moveback()
+                """for i3 in colide:
+                    print(i3.rect, i.rect)
+                    if i3.rect.colliderect(i.rect):
+                        fightt = fight.fight(self.player, colide[i.feet.collidelist(colide)].id, colide[i.feet.collidelist(colide)].lvl)
+                        fightt.image(self.screen)
+                        fightt.FightScreen()
+                        self.player.pressed[pygame.K_l] = False"""
                 self.maps[self.current_map].mapobject.collision(i)
+
+
 
     def checkcollision(self, x, y):
         for element in self.get_walls():
@@ -259,6 +275,9 @@ class Mapmanager:
     def add_element_to_draw_obj(self, name: str, gid: int, x: int, y: int, layer: int):
         img = self.alltiles_d[name].get_tile_image_by_gid(gid + 1)
         self.maps[self.current_map].group.add(Tuile(x, y, img, 32), layer=layer)
+
+    def add_class_to_draw_obj(self, object):
+        self.maps[self.current_map].group
 
     def remove_element_to_draw_obj(self, x, y):
         for element in self.maps[self.current_map].group:

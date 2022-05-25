@@ -6,10 +6,10 @@ c5: None
 c6: None
 c7: None
 c8: None
-c9: [4, 'briquet', 13, 'item', 1]
-c10: None
-c11: [23, 'Mattheo', 1, 'item', 1]
-c12: [25, 'Matthieu', 2, 'item', 1]
+c9: [4, 'briquet', 15, 'item', 1]
+c10: [24, 'Louis', 2, 'item', 1]
+c11: [23, 'Mattheo', 3, 'item', 1]
+c12: None
 c13: None
 c14: None
 c15: None

@@ -3,6 +3,8 @@ import ClassPG as PG
 import valeurs
 import transition
 import time
+import Ennemis
+import random
 
 class Grotte:
     def __init__(self, mapmanager, save_load=True):
@@ -255,27 +257,39 @@ class Allmap():
         self.in_a_zone = False
 
     def load(self):
-        if self.mm.current_map == self.mm.load_localtion():
-            self.spawnpoint = self.mm.current_map
-            self.mm.add_element_to_draw_obj("Base3", 201, self.mm.get_object("PlayerPos").x // 32,
-                                            self.mm.get_object("PlayerPos").y // 32 - 1, 32)
-            self.mm.add_element_to_draw_obj("Base3", 216, self.mm.get_object("PlayerPos").x // 32 - 1,
-                                            self.mm.get_object("PlayerPos").y // 32, 32)
-            self.mm.add_element_to_draw_obj("Base3", 218, self.mm.get_object("PlayerPos").x // 32 + 1,
-                                            self.mm.get_object("PlayerPos").y // 32, 32)
-            self.mm.add_element_to_draw_obj("Base3", 233, self.mm.get_object("PlayerPos").x // 32,
-                                            self.mm.get_object("PlayerPos").y // 32 + 1, 32)
-            self.Ms_Spawn.play()
+        if self.map.name == self.mm.current_map:
+            if self.mm.current_map == self.mm.load_localtion():
+                self.spawnpoint = self.mm.current_map
+                self.mm.add_element_to_draw_obj("Base3", 201, self.mm.get_object("PlayerPos").x // 32,
+                                                self.mm.get_object("PlayerPos").y // 32 - 1, 32)
+                self.mm.add_element_to_draw_obj("Base3", 216, self.mm.get_object("PlayerPos").x // 32 - 1,
+                                                self.mm.get_object("PlayerPos").y // 32, 32)
+                self.mm.add_element_to_draw_obj("Base3", 218, self.mm.get_object("PlayerPos").x // 32 + 1,
+                                                self.mm.get_object("PlayerPos").y // 32, 32)
+                self.mm.add_element_to_draw_obj("Base3", 233, self.mm.get_object("PlayerPos").x // 32,
+                                                self.mm.get_object("PlayerPos").y // 32 + 1, 32)
+                self.Ms_Spawn.play()
+            else:
+                self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32,
+                                                   self.mm.get_object("PlayerPos").y // 32 - 1)
+                self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32 - 1,
+                                                   self.mm.get_object("PlayerPos").y // 32)
+                self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32 + 1,
+                                                   self.mm.get_object("PlayerPos").y // 32)
+                self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32,
+                                                   self.mm.get_object("PlayerPos").y // 32 + 1)
 
-        else:
-            self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32,
-                                               self.mm.get_object("PlayerPos").y // 32 - 1)
-            self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32 - 1,
-                                               self.mm.get_object("PlayerPos").y // 32)
-            self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32 + 1,
-                                               self.mm.get_object("PlayerPos").y // 32)
-            self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32,
-                                               self.mm.get_object("PlayerPos").y // 32 + 1)
+            for element in self.mm.get_allobject("all"):
+                if element[0].type == "Ennemi":
+                    print(self.map.name)
+                    print(self.mm.get_allobject("all"))
+                    for i in range(element[0].properties['nbennemis']):
+                        id = int(random.choice(element[0].properties['Ennemis'].split(",")))
+                        lvl = int(random.choice(element[0].properties['level'].split(",")))
+                        x = int(random.randint(int(element[0].x), int(element[0].x+element[0].width)))
+                        y = int(random.randint(int(element[0].y), int(element[0].y + element[0].height)))
+                        print(i)
+                        self.mm.maps[self.mm.current_map].group.add(Ennemis.Ennemy(id, lvl, x, y))
 
     def hand(self, element):
         """
@@ -395,4 +409,3 @@ class Allmap():
             if "Boue" in b:
                 print(element[0].id, b)
                 self.mm.player.speed = int(element[0].properties["ralenti"])
-
