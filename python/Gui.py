@@ -164,8 +164,7 @@ class Gui:
                     self.c2 = self.c
                 self.element["inv"][0].move_sep(self.c, self.c2)
             
-            
-            if self.element["inv"][0].present_sur_une_case(mousepos):
+            if self.element["inv"][0].present_sur_une_case(mousepos) and self.element["inv"][0].name == "player":
                 pos = self.element["inv"][0].blit_info(mousepos).coord_save
                 if self.element["inv"][0].blit_info(pos).obj != None:
                     self.survole = True

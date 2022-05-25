@@ -616,6 +616,11 @@ class invdouble:
             for i in self.allcase.keys():
                 if self.allcase[i].rect.collidepoint(mouse_pos):
                     print(self.allcase[i])
+    def present_sur_une_case(self, mouse_pos):
+            for i in self.allcase.keys():
+                if self.allcase[i].rect.collidepoint(mouse_pos):
+                    return self.allcase[i]
+            return False
 
 class item:
     def __init__(self, ID: int, nb: int, coord: tuple = (0, 0)):

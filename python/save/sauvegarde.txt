@@ -1,2 +1,2 @@
-SpawnPoint: Lobby
+SpawnPoint: Foret
 Money: 0
