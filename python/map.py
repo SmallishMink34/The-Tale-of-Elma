@@ -35,7 +35,7 @@ class Mapmanager:
         self.player = player
 
         self.loading = False  # Load from the file
-        self.seecollision = True
+        self.seecollision = False
         self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
