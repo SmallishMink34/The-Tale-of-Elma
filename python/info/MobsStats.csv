@@ -1,5 +1,5 @@
 ID;Nom;type;Pvmin;Pvmax;Atkmin;Atkmax;Defmin;Defmax;Speedmin;Speedmax;Img
-1;Goblin;Normal;3;4;4;5;2;3;2;3;../img/Entities/mobs/Goblin/Attack3.png
-2;Squelette ;Normal;5;8;4;6;6;8;1;2;../img/Entities/mobs/Skeleton/Attack3.png
-3;Eye;Normal;3;4;6;9;3;4;4;6;../img/Entities/mobs/Flying eye/Attack3.png
-4;Champignon;Normal;6;9;5;6;5;7;3;4;../img/Entities/mobs/Mushroom/Attack3.png
+1;Goblin;Normal;3;4;4;5;2;3;2;3;../img/Entities/mobs/Goblin/Goblin.png
+2;Squelette ;Normal;4;6;3;4;6;8;1;2;../img/Entities/mobs/Skeleton/skeletton.png
+3;Eye;Normal;3;4;6;9;3;4;4;6;../img/Entities/mobs/Flying eye/flyingeye.png
+4;Champignon;Normal;6;9;5;6;5;7;3;4;../img/Entities/mobs/Mushroom/Mushroomp.png

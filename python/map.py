@@ -1,3 +1,4 @@
+import action as action
 import pygame, pytmx, pyscroll
 import mapscript
 import transition
@@ -7,8 +8,9 @@ import Ennemis
 import random
 import fight
 
+
 class Map:
-    def __init__(self, name, walls, objecte, group, tmx_data, mapdata, mapobject):
+    def __init__(self, name, walls, objecte, group, tmx_data, mapdata, mapobject, ennemis=[]):
         self.name = name
         self.walls = walls
         self.object = objecte
@@ -16,6 +18,7 @@ class Map:
         self.tmx_data = tmx_data
         self.map_data = mapdata
         self.mapobject = mapobject
+        self.ennemis = ennemis
 
 
 class Tuile(pygame.sprite.Sprite):
@@ -37,14 +40,13 @@ class Mapmanager:
         self.screen = screen
         self.player = player
 
-        print(valeurs.valeur.save_l)
         self.loading = False  # Load from the file
         self.seecollision = False
         self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
         self.register_map("Maison", mapscript.Maison(self))
-        self.register_map("Puit", mapscript.Maison(self))
+        self.register_map("Puit", mapscript.Puit(self))
 
         self.changemap(self.basemap, "PlayerPos")
 
@@ -86,18 +88,31 @@ class Mapmanager:
                 if self.seecollision: group.add(
                     PG.img("../img/img.inv/case.png", obj.x, obj.y, obj.width, obj.height, False))
 
+                # Créer un nombre aléatoire d'ennemis dans un emplacement aléatoire dans une zone donnée et les ajoutes dans le group de la map.
+        ennemis = []
+        for element in tmx.objects:
+            if element.type == "Ennemi":
+                for i in range(element.properties['nbennemis']):
+                    id = int(random.choice(element.properties['Ennemis'].split(",")))
+                    lvl = random.randint(int(element.properties['level'].split(",")[0]),
+                                         int(element.properties['level'].split(",")[1]))
+                    x = int(random.randint(int(element.x), int(element.x + element.width)))
+                    y = int(random.randint(int(element.y), int(element.y + element.height)))
+                    a = Ennemis.Ennemy(id, lvl, x, y)
+                    group.add(a)
+                    ennemis.append(a)
+
+
         # groupe contenant le joueur et la map
         group.add(self.player)
         group.change_layer(self.player, u)
 
-        self.maps[name] = Map(name, self.walls, objects_input, group, tmx, mapdata, mapobject)
+        self.maps[name] = Map(name, self.walls, objects_input, group, tmx, mapdata, mapobject, ennemis)
         mapobject.load()
         self.actionnb = mapobject.actionb
         self.current_map = self.basemap
 
-
     def reloadmap(self):
-        print('reload de la map')
 
         self.maps[self.current_map].map_layer.reload()
         self.maps[self.current_map].map_layer.set_size((1280, 720))
@@ -116,9 +131,9 @@ class Mapmanager:
 
         :param name: Le nom du fichier de sauvegarde
         """
+        print("savegarde de la map : ", name)
         w = open(valeurs.valeur.save_l + f"/save/{name}.txt", "w")
         w.write(self.current_map + "\n")
-
         for i in self.maps[self.current_map].mapobject.actionb.keys():
             w.write(str(i) + ": " + str(self.maps[self.current_map].mapobject.actionb[i]) + "\n")
         w.close()
@@ -144,7 +159,7 @@ class Mapmanager:
 
     def load_localtion(self):
         """ Fonction qui change la location du spawnpoint"""
-        a = open(valeurs.valeur.save_l +"/save/sauvegarde.txt", "r")
+        a = open(valeurs.valeur.save_l + "/save/sauvegarde.txt", "r")
         liste = a.readlines()
         try:
             self.basemap = liste[0].split(": ")[1].strip()
@@ -223,25 +238,27 @@ class Mapmanager:
             pass
 
     def collision(self):
-
         for i in self.get_group().sprites():
-            colide = []
-            for i2 in self.get_group().sprites():
-                if i2.type == "entity": colide.append(i2)
             if i.type == 'Joueur':
                 if i.feet.collidelist(
                         self.get_walls()) > -1:  # si les pieds du joueurs entre en collision avec un objet
                     i.moveback()
-                """for i3 in colide:
-                    print(i3.rect, i.rect)
-                    if i3.rect.colliderect(i.rect):
-                        fightt = fight.fight(self.player, colide[i.feet.collidelist(colide)].id, colide[i.feet.collidelist(colide)].lvl)
-                        fightt.image(self.screen)
-                        fightt.FightScreen()
-                        self.player.pressed[pygame.K_l] = False"""
+                player = i
                 self.maps[self.current_map].mapobject.collision(i)
 
-
+        for i3 in self.maps[self.current_map].ennemis:
+            if i3.rect.colliderect(player.rect):
+                fightt = fight.fight(self.player, i3.id,i3.lvl)
+                fightt.image(self.screen)
+                self.player.allinputoff(False)
+                if fightt.FightScreen() in ["Player", "Fuite"]:
+                    self.maps[self.current_map].ennemis.remove(i3)
+                    self.get_group().remove(i3)
+                else:
+                    self.teleport_player("PlayerPos")
+                    self.player.hp = self.player.hpmax
+                self.player.allinputoff(True)
+                self.player.pressed[pygame.K_l] = False
 
     def checkcollision(self, x, y):
         for element in self.get_walls():
@@ -269,7 +286,7 @@ class Mapmanager:
         self.maps[self.current_map].walls.append(rect)
 
     def add_image_to_draw(self, file, x, y, w, h):
-        img = PG.img(file, x, y, w, h,True)
+        img = PG.img(file, x, y, w, h, True)
         self.maps[self.current_map].group.add(img)
 
     def add_element_to_draw_obj(self, name: str, gid: int, x: int, y: int, layer: int):
@@ -280,10 +297,13 @@ class Mapmanager:
         self.maps[self.current_map].group
 
     def remove_element_to_draw_obj(self, x, y):
-        for element in self.maps[self.current_map].group:
-            if element.name == "tile":
-                if element.rect.x == x * 32 and element.rect.y == y * 32:
-                    self.maps[self.current_map].group.remove(element)
+        try:
+            for element in self.maps[self.current_map].group:
+                if element.name == "tile":
+                    if element.rect.x == x * 32 and element.rect.y == y * 32:
+                        self.maps[self.current_map].group.remove(element)
+        except AttributeError:
+            pass
 
     def set_layer_visible(self, layer, Visible):
         """

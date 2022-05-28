@@ -288,13 +288,16 @@ class PlayerTopDown(AnimateSprite):
         :param switch: Boolean
         :return: Nothing
         """
+
         if switch is None:
             if self.canPressKey:
                 self.canPressKey = False
+                self.pressed = {}
             else:
                 self.canPressKey = True
         else:
             self.canPressKey = switch
+            self.pressed = {} if not self.canPressKey else self.pressed
 
     def load_info(self):
         try:

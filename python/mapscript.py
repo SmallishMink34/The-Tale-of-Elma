@@ -24,7 +24,7 @@ class Grotte:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(self.default()) else self.default()
         self.pont()
         self.load_tile_map()
         self.opendoor()
@@ -53,7 +53,6 @@ class Grotte:
 
     def opendoor(self):
         if not self.actionb["Door"]:
-            print('plus de porte')
             try:
                 self.mm.remove_collision(self.mm.get_object("ExitDoor"))
             except ValueError:
@@ -74,7 +73,6 @@ class Grotte:
                         if element[0].name not in self.actionb.keys():
                             self.actionb[element[0].name] = False
                         if not element[0].properties['Infire'] and not self.actionb[element[0].name]:
-                            print("sa marche ?")
                             element[0].properties['Infire'] = True
                             self.actionb[element[0].name] = True
                             self.actionb['Pont'] += 1
@@ -145,14 +143,16 @@ class Village:
         a = {}
         for i in self.mm.get_allobject("all"):
             try:
+                print(i[0].name, i[0].properties["default"])
                 a[i[0].name] = i[0].properties["default"]
             except KeyError:
                 pass
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(self.default()) else self.default()
         self.allmap.load()
+        print(self.actionb)
 
     def __str__(self):
         return "la map actuel est Village"
@@ -167,9 +167,19 @@ class Village:
                     self.mm.player.speed = 3
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if "puit" in element[0].name:
+                    if self.actionb[element[0].name]:
+                        self.allmap.collision(element)
+                        break
+                    self.actionb[element[0].name] = True
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
+
+                if "puit" in element[0].name:
+                    self.actionb[element[0].name] = True
                 self.allmap.collision(element)
+
+
 
     def update(self):
         pass
@@ -186,7 +196,7 @@ class Maison:
 
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(self.default()) else self.default()
         self.load_img()
         self.allmap.load()
 
@@ -245,6 +255,61 @@ class Maison:
         pass
 
 
+class Puit:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "Puit"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+        self.allmap = Allmap(self.mm, self)
+        self.load()
+
+
+    def load(self):
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(self.default()) else self.default()
+        self.allmap.load()
+
+
+    def default(self):
+        """
+        Il renvoie un dictionnaire de tous les objets de la scène, avec le nom de l'objet comme clé et la propriété par
+        défaut de l'objet comme valeur
+        :return: Dictionnaire de toutes les valeurs par défaut de tous les objets du modèle.
+        """
+        a = {}
+        for i in self.mm.get_allobject("all"):
+            try:
+                a[i[0].name] = i[0].properties["default"]
+            except KeyError:
+                pass
+        return a
+
+    def __str__(self):
+        return "la map actuel est Puit"
+
+    def collision(self, i):
+        """
+        La fonction vérifie si le joueur entre en collision avec un objet, et si c'est le cas, elle vérifie si le joueur
+        appuie sur le bouton d'action
+
+        :param i: le joueur
+        """
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                self.allmap.collision(element)
+
+    def update(self):
+        pass
+
+
 class Allmap():
     def __init__(self, mapmanager, map=None):
         self.mm = mapmanager
@@ -255,6 +320,8 @@ class Allmap():
         self.Ms_Spawn.volume(valeurs.valeur.volume)
 
         self.in_a_zone = False
+
+        self.time_in = 0
 
     def load(self):
         if self.map.name == self.mm.current_map:
@@ -279,17 +346,7 @@ class Allmap():
                 self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32,
                                                    self.mm.get_object("PlayerPos").y // 32 + 1)
 
-            for element in self.mm.get_allobject("all"):
-                if element[0].type == "Ennemi":
-                    print(self.map.name)
-                    print(self.mm.get_allobject("all"))
-                    for i in range(element[0].properties['nbennemis']):
-                        id = int(random.choice(element[0].properties['Ennemis'].split(",")))
-                        lvl = int(random.choice(element[0].properties['level'].split(",")))
-                        x = int(random.randint(int(element[0].x), int(element[0].x+element[0].width)))
-                        y = int(random.randint(int(element[0].y), int(element[0].y + element[0].height)))
-                        print(i)
-                        self.mm.maps[self.mm.current_map].group.add(Ennemis.Ennemy(id, lvl, x, y))
+
 
     def hand(self, element):
         """
@@ -310,21 +367,17 @@ class Allmap():
                         if element[0].properties["consume"]:
                             if element[0].name in self.map.actionb.keys():
                                 if not self.map.actionb[element[0].name]:
-                                    print('supprimer obj from actionb')
                                     self.mm.player.inventaire.suppr_nb_obj(1, 5)
                             else:
-                                print('supprimer obj')
                                 self.mm.player.inventaire.suppr_nb_obj(1, 5)
                     else:
-                        print('pas le bonne objet')
                         self.action_help(element)
                         return False
                 else:
-                    print('La main est vide')
                     self.action_help(element)
                     return False
         except (AttributeError, KeyError):
-            print("Error")
+            pass
 
     def check_price(self, element):
         # Vérifier si le joueur a déjà acheté l'article.
@@ -357,9 +410,12 @@ class Allmap():
                 self.mm.Animation.one_by_one_iblit(self.mm.screen, "fade_in")
             self.mm.save(self.mm.maps[self.mm.current_map].name)
             self.mm.player.allinputoff(False)
-            print('teleportation')
             self.mm.changemap(var, var2)
-            self.load()
+
+            if self.mm.current_map != var:
+                self.load()
+
+
             self.mm.draw()
 
             if var3:
@@ -394,18 +450,18 @@ class Allmap():
     def action_help(self, element):
         if "help" in element[0].name:
             self.mm.player.gui.Mind(element[0].properties['Texte'])
-            print("test")
 
     def collision_without_action(self, element):
         a = element[0].name if isinstance(element[0].name, str) else ""
         b = element[0].type if isinstance(element[0].type, str) else ""
         if "Spike" in a:
-            print('Sa pique de : ', element[0].properties['Damage'])
+            self.time_in += 1
+            if self.time_in > 20:
+                self.mm.player.hp -= element[0].properties['Damage']
         if "SpawnPoint" in b:
             if self.mm.current_map != self.spawnpoint:
                 self.load()
                 self.save_player_info()
         if "effect" in b:
             if "Boue" in b:
-                print(element[0].id, b)
                 self.mm.player.speed = int(element[0].properties["ralenti"])

@@ -4,7 +4,9 @@ import ennemi
 import pandas as pd
 import random as rd
 from PIL import Image, ImageFilter
-
+import valeurs
+import numpy as np
+import math
 
 class fight():
     def __init__(self, joueur, mobid:int, lvlmob:int):
@@ -15,26 +17,30 @@ class fight():
         self.dico = {"heal":self.heal, "degat":self.damage}
         self.w = []
         
-        try: 
-            self.armid = self.joueur.get_item_in_inventory(5).obj.link
+        try:
+            if self.joueur.get_item_in_inventory(5).obj.genre == "arme":
+                self.armid = self.joueur.get_item_in_inventory(5).obj.link
+            else:
+                self.armid = 1
         except AttributeError:
             self.armid = 1
         self.lvlmob = lvlmob
+
+
+
         pygame.init()
-        self.size = (1280,720)
+        self.size = valeurs.valeur.screensize
         self.defaultsize = (1280, 720)
         self.facteur = self.size[0]/self.defaultsize[0]
-        self.screen = pygame.display.set_mode(self.size)
+        self.screen = pygame.display.set_mode(self.size, valeurs.valeur.toggle)
         self.read()
         # Pour savoir qui attaque en premier 
         if self.ennemii.Speed > self.joueur.speedfight:
             self.tour = False # False = tour du mob
-            print('cest un en false')
         elif self.ennemii.Speed == self.joueur.speedfight:
             self.tour = rd.choice([False, True])
         else : 
-            self.tour = True 
-        print(self.tour)
+            self.tour = True
         
         pygame.display.set_caption("FightScreen")
 
@@ -56,6 +62,9 @@ class fight():
         self.dmgmob = self.ennemii.Atk//1.3 - self.joueur.deffence/4
         if self.dmgmob < 0:
             self.dmgmob = 0
+
+    def animation(self, object, i):
+        return object.x + 0.01 * (i)**2 + 5
 
     # Image de fond
     def image(self, ancien):
@@ -107,11 +116,21 @@ class fight():
         
     # Potion de dégat  
     def damage(self,potions):
+        """
+        Il prend une liste de potions et un personnage, et si la potion est une potion en pourcentage, il calcule les dégâts
+        en fonction du pourcentage de la santé du personnage, puis soustrait ces dégâts de la santé du personnage.
+
+        :param potions: [0] = nom, [1] = description, [2] = prix, [3] = quantité, [4] = type, [5] = valeur
+        :return: Vrai
+        """
         if potions[4] == "pourcent" :
             potions[5] = self.ennemii.Pv * (potions[5]/100)
         self.ennemii.Pv = self.ennemii.Pv - potions[5]
         return True 
-     
+
+    def endfight(self, gagnant):
+        return gagnant
+
     def FightScreen(self):
         running = True
         bottom = pygame.image.load("../img/Fight/bas.png").convert_alpha()
@@ -119,8 +138,7 @@ class fight():
         bottom_rect = bottom.get_rect()
         bottom_rect.x = 0
         bottom_rect.y = self.size[1]//6*0.025
-        
-        
+
         # Bouton Atk
         
         batk = pygame.image.load("../img/Fight/Attaques.png").convert_alpha()
@@ -144,8 +162,7 @@ class fight():
         bf_rect = bf.get_rect()
         bf_rect.centerx = self.size[0]//6*4.5
         bf_rect.centery = self.size[1]//5*4
-        
-        
+
         # Image du joueur avec l'arme 
         
         jimg = self.joueur.moveimage["right"][0]
@@ -166,21 +183,34 @@ class fight():
         # texte hp 
         
         pv = ClassPG.Texte("PV : "+str(self.joueur.hp), 575*self.facteur, 400*self.facteur, False)
-        
-        
+        lvltext = ClassPG.Texte(str(self.lvlmob), 980*self.facteur, 110*self.facteur, True)
+        name = ClassPG.Texte(str(self.ennemii.Nom), 980*self.facteur, 50, True)
+
         Hp_mob = ClassPG.progressbar(self.ennemii.Pv/self.ennemii.PvMax,  925*self.facteur, 130*self.facteur, 110*self.facteur,20*self.facteur)
         
-        #Image de fond 
-         
+        #Image de fond
         Img = ClassPG.img("../img/temp/screen.png", 0, 0, self.size[0], self.size[1], False)
          
-        # Compteur pour le tour par tour 
-        
-        compteur = 0 
+        # Compteur pour le tour par tour
+        compteur = 0
+
+        # Il crée une liste de valeurs x de jimg_rect.x à jimg_rect.x + 100, puis crée une liste de valeurs y à partir du
+        # journal de ces valeurs x. Deplacement Joueur
+        anim_x = np.arange(jimg_rect.x, jimg_rect.x + 100, 1)
+        anim_arme_x = np.arange(aimg_rect.x, aimg_rect.x + 100, 1)
+        player_move = False
+        x = 0
+
+        anim_mob_x = np.arange(self.ennemii.mobimg_rect.x, self.ennemii.mobimg_rect.x - 100, -1)
+        ennemi_move = False
+        x_m = 0
+
+
         while running : 
             if not self.enfight: 
-                running = False 
+                running = False
             
+            # Vérification des événements dans le jeu.
             for events in pygame.event.get():
                 if events.type == pygame.QUIT:
                     running = False
@@ -192,59 +222,89 @@ class fight():
                     if events.button == 1: # 1= clique gauche
                         if self.gui == False :
                             # Bouton atk
-                            if batk_rect.collidepoint(events.pos) :
-                                self.ennemii.Pv -= self.realdmg
-                                self.tour = False 
-                                if self.ennemii.Pv <= 0 : 
-                                    self.enfight = False
+                            if batk_rect.collidepoint(events.pos):
+                                player_move = True
+                                self.tour = False
                             # Bouton fuir 
                             if bf_rect.collidepoint(events.pos):
-                                self.enfight = False
+                                return self.endfight("Fuite")
+
                             if bobj_rect.collidepoint(events.pos):
                                 self.afficherinv()
-                                self.gui = True 
-                if self.gui == True : 
-                    for i in self.w :
-                        if i.click(events, mousepos):
-                            if i.obj.genre in ["potions"]:  
-                                if self.dico[self.potions(i.obj.link)[3]](self.potions(i.obj.link)):
-                                    pv.iupdate("PV : "+str(self.joueur.hp), (255, 255, 255), (pv.x, pv.y))
-                                    self.tour = False 
-                                    self.gui = False 
-                                    self.joueur.inventaire.suppr_nb_obj(1, i.casenumber)
-                                
-                            
-                        
+                                self.gui = True
+
+            # Vérifier si le joueur a cliqué sur une potion dans l'inventaire. Si c'est le cas, il vérifie si la potion
+            # est utilisable. Si c'est le cas, il utilise la potion et met à jour la santé du joueur.
+            if self.gui == True :
+                for i in self.w :
+                    if i.click(events, mousepos):
+                        if i.obj.genre in ["potions"]:
+                            if self.dico[self.potions(i.obj.link)[3]](self.potions(i.obj.link)):
+                                pv.iupdate("PV : "+str(self.joueur.hp), (255, 255, 255), (pv.x, pv.y))
+                                self.tour = False
+                                self.gui = False
+                                self.joueur.inventaire.suppr_nb_obj(1, i.casenumber)
+
+            # Une animation simple d'un personnage en mouvement.
+            if player_move:
+                x += 1
+                jimg_rect.x, jimg_rect.y = anim_x[x], 1/x + jimg_rect.y
+                aimg_rect.x, aimg_rect.y = anim_arme_x[x], 1 / x + aimg_rect.y
+                if x > len(anim_x) - 2:
+                    player_move = False
+                    self.ennemii.Pv -= self.realdmg
+                    if self.ennemii.Pv <= 0:
+                        return self.endfight("Player")
+
+            elif not player_move:
+                if x > 1:
+                    x -= 1
+                    jimg_rect.x, jimg_rect.y = anim_x[x], 1/x + jimg_rect.y
+                    aimg_rect.x, aimg_rect.y = anim_arme_x[x], 1 / x + aimg_rect.y
+
             # Tour du mob
             if self.tour == False:
                 compteur +=1
                 if compteur == 400 :
-                    self.joueur.hp -= self.dmgmob
-                    pv.iupdate("PV : "+str(self.joueur.hp), (255, 255, 255), (pv.x, pv.y))
-                    if self.joueur.hp <= 0:
-                        self.enfight = False
+                    ennemi_move = True
                 elif compteur == 800:
                     compteur = 0
-                    self.tour = True 
-        
+                    self.tour = True
+
+            # Déplacer le sprite ennemi.
+            if ennemi_move:
+                x_m += 1
+                self.ennemii.mobimg_rect.x, self.ennemii.mobimg_rect.y = anim_mob_x[x_m], 1 / x_m + self.ennemii.mobimg_rect.y
+                if x_m > len(anim_mob_x) - 2:
+                    ennemi_move = False
+                    self.joueur.hp -= self.dmgmob
+                    pv.iupdate("PV : " + str(self.joueur.hp), (255, 255, 255), (pv.x, pv.y))
+                    if self.joueur.hp <= 0:
+                        return self.endfight("Ennemis")
+            elif not ennemi_move:
+                if x_m > 1:
+                    x_m -= 1
+                    self.ennemii.mobimg_rect.x, self.ennemii.mobimg_rect.y = anim_mob_x[x_m], 1 / x_m + self.ennemii.mobimg_rect.y
 
             Img.iblit(self.screen)
             Hp_mob.blit(self.screen, self.ennemii.Pv, self.ennemii.PvMax)
+            name.iblit(self.screen)
+            lvltext.iblit(self.screen)
             self.screen.blit(self.ennemii.mobimg, self.ennemii.mobimg_rect)
             self.screen.blit(jimg, jimg_rect)
             self.screen.blit(aimg, aimg_rect)
-            self.screen.blit(bottom, bottom_rect)
-            pv.iblit(self.screen)
-            
+
             if self.gui == False :
-                self.screen.blit(bf, bf_rect)
-                self.screen.blit(batk, batk_rect)
-                self.screen.blit(bobj,bobj_rect)
+                if self.tour == True:
+                    self.screen.blit(bf, bf_rect)
+                    self.screen.blit(batk, batk_rect)
+                    self.screen.blit(bobj,bobj_rect)
             else : 
                 for i in self.w:
                     i.iblit(self.screen)
-                    
+            self.screen.blit(bottom, bottom_rect)
+            pv.iblit(self.screen)
                     
             
             pygame.display.update()
-         
+        return self.endfight("Fuite")

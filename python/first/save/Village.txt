@@ -1,2 +1,3 @@
 Village
-Buy Portail Maison: True
+help Portail puit: True
+Buy Portail Maison: False
