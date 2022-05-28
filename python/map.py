@@ -49,6 +49,8 @@ class Mapmanager:
         self.register_map("Puit", mapscript.Puit(self))
         self.register_map("Foret", mapscript.Foret(self))
         self.register_map("Maison_Foret", mapscript.Maison_Foret(self))
+        self.register_map("Plaine", mapscript.Plaine(self))
+        self.register_map("MaisonPêcheur", mapscript.MaisonPêcheur(self))
 
         self.changemap(self.basemap, "PlayerPos")
 
