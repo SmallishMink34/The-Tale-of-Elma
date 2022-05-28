@@ -29,10 +29,13 @@ class case:
 
     def __str__(self):
         if self.obj != None:
-            return str([self.obj.nom, self.obj.nbr])
+            return str([self.obj.genre])
         else:
             return "la case est vide"
 
+    def return_info(self):
+        return self.obj.nom
+    
     def add_obj(self, obj):
         if self.obj != None:
             if self.obj.id == obj.id:
@@ -368,10 +371,23 @@ class inv:
         self.save(self.name)  # on enrefistre l'inventaire
 
     def info_case(self, mouse_pos, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
+        # if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
             for i in self.c.keys():
                 if self.c[i].rect.collidepoint(mouse_pos):
                     print(self.c[i])
+    
+    
+    
+    def blit_info(self, mouse_pos):
+        for i in self.c.keys():
+            if self.c[i].rect.collidepoint(mouse_pos):
+                return(self.c[i])
+            
+    def present_sur_une_case(self, mouse_pos):
+        for i in self.c.keys():
+            if self.c[i].rect.collidepoint(mouse_pos):
+                return self.c[i]
+        return False
 
 
 class invdouble:
@@ -621,6 +637,11 @@ class invdouble:
             for i in self.allcase.keys():
                 if self.allcase[i].rect.collidepoint(mouse_pos):
                     print(self.allcase[i])
+    def present_sur_une_case(self, mouse_pos):
+            for i in self.allcase.keys():
+                if self.allcase[i].rect.collidepoint(mouse_pos):
+                    return self.allcase[i]
+            return False
 
 
 class item:
@@ -667,3 +688,22 @@ class item:
 
     def update_txt(self, coord):
         self.text.iupdate(self.nbr, (255, 255, 0), (coord[0], coord[1]))
+
+
+class survole:
+    def __init__(self, coord, texte):
+        self.text_str = texte
+        self.texte = pg.Texte(self.text_str ,coord[0] + 128 ,coord[1] + 128 ,"center" ,(255,255,0))
+        self.img = pg.img("../img/img.inv/img.png", coord[0] + 128, coord[1] + 128, 260, 80, True)
+
+    def __str__(self):
+        return self.text_str
+    
+    def iblit(self, screen):
+        self.img.iblit(screen)
+        self.texte.iblit(screen)
+    
+    def update(self, coord, texte):
+        self.texte = pg.Texte(texte ,coord[0] + 128 ,coord[1] + 128 ,"center" ,(255,255,0))
+        self.text_str = texte
+        self.img = pg.img("../img/img.inv/img.png", coord[0] + 128, coord[1] + 128, 260, 80, True)

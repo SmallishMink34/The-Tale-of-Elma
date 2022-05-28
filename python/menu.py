@@ -239,7 +239,6 @@ class song():
             pygame.display.update()
         pygame.quit()
 
-
 class Touches():
     def __init__(self, menu, val) -> None:
         self.display_w, self.display_h = menu.w, menu.h
