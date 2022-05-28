@@ -318,11 +318,13 @@ class inv:
 
             """
             if self.lettre + str(case1) in self.c.keys(): 
-                if self.c[self.lettre + str(case1)].obj == None:  # si on déplace un None ( = rien )
+                if self.c[self.lettre + str(case1)].obj == None :  # si on déplace un None ( = rien )
                     return False
                 elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case            
-                elif self.c[self.lettre + str(case2)].obj is None :  # si la deuxieme case est vide
-                    if self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
+                elif self.c[self.lettre + str(case2)].obj is None :  # 
+                    if self.c[self.lettre + str(case1)].obj.nbr == 1: # si l'objet à déplacer est un seul
+                        self.retourner_case(case1) # on retourne la case
+                    elif self.c[self.lettre + str(case1)].obj.genre == self.c[self.lettre + str(case2)].genre or self.c[self.lettre + str(case2)].genre == "None": # si les deux genre sont identique ou si la case est vide
                         print("on sépare dans l'inventaire")
                         tmp = self.c[self.lettre + str(case1)].obj.nbr % 2
                         self.c[self.lettre + str(case1)].obj.nbr = self.c[self.lettre + str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
@@ -569,14 +571,18 @@ class invdouble:
                     return False
                 
                 elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case      
-                      
+                
+                
                 elif self.allcase[str(case2)].obj is None :  # si la deuxieme case est vide
-                    print("on sépare dans le coffre")
-                    tmp = self.allcase[str(case1)].obj.nbr % 2
-                    self.allcase[str(case1)].obj.nbr = self.allcase[str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
-                    self.add(self.allcase[str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
-                    self.update()
-                    self.allcase[str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
+                    if self.allcase[str(case1)].obj.nbr == 1: # si l'objet à déplacer est un seul
+                        self.retourner_case(case1) # on retourne la case
+                    else:
+                        print("on sépare dans le coffre")
+                        tmp = self.allcase[str(case1)].obj.nbr % 2
+                        self.allcase[str(case1)].obj.nbr = self.allcase[str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
+                        self.add(self.allcase[str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
+                        self.update()
+                        self.allcase[str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
                         
                 elif (self.allcase[str(case1)].obj.id == self.allcase[str(case2)].obj.id): # si les deux objets des deux cases sont identique 
                     if self.allcase[str(case1)].obj.nbr + self.allcase[str(case2)].obj.nbr <= self.allcase[str(case2)].obj.nbr_max: # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
@@ -632,7 +638,9 @@ class item:
         return [self.id, self.nom, self.nbr, self.genre, self.nbr_max]
 
     def iblit(self, screen):
-        self.img.iblit(screen)
+        if self.nbr >= 1:
+            self.img.iblit(screen)
+            
         if self.nbr > 1:
             self.text.iblit(screen)
 
