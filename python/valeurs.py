@@ -1,5 +1,5 @@
 import pygame
-import python.ClassPG as PG
+import ClassPG as PG
 
 class val():
     def __init__(self):

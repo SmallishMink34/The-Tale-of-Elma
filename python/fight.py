@@ -212,9 +212,7 @@ class fight():
                                     self.tour = False 
                                     self.gui = False 
                                     self.joueur.inventaire.suppr_nb_obj(1, i.casenumber)
-                                
-                            
-                        
+                                      
             # Tour du mob
             if self.tour == False:
                 compteur +=1

@@ -3,10 +3,10 @@ c2: None
 c3: None
 c4: None
 c5: None
-p6: [11, 'GrosDmg', 10, 'potions', 64]
-p7: [11, 'GrosDmg', 64, 'potions', 64]
-p8: [11, 'GrosDmg', 26, 'potions', 64]
-p9: [10, 'PetitDmg', 1, 'potions', 64]
+p6: None
+p7: None
+p8: None
+p9: None
 p10: None
 p11: None
 p12: None

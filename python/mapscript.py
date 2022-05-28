@@ -166,7 +166,46 @@ class Village:
 
     def update(self):
         pass
+class Plaine:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "Plaine"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
 
+        self.allmap = Allmap(self.mm, self)
+
+    def default(self):
+        a = {}
+        for i in self.mm.get_allobject("all"):
+            try:
+                a[i[0].name] = i[0].properties["default"]
+            except KeyError:
+                pass
+        return a
+
+    def load(self):
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.allmap.load()
+
+    def __str__(self):
+        return "la map actuel est Plaine"
+
+    def collision(self, i):
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                if self.allmap.check_price(element) is False: break
+                self.allmap.collision(element)
+    def update(self):
+        pass
 class Maison:
     def __init__(self, mapmanager, save_load=False):
         self.name = "Maison"
@@ -201,6 +240,82 @@ class Maison:
     def update(self):
         pass
 
+class Plaine:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "Plaine"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+
+        self.allmap = Allmap(self.mm, self)
+
+    def default(self):
+        a = {}
+        for i in self.mm.get_allobject("all"):
+            try:
+                a[i[0].name] = i[0].properties["default"]
+            except KeyError:
+                pass
+        return a
+
+    def load(self):
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.allmap.load()
+
+    def __str__(self):
+        return "la map actuel est Plaine"
+
+    def collision(self, i):
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                if self.allmap.check_price(element) is False: break
+                self.allmap.collision(element)
+    def update(self):
+        pass
+class MaisonPêcheur:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "MaisonPêcheur"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+
+        self.allmap = Allmap(self.mm, self)
+
+    def load(self):
+        self.allmap.load()
+
+    def __str__(self):
+        return "la map actuel est MaisonPêcheur"
+
+    def collision(self, i):
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                self.allmap.collision(element)
+                if element[0].name == "Game":
+                    self.mm.player.gui.Game(self.mm.player.get_item_in_inventory(5).obj)
+                if "Map" in element[0].name:
+                    self.mm.player.gui.Carte(element[0].properties['Stage'])
+                if "pêcheur" in element[0].name :
+                    objet2 = inv.item(9, 1)
+                    self.element['inv'][0].add(objet2, "c14")
+    def update(self):
+        pass
 
 class Allmap():
     def __init__(self, mapmanager, map=None):

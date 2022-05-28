@@ -1,1 +1,2 @@
-SpawnPoint: Grotte
+SpawnPoint: Plaine
+Money: 0

@@ -35,11 +35,13 @@ class Mapmanager:
         self.player = player
 
         self.loading = False  # Load from the file
-        self.seecollision = False
+        self.seecollision = True
         self.register_map("Lobby", mapscript.lobby(self))
         self.register_map("Grotte", mapscript.Grotte(self))
         self.register_map("Village", mapscript.Village(self))
         self.register_map("Maison", mapscript.Maison(self))
+        self.register_map("Plaine", mapscript.Plaine(self))
+        self.register_map("MaisonPêcheur", mapscript.MaisonPêcheur(self))
 
         self.changemap(self.basemap, "PlayerPos")
 
@@ -82,6 +84,7 @@ class Mapmanager:
 
         # groupe contenant le joueur et la map
         self.group.add(self.player)
+        self.group.change_layer(self.player, u)
         self.maps[name] = Map(name, self.walls, self.objects_input, self.group, self.tmx, self.mapdata, mapobject)
         self.mapobject = mapobject
         mapobject.load()
