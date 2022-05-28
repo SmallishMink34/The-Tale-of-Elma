@@ -50,11 +50,11 @@ class Mapmanager:
         self.register_map("Foret", mapscript.Foret(self))
         self.register_map("Maison_Foret", mapscript.Maison_Foret(self))
 
-
-
         self.changemap(self.basemap, "PlayerPos")
 
         self.Animation = transition.Animation(3)
+
+
 
         self.teleport_player("PlayerPos")
 
@@ -138,6 +138,7 @@ class Mapmanager:
         print("savegarde de la map : ", name)
         w = open(valeurs.valeur.save_l + f"/save/{name}.txt", "w")
         w.write(self.current_map + "\n")
+
         for i in self.maps[self.current_map].mapobject.actionb.keys():
             w.write(str(i) + ": " + str(self.maps[self.current_map].mapobject.actionb[i]) + "\n")
         w.close()
@@ -279,6 +280,7 @@ class Mapmanager:
         self.current_map = name
         self.mapobject = self.maps[name].mapobject
         self.teleport_player(teleportpoint)
+
 
     def remove_collision(self, obj):
         self.maps[self.current_map].walls.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))

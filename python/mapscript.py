@@ -194,6 +194,7 @@ class Maison:
         self.allmap = Allmap(self.mm, self)
         self.load()
 
+        self.allmap = Allmap(self.mm)
 
     def load(self):
         self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(self.default()) else self.default()
@@ -393,6 +394,36 @@ class Maison_Foret:
     def update(self):
         pass
 
+class Foret:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "Foret"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+
+        self.allmap = Allmap(self.mm)
+
+    def load(self):
+        self.allmap.load()
+
+    def __str__(self):
+        return "la map actuel est la Foret"
+
+    def collision(self, i):
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                self.allmap.collision(element)
+
+    def update(self):
+        pass
 class Allmap():
     def __init__(self, mapmanager, map=None):
         self.mm = mapmanager
