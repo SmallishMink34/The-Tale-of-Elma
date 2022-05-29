@@ -1,3 +1,0 @@
-Village
-help Portail puit: True
-Buy Portail Maison: False

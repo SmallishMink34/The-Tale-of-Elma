@@ -1,4 +1,0 @@
-Maison
-Pedestale Mattheo: True
-Pedestale Louis: False
-Pedestale Matthieu: True

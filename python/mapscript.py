@@ -220,7 +220,6 @@ class Maison:
         :return: Dictionnaire de toutes les valeurs par défaut de tous les objets du modèle.
         """
         a = {}
-        print(self.mm.current_map)
         for i in self.mm.get_allobject("all"):
             try:
                 a[i[0].name] = i[0].properties["default"]
@@ -326,6 +325,10 @@ class Foret:
         self.liste_obj = {}
         self.allmap = Allmap(self.mm, self)
 
+    def load_tile_map(self):
+        for element in self.mm.get_objectinp("add", "all"):
+            self.mm.add_element_to_draw_obj(element[0].properties["tilename"], element[0].properties["idtile"],
+                                            int(element[0].x / 32), int(element[0].y / 32), 8)
     def default(self):
         a = {}
         for i in self.mm.get_allobject("all"):
@@ -335,15 +338,38 @@ class Foret:
                 pass
         return a
 
+    def load_arbre(self):
+        self.a = PG.img(f"../img/grosarbre.png", 1870, 776, 150, 150)
+        self.mm.maps[self.mm.current_map].group.add(self.a)
+
+    def opendoor(self):
+        if not self.actionb["Door"]:
+            try:
+                self.mm.remove_collision(self.mm.get_object("ExitDoor"))
+            except ValueError:
+                pass
+            self.mm.remove_element_to_draw_obj(31, 34)
+            self.mm.remove_element_to_draw_obj(31, 35)
+
+
+    def supr_arbre(self):
+        self.mm.maps[self.mm.current_map].group.remove(self.a)
 
     def load(self):
         self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
             self.mm.load(self.name)) == len(
             self.default()) else self.default()
+        if not self.actionb["Arbre"]:
+            self.load_arbre()
+        else:
+            self.mm.remove_collision(self.mm.get_object("Arbrecollision"))
+        self.opendoor()
+        self.load_tile_map()
         self.allmap.load()
 
     def __str__(self):
         return "la map actuel est la foret"
+
 
     def collision(self, i):
         for element in self.mm.get_allobject("all"):
@@ -357,6 +383,14 @@ class Foret:
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
+
+                if "Arbre" in element[0].name and not self.actionb[element[0].name]:
+                    self.supr_arbre()
+                    self.actionb[element[0].name] = True
+                    self.mm.remove_collision(self.mm.get_object("Arbrecollision"))
+                if "Door" in element[0].name:
+                    self.actionb["Door"] = False
+                    self.opendoor()
                 self.allmap.collision(element)
 
     def update(self):
@@ -402,6 +436,7 @@ class Maison_Foret:
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
                 self.allmap.collision(element)
+
 
     def update(self):
         pass
