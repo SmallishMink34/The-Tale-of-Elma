@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="145" height="152" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="454">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="145" height="152" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="458">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="ManyBats.tsx"/>
  <tileset firstgid="15179" source="Base2 (32).tsx"/>
@@ -2184,6 +2184,24 @@
   </object>
   <object id="453" name="Puit" x="1469" y="3261.5">
    <point/>
+  </object>
+  <object id="454" name="Portail Foret -&gt; Village" type="InputAction" x="1826.33" y="3965.67" width="124.666" height="100.667">
+   <properties>
+    <property name="TeleportPoint" value="ForetPos"/>
+    <property name="To?" value="Foret"/>
+   </properties>
+  </object>
+  <object id="455" name="ForetPosVillage" type="PlayerPos" x="1888.66" y="4026.67">
+   <point/>
+  </object>
+  <object id="456" name="Plaine" type="PlayerPos" x="4198.1" y="1796.83">
+   <point/>
+  </object>
+  <object id="457" name="Portail To Plaine Village" type="InputAction" x="4122.02" y="1740.5" width="159.454" height="89.5">
+   <properties>
+    <property name="TeleportPoint" value="Plaine"/>
+    <property name="To?" value="Plaine"/>
+   </properties>
   </object>
  </objectgroup>
  <layer id="18" name="ArbreBottom" width="145" height="152">

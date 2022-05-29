@@ -17,13 +17,15 @@ class game:
         # Lancement de pygame
         pygame.init()
 
+
+
         # Création de la fenetre de jeux
         if fullscreen is False:
             self.screen = pygame.display.set_mode(size)
         else:
             self.screen = pygame.display.set_mode((size), FULLSCREEN)
         pygame.display.set_caption(name)  # Choix du nom
-
+        pygame.display.set_icon(pygame.image.load("../img/icone.png").convert_alpha())
         self.w, self.h = self.screen.get_size()
 
         # Variable boolean Boucle de jeux
@@ -48,6 +50,13 @@ class game:
         self.clock.tick(self.tick)  # Vitesse du jeux
 
     def eventpy(self):
+        """
+        La fonction parcourt tous les événements qui se sont produits depuis le dernier appel de la fonction.
+
+        Si l'événement est un clic de souris, la fonction vérifie si le clic de souris s'est produit sur l'un des boutons.
+
+        Si le clic de la souris était sur un bouton, la fonction imprime le texte du bouton
+        """
         for event in pygame.event.get():  # parcours de tous les event pygame dans cette fenêtre
             x, y = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:  # si l'événement est le clic sur la fermeture de la fenêtre

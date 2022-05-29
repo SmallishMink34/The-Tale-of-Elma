@@ -370,7 +370,7 @@ class inv:
                     self.retourner_case(case1)
             else:  # sinon soit = si la deuxieme case est un autre objet que la première
                 self.retourner_case(case1)
-        self.save(self.name)  # on enrefistre l'inventaire
+                self.save(self.name)  # on enrefistre l'inventaire
             if self.lettre + str(case1) in self.c.keys():
                 if self.c[self.lettre + str(case1)].obj == None :  # si on déplace un None ( = rien )
                     return False
@@ -664,7 +664,7 @@ class invdouble:
                     self.retourner_case(case1)
             else:  # sinon soit = si la deuxieme case est un autre objet que la première
                 self.retourner_case(case1)
-        self.save(self.name)  # on enrefistre l'inventaire
+                self.save(self.name)  # on enrefistre l'inventaire
             if str(case1) in self.allcase.keys():
                 if self.allcase[str(case1)].obj == None:  # si on déplace un None ( = rien )
                     return False
@@ -703,10 +703,10 @@ class invdouble:
                 if self.allcase[i].rect.collidepoint(mouse_pos):
                     print(self.allcase[i])
     def present_sur_une_case(self, mouse_pos):
-            for i in self.allcase.keys():
-                if self.allcase[i].rect.collidepoint(mouse_pos):
-                    return self.allcase[i]
-            return False
+        for i in self.allcase.keys():
+            if self.allcase[i].rect.collidepoint(mouse_pos):
+                return self.allcase[i]
+        return False
 
 
 class item:

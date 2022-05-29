@@ -69,8 +69,11 @@ class menu():
                                        font='../font/Like Snow.otf')
         self.d['text_Quit'] = PG.Texte("Quitter", self.val.screensize[0] // 2, self.val.screensize[1] // 2 + 210,
                                        True, color=(255, 255, 255), size=50, font='../font/Like Snow.otf')
-        self.d['Titre'] = PG.Texte("Titre", self.val.screensize[0] // 2, self.val.screensize[1] // 2 - 275, True,
-                                   color=(255, 255, 255), size=125, font='../font/Like Snow.otf')
+        """self.d['Titre'] = PG.Texte("Titre", self.val.screensize[0] // 2, self.val.screensize[1] // 2 - 275, True,
+                                   color=(255, 255, 255), size=125, font='../font/Like Snow.otf')"""
+
+        self.d['Titre'] = PG.img("../img/Titre.png", 0, -120*self.val.facteur, self.val.screensize[0], self.val.screensize[1], False)
+
         self.image_fond = PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1],
                                  False)
         self.display = pygame.Surface(self.val.screensize)

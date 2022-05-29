@@ -6,6 +6,7 @@ import time
 import Ennemis
 import random
 
+
 class Grotte:
     def __init__(self, mapmanager, save_load=True):
         self.name = "Grotte"
@@ -24,7 +25,8 @@ class Grotte:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(self.default()) else self.default()
+        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(
+            self.default()) else self.default()
         self.pont()
         self.load_tile_map()
         self.opendoor()
@@ -150,7 +152,8 @@ class Village:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(self.default()) else self.default()
+        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(
+            self.default()) else self.default()
         self.allmap.load()
         print(self.actionb)
 
@@ -179,8 +182,6 @@ class Village:
                     self.actionb[element[0].name] = True
                 self.allmap.collision(element)
 
-
-
     def update(self):
         pass
 
@@ -194,10 +195,10 @@ class Maison:
         self.allmap = Allmap(self.mm, self)
         self.load()
 
-        self.allmap = Allmap(self.mm)
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(self.default()) else self.default()
+        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(
+            self.default()) else self.default()
         self.load_img()
         self.allmap.load()
 
@@ -208,6 +209,7 @@ class Maison:
                     self.mm.add_image_to_draw(f"../img/item/{element[0].properties['needitem']}.png",
                                               int(element[0].properties['Itemx']), int(element[0].properties['Itemy']),
                                               32, 32)
+
     def default(self):
         """
         Il renvoie un dictionnaire de tous les objets de la scène, avec le nom de l'objet comme clé et la propriété par
@@ -250,7 +252,9 @@ class Maison:
                 if "Pedestale" in element[0].name:
                     if not self.actionb[element[0].name]:
                         self.actionb[element[0].name] = True
-                        self.mm.add_image_to_draw(f"../img/item/{element[0].properties['needitem']}.png", int(element[0].properties['Itemx']), int(element[0].properties['Itemy']), 32, 32)
+                        self.mm.add_image_to_draw(f"../img/item/{element[0].properties['needitem']}.png",
+                                                  int(element[0].properties['Itemx']),
+                                                  int(element[0].properties['Itemy']), 32, 32)
 
     def update(self):
         pass
@@ -265,11 +269,10 @@ class Puit:
         self.allmap = Allmap(self.mm, self)
         self.load()
 
-
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(self.default()) else self.default()
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
+            self.mm.load(self.name)) == len(self.default()) else self.default()
         self.allmap.load()
-
 
     def default(self):
         """
@@ -310,13 +313,13 @@ class Puit:
     def update(self):
         pass
 
+
 class Foret:
     def __init__(self, mapmanager, save_load=False):
         self.name = "Foret"
         self.mm = mapmanager
         self.actionb = {}
         self.liste_obj = {}
-        print(self.mm.tmx.layers)
         self.allmap = Allmap(self.mm, self)
 
     def default(self):
@@ -352,13 +355,13 @@ class Foret:
     def update(self):
         pass
 
+
 class Maison_Foret:
     def __init__(self, mapmanager, save_load=False):
         self.name = "Maison_Foret"
         self.mm = mapmanager
         self.actionb = {}
         self.liste_obj = {}
-        print(self.mm.tmx.layers)
         self.allmap = Allmap(self.mm, self)
 
     def default(self):
@@ -394,12 +397,7 @@ class Maison_Foret:
     def update(self):
         pass
 
-class Foret:
-    def __init__(self, mapmanager, save_load=False):
-        self.name = "Foret"
-        self.mm = mapmanager
-        self.actionb = {}
-        self.liste_obj = {}
+
 class Plaine:
     def __init__(self, mapmanager, save_load=False):
         self.name = "Plaine"
@@ -438,8 +436,11 @@ class Plaine:
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
                 self.allmap.collision(element)
+
     def update(self):
         pass
+
+
 class MaisonPêcheur:
     def __init__(self, mapmanager, save_load=False):
         self.name = "MaisonPêcheur"
@@ -471,13 +472,12 @@ class MaisonPêcheur:
                     self.mm.player.gui.Game(self.mm.player.get_item_in_inventory(5).obj)
                 if "Map" in element[0].name:
                     self.mm.player.gui.Carte(element[0].properties['Stage'])
-                if "pêcheur" in element[0].name :
-                    objet2 = inv.item(9, 1)
+                if "pêcheur" in element[0].name:
+                    objet2 = self.mm.player.inv.item(9, 1)
                     self.element['inv'][0].add(objet2, "c14")
+
     def update(self):
         pass
-
-        self.allmap = Allmap(self.mm)
 
     def load(self):
         self.allmap.load()
@@ -500,6 +500,8 @@ class MaisonPêcheur:
 
     def update(self):
         pass
+
+
 class Allmap():
     def __init__(self, mapmanager, map=None):
         self.mm = mapmanager
@@ -535,8 +537,6 @@ class Allmap():
                                                    self.mm.get_object("PlayerPos").y // 32)
                 self.mm.remove_element_to_draw_obj(self.mm.get_object("PlayerPos").x // 32,
                                                    self.mm.get_object("PlayerPos").y // 32 + 1)
-
-
 
     def hand(self, element):
         """
@@ -605,7 +605,6 @@ class Allmap():
             if self.mm.current_map != var:
                 self.load()
 
-
             self.mm.draw()
 
             if var3:
@@ -629,7 +628,7 @@ class Allmap():
         """
         Il enregistre les informations du joueur dans un fichier
         """
-        w = open(valeurs.valeur.save_l+"/save/sauvegarde.txt", "w")
+        w = open(valeurs.valeur.save_l + "/save/sauvegarde.txt", "w")
         w.write("SpawnPoint: " + str(self.map.name) + "\n")
         w.write("Money: " + str(self.mm.player.money) + "\n")
         w.write("Pseudo: " + str(self.mm.player.name) + "\n")
