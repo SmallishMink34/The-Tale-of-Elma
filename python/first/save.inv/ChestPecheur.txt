@@ -1,12 +1,12 @@
-c1: None
-c2: None
-c3: None
-c4: [21, 'Clé Bleue', 1, 'item', 1]
-c5: [21, 'Clé Bleue', 1, 'item', 1]
-c6: None
-c7: None
-c8: None
-c9: None
-c10: None
-c11: None
-c12: None
+c1: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c2: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c3: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c4: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c5: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c6: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c7: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c8: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c9: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c10: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c11: [21, 'Clï¿½ Bleue', 1, 'item', 1]
+c12: [21, 'Clï¿½ Bleue', 1, 'item', 1]
