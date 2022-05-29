@@ -474,6 +474,8 @@ class MaisonPêcheur:
                 if "pêcheur" in element[0].name:
                     objet2 = inv.item(26, 1)
                     self.mm.player.inventaire.add(objet2, "c14")
+                #if "rubisBoss" in element[0].name:
+                    
                 self.allmap.collision(element)
                 
 

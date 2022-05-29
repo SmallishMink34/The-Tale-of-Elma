@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="140" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="34" nextobjectid="677">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="140" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="34" nextobjectid="678">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="ManyBats.tsx"/>
  <tileset firstgid="15179" source="TX Props (32).tsx"/>
@@ -1760,16 +1760,6 @@
     <property name="To?" value="MaisonPêcheur"/>
    </properties>
   </object>
-  <object id="663" name="Portail rubis" type="InputAction" x="3188.23" y="706.289" width="124.882" height="130.154" rotation="0.584631">
-   <properties>
-    <property name="Speaker" value="Mind"/>
-    <property name="TeleportPoint" value="BossF"/>
-    <property name="To?" value="Plaine"/>
-    <property name="consume" type="bool" value="false"/>
-    <property name="needitem" value="Rubis"/>
-    <property name="quantity" type="int" value="1"/>
-   </properties>
-  </object>
   <object id="666" name="ChestP3" type="InputAction" x="3139" y="3011.33" width="91.3334" height="81.3334"/>
   <object id="667" name="ChestP2" type="InputAction" x="1345.67" y="2535.33" width="91.3334" height="81.3334"/>
   <object id="668" name="ChestP1" type="InputAction" x="99.6666" y="3436.67" width="91.3334" height="81.3334"/>
@@ -1787,6 +1777,16 @@
     <property name="Respawn?" type="bool" value="false"/>
     <property name="level" value="3,6"/>
     <property name="nbennemis" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="677" name="Portail rubis" type="InputAction" x="3195.56" y="722.302" width="107.277" height="104.822" rotation="0.584631">
+   <properties>
+    <property name="Speaker" value="Mind"/>
+    <property name="TeleportPoint" value="BossF"/>
+    <property name="To?" value="MaisonPêcheur"/>
+    <property name="consume" type="bool" value="false"/>
+    <property name="needitem" value="Rubi"/>
+    <property name="quantity" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
@@ -1859,7 +1859,7 @@
   <object id="87" type="Collision" x="1440" y="2624" width="39" height="32"/>
   <object id="88" type="Collision" x="1312" y="2656" width="143" height="26"/>
   <object id="89" type="Collision" x="1283" y="2620" width="29" height="36"/>
-  <object id="91" type="Collision" x="2688" y="2368" width="161" height="32"/>
+  <object id="91" type="Collision" x="2688" y="2368" width="145" height="32"/>
   <object id="92" type="Collision" x="2816" y="2400" width="97" height="32"/>
   <object id="93" type="Collision" x="2976" y="2400" width="93" height="32"/>
   <object id="94" type="Collision" x="3040" y="2368" width="125" height="30"/>
@@ -2158,7 +2158,7 @@
   <object id="631" type="Collision" x="3305.33" y="963.818" width="216.667" height="28"/>
   <object id="632" type="Collision" x="3306.67" y="901.148" width="151.333" height="26.6667"/>
   <object id="633" type="Collision" x="3449.33" y="607.148" width="8.66667" height="288.667"/>
-  <object id="634" type="Collision" x="3074" y="607.818" width="384" height="32"/>
+  <object id="634" type="Collision" x="3072" y="605.818" width="384" height="32"/>
   <object id="635" type="Collision" x="3074" y="639.818" width="9.33333" height="64"/>
   <object id="636" type="Collision" x="3230.67" y="771.818" width="34" height="25.3333"/>
   <object id="637" type="Collision" x="3362" y="191.818" width="288" height="32"/>
@@ -2176,7 +2176,7 @@
   <object id="649" type="Collision" x="4199.33" y="1505.82" width="19.6667" height="28"/>
   <object id="650" type="Collision" x="3941.75" y="1087.57" width="23" height="28.75"/>
   <object id="651" type="Collision" x="3714.67" y="1127.49" width="58" height="50.3333"/>
-  <object id="652" type="Collision" x="2946" y="415.818" width="32" height="32"/>
+  <object id="652" type="Collision" x="2944" y="401.818" width="32" height="46"/>
   <object id="653" type="Collision" x="2504" y="1127.82" width="19.3333" height="20.6667"/>
   <object id="654" type="Collision" x="2530" y="703.818" width="32" height="32"/>
   <object id="655" type="Collision" x="3106" y="639.818" width="32" height="32"/>

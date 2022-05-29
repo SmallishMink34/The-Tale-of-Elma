@@ -3,7 +3,7 @@ ID;Nom;type;Pvmin;Pvmax;Atkmin;Atkmax;Defmin;Defmax;Speedmin;Speedmax;Img
 2;Squelette ;Normal;4;6;3;4;6;8;1;2;../img/Entities/mobs/Skeleton/skeletton.png
 3;Eye;Normal;3;4;6;9;3;4;4;6;../img/Entities/mobs/Flying eye/flyingeye.png
 4;Champignon;Normal;6;9;5;6;5;7;3;4;../img/Entities/mobs/Mushroom/Mushroomp.png
-5;Minautore;Normal;8;12;7;9;7;10;5;7;../img/Entities/mobs/Mino.png
+5;Santaure;Normal;8;12;7;9;7;10;5;7;../img/Entities/mobs/Mino.png
 6;Kraken;Normal;8;12;7;9;7;10;5;7;../img/Entities/mobs/Kraken.png
 7;Dragon;Normal;8;12;7;9;7;10;5;7;../img/Entities/mobs/Dragon.png
 8;Griffon;Normal;8;12;7;9;7;10;5;7;../img/Entities/mobs/Griffon.png

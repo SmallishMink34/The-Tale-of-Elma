@@ -1006,7 +1006,7 @@
   </object>
   <object id="56" name="Portail To Village Plaine" type="InputAction" x="2080.33" y="3740.79" width="175.333" height="98.413">
    <properties>
-    <property name="TeleportPoint" value="VillagePlage"/>
+    <property name="TeleportPoint" value="GoPlage"/>
     <property name="To?" value="Village"/>
    </properties>
   </object>
@@ -1050,7 +1050,7 @@
     <property name="To?" value="Plage"/>
    </properties>
   </object>
-  <object id="69" name="Portail bois" type="InputAction" x="3590.56" y="1886.92" width="124.882" height="130.154" rotation="0.584631">
+  <object id="69" name="Portail bois" type="InputAction" x="3624.57" y="1930.34" width="50.8722" height="65.3955" rotation="0.584631">
    <properties>
     <property name="Speaker" value="Mind"/>
     <property name="TeleportPoint" value="ile"/>
