@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="145" height="152" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="449">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="145" height="152" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="452">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="ManyBats.tsx"/>
  <tileset firstgid="15179" source="Base2 (32).tsx"/>
@@ -1991,6 +1991,15 @@
    <properties>
     <property name="TeleportPoint" value="Plaine"/>
     <property name="To?" value="Plaine"/>
+   </properties>
+  </object>
+  <object id="450" name="VillagePlage" type="PlayerPos" x="1884.5" y="40.83">
+   <point/>
+  </object>
+  <object id="451" name="Portail To Village Plaine" type="InputAction" x="1836.33" y="4" width="103.333" height="58">
+   <properties>
+    <property name="TeleportPoint" value="Plage"/>
+    <property name="To?" value="Plage"/>
    </properties>
   </object>
  </objectgroup>

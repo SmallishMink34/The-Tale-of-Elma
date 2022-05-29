@@ -1,2 +1,2 @@
-SpawnPoint: Plaine
+SpawnPoint: Plage
 Money: 0
