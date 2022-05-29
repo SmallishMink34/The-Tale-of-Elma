@@ -1,9 +1,10 @@
+from turtle import right
 import pygame
 import inv
 import ClassPG, pygame_textbox
 from valeurs import valeur
 
-#
+
 class Gui:
     def __init__(self, name, player, size=(1280, 720)):
         self.name = name
@@ -16,6 +17,7 @@ class Gui:
 
         self.element = {}
         self.InGame()
+
 
         self.currentGui = 'InGame'
 
@@ -108,13 +110,12 @@ class Gui:
         pass
 
     def iblit(self, screen):
-        self.PlayerLife(self.player.hp)
         if self.currentGui == "InGame":
             self.element['Kaction'][1] = self.player.KeyAction
         for i in self.element.keys():
             if self.element[i][1]:
                 self.element[i][0].iblit(screen)
-        if self.survole:
+        if self.survole and self.currentGui == "Inv":
             self.img_survole.iblit(screen)
         else:
             pass
@@ -135,6 +136,7 @@ class Gui:
             self.close()
 
         if self.currentGui == "Inv" or self.currentGui == "Invc":
+            print("inv ouvert")
             # self.element['inv'][0].info_case(mousepos, event)
             if self.move:
                 self.element['inv'][0].image_suivie(self.c, mousepos)

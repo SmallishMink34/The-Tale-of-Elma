@@ -36,6 +36,7 @@ class case:
     def return_info(self):
         return self.obj.nom
 
+
     def add_obj(self, obj):
         if self.obj != None:
             if self.obj.id == obj.id:
@@ -106,7 +107,7 @@ class inv:
     def suppr_nb_obj(self, nbr, case):
         """[Méthode qui supprime un objet à l'inv]"""
         case = case.replace(self.lettre, "") if isinstance(case, str) else case
-        self.c[self.lettre + str(case)].supr_nb(nbr)
+        self.c[self.lettre + str(case)].suppr_nb(nbr)
         self.save(self.name)
         self.load_inv()
         print(self.c[self.lettre + str(case)].obj)
@@ -114,6 +115,7 @@ class inv:
     def load_inv(self):
         self.c = self.lire_inv(f"inv.case/{self.type}.txt")
         self.import_save(self.name)
+
 
     def iblit(self, screen):
         """[Methode qui blit tout ce qu'il a afficher]"""
@@ -319,8 +321,10 @@ class inv:
                 else:
 
                     self.retourner_case(case1)
+                    
+        self.save(self.name) # on enrefistre l'inventaire
+        
 
-        self.save(self.name)  # on enrefistre l'inventaire
 
     def move_sep(self, case1: int, case2: int):
         """
@@ -422,6 +426,8 @@ class inv:
             if self.c[i].rect.collidepoint(mouse_pos):
                 return self.c[i]
         return False
+
+
 
 
 class invdouble:
@@ -632,39 +638,6 @@ class invdouble:
                 case2 (int): vers ou on veut déplacer l'item
 
             """
-        if str(case1) in self.allcase.keys():
-            if self.allcase[str(case1)].obj == None:  # si on déplace un None ( = rien )
-                return False
-
-            elif case1 == case2:
-                self.retourner_case(case1)  # si on déplace sur la meme case
-
-            elif self.allcase[str(case2)].obj is None:  # si la deuxieme case est vide
-                print("on sépare dans le coffre")
-                tmp = self.allcase[str(case1)].obj.nbr % 2
-                self.allcase[str(case1)].obj.nbr = self.allcase[
-                                                       str(case1)].obj.nbr // 2  # on divise par 2 le nombre d'objet de la case 1
-                self.add(self.allcase[str(case1)].obj, case2)  # on ajoute l'objet de la case 1 dans la case 2
-                self.update()
-                self.allcase[str(case2)].add_nb(tmp)  # on ajoute la moitié de la case un dans la deux
-
-            elif (self.allcase[str(case1)].obj.id == self.allcase[
-                str(case2)].obj.id):  # si les deux objets des deux cases sont identique
-                if self.allcase[str(case1)].obj.nbr + self.allcase[str(case2)].obj.nbr <= self.allcase[
-                    str(case2)].obj.nbr_max:  # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
-                    print("on emplile la motié dans le coffre")
-                    tmp = self.allcase[
-                              str(case1)].obj.nbr // 2  # on enregiste dans un var temporaire la moitié de la case 1
-                    self.allcase[str(case2)].add_nb(
-                        self.allcase[str(case1)].obj.nbr // 2)  # on divise par 2 le nombre d'objet de la case 1
-                    self.update()
-                    self.allcase[str(case1)].supr_nb(tmp)  # on supprime la moitié de la case 1
-                    self.update()
-                else:
-                    self.retourner_case(case1)
-            else:  # sinon soit = si la deuxieme case est un autre objet que la première
-                self.retourner_case(case1)
-                self.save(self.name)  # on enrefistre l'inventaire
             if str(case1) in self.allcase.keys():
                 if self.allcase[str(case1)].obj == None:  # si on déplace un None ( = rien )
                     return False
@@ -707,7 +680,6 @@ class invdouble:
             if self.allcase[i].rect.collidepoint(mouse_pos):
                 return self.allcase[i]
         return False
-
 
 class item:
     def __init__(self, ID: int, nb: int, coord: tuple = (0, 0)):
@@ -755,7 +727,6 @@ class item:
 
     def update_txt(self, coord):
         self.text.iupdate(self.nbr, (255, 255, 0), (coord[0], coord[1]))
-
 
 class survole:
     def __init__(self, coord, texte):
