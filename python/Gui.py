@@ -35,6 +35,7 @@ class Gui:
         self.element['Pname'] = [ClassPG.Texte(self.player.name, 20, 20, False, (255, 255, 255), 32), True]
         self.element['Kaction'] = [ClassPG.Texte("Interagir : "+str(pygame.key.name(valeur.l["interact"])).upper(), self.w/2, self.h-30, True, (255, 255, 255), int(15*self.facteur)),
                                    self.player.KeyAction]
+        #self.element['Vie'] = [ClassPG.img("")]
 
     def DialogB(self, name, texte):
         self.currentGui = "DialogB"
