@@ -503,6 +503,87 @@ class MaisonPêcheur:
 
     def update(self):
         pass
+class Plage:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "Plage"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+
+        self.allmap = Allmap(self.mm, self)
+
+    def default(self):
+        a = {}
+        for i in self.mm.get_allobject("all"):
+            try:
+                a[i[0].name] = i[0].properties["default"]
+            except KeyError:
+                pass
+        return a
+
+    def load(self):
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.allmap.load()
+
+    def __str__(self):
+        return "la map actuel est Plage"
+
+    def collision(self, i):
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                if self.allmap.check_price(element) is False: break
+                self.allmap.collision(element)
+    def update(self):
+        pass
+    
+class MaisonPlage:
+    def __init__(self, mapmanager, save_load=False):
+        self.name = "MaisonPlage"
+        self.mm = mapmanager
+        self.actionb = {}
+        self.liste_obj = {}
+
+        self.allmap = Allmap(self.mm, self)
+
+    def default(self):
+        a = {}
+        for i in self.mm.get_allobject("all"):
+            try:
+                a[i[0].name] = i[0].properties["default"]
+            except KeyError:
+                pass
+        return a
+
+    def load(self):
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.allmap.load()
+
+    def __str__(self):
+        return "la map actuel est MaisonPlage"
+
+    def collision(self, i):
+        for element in self.mm.get_allobject("all"):
+            if element[0].type != "InputAction":
+                if i.feet.colliderect(element[1]):
+                    self.allmap.collision_without_action(element)
+                    break
+                else:
+                    self.mm.player.speed = 3
+            if i.feet.colliderect(
+                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
+                if self.allmap.hand(element) is False: break
+                if self.allmap.check_price(element) is False: break
+                self.allmap.collision(element)
+    def update(self):
+        pass
 
 
 class Allmap():
