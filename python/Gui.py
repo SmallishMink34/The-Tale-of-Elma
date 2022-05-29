@@ -1,10 +1,9 @@
-from turtle import right
 import pygame
 import inv
 import ClassPG, pygame_textbox
 from valeurs import valeur
 
-
+#
 class Gui:
     def __init__(self, name, player, size=(1280, 720)):
         self.name = name
@@ -24,6 +23,9 @@ class Gui:
         self.move = None
         self.sep = None
 
+        self.img_survole = inv.survole(pygame.mouse.get_pos(), "")
+        self.survole = False
+
     def Game(self, name):
         pass
 
@@ -33,6 +35,7 @@ class Gui:
         self.element['Pname'] = [ClassPG.Texte(self.player.name, 20, 20, False, (255, 255, 255), 32), True]
         self.element['Kaction'] = [ClassPG.Texte("Interagir : "+str(pygame.key.name(valeur.l["interact"])).upper(), self.w/2, self.h-30, True, (255, 255, 255), int(15*self.facteur)),
                                    self.player.KeyAction]
+        #self.element['Vie'] = [ClassPG.img("")]
 
     def DialogB(self, name, texte):
         self.currentGui = "DialogB"
@@ -73,6 +76,23 @@ class Gui:
         print(f'{name} Ouvert')
         self.player.allinputoff(False)
 
+    def Carte(self, stade:int):
+        self.currentGui = "Carte"
+        self.element["Carte"] = [ClassPG.img(f"../img/Carte/Carte_{str(stade)}.jpg", 10, 10, 1260*self.facteur, 700*self.facteur, False), True]
+        self.player.allinputoff(False)
+
+    def buy(self, item, map):
+        self.currentGui = "Buy"
+        self.oldmap = map
+        self.item = item
+        self.element['texte'] = [ClassPG.Texte("Voulez vous achetez "+str(item.name)+" ?", 640*self.facteur, 300*self.facteur, True), True]
+        self.element['texte2'] = [
+            ClassPG.Texte("Prix : " + str(item.properties['money']) + " $", 640 * self.facteur, 340 * self.facteur, True),
+            True]
+        self.element["Valider"] = [ClassPG.Texte("Valider", 690*self.facteur, 380*self.facteur, True), True]
+        self.element["Annulerr"] = [ClassPG.Texte("Annuler", 590 * self.facteur, 380 * self.facteur, True), True]
+        self.player.allinputoff(False)
+
     def Pause(self):
         self.currentGui = "Pause"
         pass
@@ -83,6 +103,10 @@ class Gui:
         for i in self.element.keys():
             if self.element[i][1]:
                 self.element[i][0].iblit(screen)
+        if self.survole and self.currentGui == "Inv":
+            self.img_survole.iblit(screen)
+        else:
+            pass
 
     def close(self):
         self.InGame()
@@ -100,6 +124,7 @@ class Gui:
             self.close()
 
         if self.currentGui == "Inv" or self.currentGui == "Invc":
+            print("inv ouvert")
             # self.element['inv'][0].info_case(mousepos, event)
             if self.move:
                 self.element['inv'][0].image_suivie(self.c, mousepos)
@@ -119,10 +144,10 @@ class Gui:
                 self.element["inv"][0].move(self.c, self.c2)
 
             # if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-            #     objet = inv.item(10, 1)
-            #     objet2 = inv.item(11, 2)
-            #     self.element['inv'][0].add(objet, "c1")
-            #     self.element['inv'][0].add(objet2, "c2")
+            #     objet = inv.item(28, 1)
+            # #     objet2 = inv.item(11, 2)
+            #     self.element['inv'][0].add(objet, "c12")
+            # #     self.element['inv'][0].add(objet2, "c2")
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
                 self.sep = True
@@ -139,3 +164,18 @@ class Gui:
                 if not self.c2:
                     self.c2 = self.c
                 self.element["inv"][0].move_sep(self.c, self.c2)
+
+            if self.element["inv"][0].present_sur_une_case(mousepos) and self.element["inv"][0].name == "player":
+                pos = self.element["inv"][0].blit_info(mousepos).coord_save
+                if self.element["inv"][0].blit_info(pos).obj != None:
+                    self.survole = True
+                    self.img_survole.update(pos,self.element["inv"][0].blit_info(mousepos).return_info())
+                else:
+                    self.survole = False
+
+        if self.currentGui == "Buy":
+            if self.element['Valider'][0].click(mousepos, event):
+                self.oldmap.buy(self.item)
+                self.close()
+            elif self.element["Annulerr"][0].click(mousepos, event):
+                self.close()
