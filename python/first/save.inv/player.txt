@@ -7,14 +7,14 @@ c6: None
 c7: None
 c8: None
 c9: None
-c10: None
+c10: [5, 'epee', 1, 'arme', 1]
 c11: None
-c12: None
-c13: None
+c12: [23, 'Mattheo', 1, 'item', 1]
+c13: [24, 'Louis', 1, 'item', 1]
 c14: None
-c15: None
-c16: [28, 'Bois', 1, 'item', 1]
+c15: [4, 'briquet', 1, 'item', 1]
+c16: None
 c17: None
-c18: None
+c18: [18, 'Chaussure de vitesse', 1, 'item', 1]
 c19: None
-c20: [28, 'Bois', 1, 'item', 1]
+c20: None

@@ -109,14 +109,19 @@ class Texte:
         else:
             self.rect.x, self.rect.y = x, y
 
-    def iupdate(self, texte, color, coord=(0, 0)):
+    def iupdate(self, texte, color, coord=None):
         self.txt = self.font.render(str(texte), True, color)
         self.rect = self.txt.get_rect()
-
-        if self.center == 'center' or self.center == True:  # Detecte si on veut que les coordonées sois centré ou non
-            self.rect.centerx, self.rect.centery = coord[0], coord[1]
+        if coord != None:
+            if self.center == 'center' or self.center == True:  # Detecte si on veut que les coordonées sois centré ou non
+                self.rect.centerx, self.rect.centery = coord[0], coord[1]
+            else:
+                self.rect.x, self.rect.y = coord[0], coord[1]
         else:
-            self.rect.x, self.rect.y = coord[0], coord[1]
+            if self.center == 'center' or self.center == True:  # Detecte si on veut que les coordonées sois centré ou non
+                self.rect.centerx, self.rect.centery = self.x, self.y
+            else:
+                self.rect.x, self.rect.y = self.x, self.y
 
     def updatecoords(self, x, y):
         self.rect.x, self.rect.y = x, y

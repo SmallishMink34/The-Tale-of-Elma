@@ -3,7 +3,7 @@ import pygame
 import inv
 import ClassPG, pygame_textbox
 from valeurs import valeur
-
+import pandas as pd
 
 class Gui:
     def __init__(self, name, player, size=(1280, 720)):
@@ -87,6 +87,7 @@ class Gui:
         self.currentGui = "Buy"
         self.oldmap = map
         self.item = item
+        self.element["background"] = [ClassPG.img("../img/img.inv/INV.png", 0, 0, valeur.screensize[0], valeur.screensize[1], False), True]
         self.element['texte'] = [ClassPG.Texte("Voulez vous achetez "+str(item.name)+" ?", 640*self.facteur, 300*self.facteur, True), True]
         self.element['texte2'] = [
             ClassPG.Texte("Prix : " + str(item.properties['money']) + " $", 640 * self.facteur, 340 * self.facteur, True),
@@ -94,6 +95,26 @@ class Gui:
         self.element["Valider"] = [ClassPG.Texte("Valider", 690*self.facteur, 380*self.facteur, True), True]
         self.element["Annulerr"] = [ClassPG.Texte("Annuler", 590 * self.facteur, 380 * self.facteur, True), True]
         self.player.allinputoff(False)
+
+    def shop(self, marchant):
+        self.currentGui = "Shop"
+        csv = pd.read_csv(f"../python/info/{marchant}.csv", sep=",", low_memory=False)
+        long = len(open(f"../python/info/{marchant}.csv", "r").readlines())-1
+        dico = {}
+        for i in range(long):
+            a = csv.loc[i, ["Item", "price"]]
+            dico[str(i)] = [a["Item"], a["price"]]
+
+        self.element["background"] = [
+            ClassPG.img("../img/img.inv/INV.png", 0, 0, valeur.screensize[0], valeur.screensize[1], False), True]
+        x = 640
+        y = 150
+
+        for i in dico.keys():
+            self.element[str(i)] = [ItemShop(dico[i], x*valeur.facteur, y*valeur.facteur), True]
+            y+=80
+
+        self.element["Money_P"] = [ClassPG.Texte(str(self.player.money), 300*self.facteur, 150, False), True]
 
     def PlayerLife(self, vie):
         if self.player.hp_previous != self.player.hp:
@@ -156,10 +177,18 @@ class Gui:
                 self.element["inv"][0].move(self.c, self.c2)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                objet = inv.item(28, 1)
-            #     objet2 = inv.item(11, 2)
+                objet = inv.item(23, 1)
+                objet1 = inv.item(24, 1)
+                objet2 = inv.item(25, 1)
+                objet3 = inv.item(4, 1)
+                objet4 = inv.item(5, 1)
+
                 self.element['inv'][0].add(objet, "c12")
-            #     self.element['inv'][0].add(objet2, "c2")
+                self.element['inv'][0].add(objet1, "c13")
+                self.element['inv'][0].add(objet2, "c14")
+                self.element['inv'][0].add(objet3, "c15")
+                self.element['inv'][0].add(objet4, "c10")
+
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
                 self.sep = True
@@ -191,3 +220,43 @@ class Gui:
                 self.close()
             elif self.element["Annulerr"][0].click(mousepos, event):
                 self.close()
+
+        if self.currentGui == "Shop":
+            for i in self.element.keys():
+                if i in "1234567890":
+                    if self.element[i][0].click(mousepos, event):
+                        if self.player.money - self.element[i][0].item[1] >= 0:
+                            self.player.money -= self.element[i][0].item[1]
+                            self.element["Money_P"][0].iupdate(str(self.player.money), (255,255,255))
+                            obj = inv.item(self.element[i][0].item[0], 1)
+                            self.player.inventaire.add_last(obj)
+
+
+class ItemShop:
+    def __init__(self, item, x, y):
+        self.x, self.y = x, y
+        self.item = item
+        self.read()
+        self.img = ClassPG.img(self.imglink, self.x+10, self.y+10, 40, 40, False)
+        self.price = ClassPG.Texte(str(self.item[1]), self.x +60, self.y+10, False)
+        self.case = ClassPG.bouton("../img/img.inv/caseshop.png", self.x, self.y, 160, 60)
+    def read(self):
+        id = self.item[0]
+
+        data = pd.read_csv(r'info/items.csv', sep=',', low_memory=False)
+        info = data.loc[id - 1, ["Id", "name", "type", "imglink", "nbmax", "link"]]
+        self.nom = str(info["name"])
+        self.genre = str(info["type"])
+        print(info["type"])
+        self.imglink = str(info["imglink"])
+        self.nbr_max = int(info["nbmax"])
+        self.link = int(info["link"])
+
+    def click(self, mousepos, event):
+        if self.case.click(mousepos, event):
+            return True
+
+    def iblit(self, screen):
+        self.case.iblit(screen)
+        self.img.iblit(screen)
+        self.price.iblit(screen)

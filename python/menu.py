@@ -12,7 +12,8 @@ import valeurs
 import math
 import os
 import threading
-
+import shutil
+import cv2
 
 class menu():
     def __init__(self, val) -> None:
@@ -354,6 +355,7 @@ class ChoosePlayer():
         self.Film = self.Film_resized
         self.Film.set_fps(60)
 
+
     def gameloop(self, event, screen):
         self.iblit(screen)
         self.eventpy(event, screen)
@@ -383,12 +385,20 @@ class ChoosePlayer():
             if self.d["TextName"].select:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        #self.Film.preview(fullscreen=self.val.toggle)
+                        try:
+                            self.Film.preview(fullscreen=self.val.toggle)
+                        except ValueError:
+                            pass
                         self.val.name = self.d['TextName'].get_text()
                         self.change_save_stat()
                         gamee = game.Game((self.val.screensize[0], self.val.screensize[1], self.val.toggle))
                         gamee.map_manag.save("Lobby")
                         gamee.map_manag.maps["Lobby"].mapobject.allmap.save_player_info()
+
+                        for i in os.listdir("Basesave/save.chest/"):
+                            shutil.copy(f"Basesave/save.chest/{i}", self.val.save_l+"/save.inv/")
+
+
                         gamee.run()
 
         self.d['TextName'].iblit(events, screen)
@@ -676,6 +686,35 @@ class carte():
             self.img.image = self.img.img_copy
         self.img.iblit(screen)
         self.txt.iblit(screen)
+
+
+class Filme:
+    def __init__(self, film, menu, val):
+        self.video = cv2.VideoCapture(film)
+        self.success, self.video_image = self.video.read()
+        self.fps = self.video.get(cv2.CAP_PROP_FPS)
+        self.menu = menu
+        self.val = val
+        self.clock = pygame.time.Clock()
+        self.run()
+    def run(self):
+        running = True
+        while running:
+            self.continuer = True
+            self.clock.tick(self.fps)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            self.success, self.video_image = self.video.read()
+            if self.success:
+                video_surf = pygame.image.frombuffer(
+                    self.video_image.tobytes(), self.video_image.shape[1::-1], "BGR")
+            else:
+                running = False
+            self.menu.game.screen.blit(video_surf, (0, 0))
+
+            pygame.display.update()
+        pygame.quit()
 
 
 Menu = menu(valeurs.valeur)

@@ -174,6 +174,26 @@ class inv:
         self.c[self.lettre + str(case)].add_obj(obj)
         self.save(self.name)
 
+    def add_last(self, obj):
+        for i in self.c.keys():
+            if i not in ["c1", "c2", "c3", "c4", "c5"]:
+                if self.c[i].obj != None and self.c[i].obj.id == obj.id:
+                    if self.c[i].obj.nbr < self.c[i].obj.nbr_max:
+                        if self.c[i].obj.nbr + obj.nbr > self.c[i].obj.nbr_max:
+                            self.c[i].obj.nbr += obj.nbr
+                            diff = self.c[i].obj.nbr - self.c[i].obj.nbr_max
+                            obj.nbr -= diff
+                            self.add_last(obj)
+                            break
+                        else:
+                            self.c[i].obj.nbr += obj.nbr
+                            break
+                elif self.c[i].obj == None:
+                    self.c[i].add_obj(obj)
+                    break
+        self.save(self.name)
+        return False
+
     def suppr(self, case):
         """[Méthode qui suprime l'item dans la case de l'inv]"""
         self.c[self.lettre + str(case)].supr_obj()

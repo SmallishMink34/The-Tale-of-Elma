@@ -25,7 +25,8 @@ class Grotte:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
+            self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.pont()
         self.load_tile_map()
@@ -152,7 +153,8 @@ class Village:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
+            self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.allmap.load()
         print(self.actionb)
@@ -194,10 +196,10 @@ class Maison:
         self.liste_obj = {}
         self.allmap = Allmap(self.mm, self)
 
-
     def load(self):
 
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
+            self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.load_img()
         self.allmap.load()
@@ -332,8 +334,10 @@ class Foret:
                 pass
         return a
 
+
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
+            self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.allmap.load()
 
@@ -376,7 +380,8 @@ class Maison_Foret:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
+            self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.allmap.load()
 
@@ -420,7 +425,8 @@ class Plaine:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(
+            self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.allmap.load()
 
@@ -479,6 +485,7 @@ class MaisonPêcheur:
     def update(self):
         pass
 
+
 class Plage:
     def __init__(self, mapmanager, save_load=False):
         self.name = "Plage"
@@ -517,9 +524,11 @@ class Plage:
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
                 self.allmap.collision(element)
+
     def update(self):
         pass
-    
+
+
 class MaisonPlage:
     def __init__(self, mapmanager, save_load=False):
         self.name = "MaisonPlage"
@@ -558,6 +567,7 @@ class MaisonPlage:
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
                 self.allmap.collision(element)
+
     def update(self):
         pass
 
@@ -676,6 +686,9 @@ class Allmap():
             if var3:
                 self.mm.Animation.one_by_one_iblit(self.mm.screen, "fade_out")
             self.mm.player.allinputoff(True)
+
+        if "Marchant" in element[0].name:
+            self.mm.player.gui.shop(element[0].name)
 
     def buy(self, element):
         """

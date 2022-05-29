@@ -115,7 +115,6 @@ class Mapmanager:
                     group.add(a)
                     ennemis.append(a)
 
-
         # groupe contenant le joueur et la map
         group.add(self.player)
         group.change_layer(self.player, u)
@@ -293,6 +292,9 @@ class Mapmanager:
 
     def remove_collision(self, obj):
         self.maps[self.current_map].walls.remove(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
+    """def remove_inputaction(self, obj):
+        self.maps[self.current_map].object"""
 
     def add_collision_from_obj(self, obj):
         self.maps[self.current_map].walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
