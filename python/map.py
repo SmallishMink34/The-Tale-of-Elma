@@ -218,7 +218,6 @@ class Mapmanager:
             returntype = object : return object
             returntype = all : [object, pygame.Rect]
         """
-        print("After", self.current_map )
         l = []
         if returntype == "rect":
             for i in self.get_map().object.keys():
