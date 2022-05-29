@@ -3,7 +3,7 @@ import inv
 import ClassPG, pygame_textbox
 from valeurs import valeur
 
-
+#
 class Gui:
     def __init__(self, name, player, size=(1280, 720)):
         self.name = name
