@@ -1,13 +1,13 @@
 c1: None
 c2: None
-c3: None
+c3: [43, 'diamond_legging', 1, 'jambiere', 1]
 c4: None
-c5: [26, 'Rubi', 3, 'item', 1]
+c5: [32, 'Epee++', 1, 'arme', 1]
 c6: None
-c7: [26, 'Rubi', 17, 'item', 1]
+c7: None
 c8: None
 c9: None
-c10: None
+c10: [26, 'Rubi', 33, 'item', 1]
 c11: None
 c12: None
 c13: None

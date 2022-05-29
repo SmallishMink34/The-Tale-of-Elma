@@ -144,7 +144,7 @@ class Gui:
                 self.element["inv"][0].move(self.c, self.c2)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                objet = inv.item(26, 1)
+                objet = inv.item(43, 1)
             #     objet2 = inv.item(11, 2)
                 self.element['inv'][0].add(objet, "c12")
             #     self.element['inv'][0].add(objet2, "c2")

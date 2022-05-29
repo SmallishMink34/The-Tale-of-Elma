@@ -768,7 +768,7 @@
     <property name="To?" value="Plage"/>
    </properties>
   </object>
-  <object id="26" name="PlayerPos" type="PlayerPos" x="2220" y="1290">
+  <object id="26" name="PlayerPos" type="PlayerPos" x="2496.24" y="3317.88">
    <point/>
   </object>
   <object id="27" type="Ennemi" x="1882" y="3442" width="38" height="30">
