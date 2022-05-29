@@ -321,6 +321,7 @@ class Foret:
         self.actionb = {}
         self.liste_obj = {}
         self.allmap = Allmap(self.mm, self)
+        
 
     def default(self):
         a = {}
@@ -335,10 +336,20 @@ class Foret:
         self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.allmap.load()
+        self.opendoor()
 
     def __str__(self):
         return "la map actuel est la foret"
-
+    
+    def opendoor(self):
+        if not self.actionb["Door"]:
+            try:
+                self.mm.remove_collision(self.mm.get_object("ExitDoor"))
+            except ValueError:
+                pass
+            self.mm.remove_element_to_draw_obj(85, 65)
+            self.mm.remove_element_to_draw_obj(85, 64)
+            
     def collision(self, i):
         for element in self.mm.get_allobject("all"):
             if element[0].type != "InputAction":
@@ -351,8 +362,14 @@ class Foret:
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
+                
+                if "Door" in element[0].name:
+                    self.actionb["Door"] = False
+                    self.opendoor()
+                    self.allmap.collision(element)
+                
                 self.allmap.collision(element)
-
+                
     def update(self):
         pass
 
@@ -395,6 +412,7 @@ class Maison_Foret:
                 if self.allmap.hand(element) is False: break
                 if self.allmap.check_price(element) is False: break
                 self.allmap.collision(element)
+
 
     def update(self):
         pass

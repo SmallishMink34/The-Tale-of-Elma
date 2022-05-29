@@ -53,7 +53,9 @@ class Mapmanager:
         self.register_map("MaisonPêcheur", mapscript.MaisonPêcheur(self))
         self.register_map("Plage", mapscript.Plage(self))
         self.register_map("MaisonPlage", mapscript.MaisonPlage(self))
-
+        
+        self.current_map = self.basemap
+        
         self.changemap(self.basemap, "PlayerPos")
 
         self.Animation = transition.Animation(3)
@@ -118,7 +120,7 @@ class Mapmanager:
         self.maps[name] = Map(name, self.walls, objects_input, group, tmx, mapdata, mapobject, ennemis)
         mapobject.load()
         self.actionnb = mapobject.actionb
-        self.current_map = self.basemap
+        
 
     def reloadmap(self):
 

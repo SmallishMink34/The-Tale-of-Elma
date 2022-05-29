@@ -3,18 +3,18 @@ c2: None
 c3: None
 c4: None
 c5: None
-p6: None
-p7: None
-p8: None
-p9: None
-p10: None
-p11: None
-p12: None
-p13: None
-p14: None
-p15: None
-p16: None
-p17: None
-p18: None
-p19: None
-p20: None
+c6: [11, 'GrosDmg', 1021, 'potions', 1]
+c7: None
+c8: None
+c9: None
+c10: [28, 'Bois', 1, 'item', 1]
+c11: None
+c12: [28, 'Bois', 1, 'item', 1]
+c13: None
+c14: None
+c15: None
+c16: None
+c17: None
+c18: None
+c19: None
+c20: None
