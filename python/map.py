@@ -1,4 +1,4 @@
-import action as action
+
 import pygame, pytmx, pyscroll
 import mapscript
 import transition

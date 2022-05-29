@@ -26,6 +26,7 @@ class game:
             self.screen = pygame.display.set_mode((size), FULLSCREEN)
         pygame.display.set_caption(name)  # Choix du nom
         pygame.display.set_icon(pygame.image.load("../img/icone.png").convert_alpha())
+        pygame.mixer.pre_init(44100, -16, 2)
         self.w, self.h = self.screen.get_size()
 
         # Variable boolean Boucle de jeux

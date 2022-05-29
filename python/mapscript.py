@@ -25,7 +25,7 @@ class Grotte:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.pont()
         self.load_tile_map()
@@ -152,7 +152,7 @@ class Village:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.allmap.load()
         print(self.actionb)
@@ -197,7 +197,7 @@ class Maison:
 
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if len(self.mm.load(self.name)) == len(
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.load_img()
         self.allmap.load()
@@ -332,7 +332,8 @@ class Foret:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+            self.default()) else self.default()
         self.allmap.load()
 
     def __str__(self):
@@ -374,7 +375,8 @@ class Maison_Foret:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+            self.default()) else self.default()
         self.allmap.load()
 
     def __str__(self):
@@ -417,7 +419,8 @@ class Plaine:
         return a
 
     def load(self):
-        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None else self.default()
+        self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
+            self.default()) else self.default()
         self.allmap.load()
 
     def __str__(self):
@@ -632,6 +635,8 @@ class Allmap():
         w.write("SpawnPoint: " + str(self.map.name) + "\n")
         w.write("Money: " + str(self.mm.player.money) + "\n")
         w.write("Pseudo: " + str(self.mm.player.name) + "\n")
+
+        print("Info enregistrer dans le fichier")
         w.close()
 
         self.mm.save(self.mm.maps[self.mm.current_map].name)

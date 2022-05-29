@@ -1,3 +1,0 @@
-SpawnPoint: Lobby
-Money: 0
-Pseudo: SmallIsh

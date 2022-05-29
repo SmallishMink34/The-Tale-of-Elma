@@ -383,7 +383,7 @@ class ChoosePlayer():
             if self.d["TextName"].select:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        self.Film.preview(fullscreen=self.val.toggle)
+                        #self.Film.preview(fullscreen=self.val.toggle)
                         self.val.name = self.d['TextName'].get_text()
                         self.change_save_stat()
                         gamee = game.Game((self.val.screensize[0], self.val.screensize[1], self.val.toggle))
