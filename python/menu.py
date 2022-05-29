@@ -21,9 +21,8 @@ class menu():
         self.w, self.h = self.val.screensize[0], self.val.screensize[1]
         self.fullscreen = self.val.toggle
         self.display_w, self.display_h = self.val.screensize[0], self.val.screensize[1]
-        self.game = PG.game("Ingame", self.val.screensize, 60,  self.val.toggle)
+        self.game = PG.game("Ingame", self.val.screensize, 60, self.val.toggle)
         self.display = pygame.Surface((self.display_w, self.display_h))
-
 
         self.d = {}
         self.load()
@@ -55,7 +54,6 @@ class menu():
                 self.paraa.load()
                 self.paraa.run()
 
-
     def load(self):
         set = open("Basesave/settings.txt", "r")
         L = set.readlines()
@@ -72,7 +70,8 @@ class menu():
         """self.d['Titre'] = PG.Texte("Titre", self.val.screensize[0] // 2, self.val.screensize[1] // 2 - 275, True,
                                    color=(255, 255, 255), size=125, font='../font/Like Snow.otf')"""
 
-        self.d['Titre'] = PG.img("../img/Titre.png", 0, -120*self.val.facteur, self.val.screensize[0], self.val.screensize[1], False)
+        self.d['Titre'] = PG.img("../img/Titre.png", 0, -120 * self.val.facteur, self.val.screensize[0],
+                                 self.val.screensize[1], False)
 
         self.image_fond = PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1],
                                  False)
@@ -160,7 +159,6 @@ class song():
         self.game = PG.game("Ingame", (self.display_w, self.display_h), 60, menu.fullscreen)
         self.val = val
 
-
         self.slider = Slider(self.game.screen, self.val.screensize[0] // 2 - 400, self.val.screensize[1] // 2 + 30, 800,
                              40, min=0, max=99, step=1, initial=0, curved=True, handleRadius=30)
 
@@ -241,6 +239,7 @@ class song():
             self.gameloop(pygame.event.get(), self.game.screen)
             pygame.display.update()
         pygame.quit()
+
 
 class Touches():
     def __init__(self, menu, val) -> None:
@@ -443,7 +442,7 @@ class Choose_save():
         self.eventpy(event, screen)
 
     def delete_save(self, savename):
-        dir1 = savename+"/save/"
+        dir1 = savename + "/save/"
         dir2 = savename + "/save.inv/"
 
         for i in os.listdir(dir1):
@@ -536,10 +535,10 @@ class Choose_save():
 
     def save(self):
         set = open("Basesave/save.txt", "w")
-        set.write("Lastsave: " + str(self.dico['Lastsave'])+"\n")
-        set.write("save1: " + str(self.dico['save1'])+"\n")
-        set.write("save2: " + str(self.dico['save2'])+"\n")
-        set.write("save3: " + str(self.dico['save3'])+"\n")
+        set.write("Lastsave: " + str(self.dico['Lastsave']) + "\n")
+        set.write("save1: " + str(self.dico['save1']) + "\n")
+        set.write("save2: " + str(self.dico['save2']) + "\n")
+        set.write("save3: " + str(self.dico['save3']) + "\n")
         set.close()
 
     def load(self):
@@ -563,9 +562,9 @@ class Choose_save():
         self.d['Quitter'] = PG.bouton('../img/menu/Quit.png', 40, self.val.screensize[1] - 60, 50, 50)
         self.d['SaveTxt'] = PG.Texte('Les sauvegardes : ', self.val.screensize[0] / 2, 30 * self.val.facteur, True,
                                      (255, 255, 255), 32, "../font/Like Snow.otf")
-        self.d['save1'] = carte("first", 132*self.val.facteur, 150*self.val.facteur, self.dico['save1'])
-        self.d['save2'] = carte("second", 514*self.val.facteur, 150*self.val.facteur, self.dico['save2'])
-        self.d['save3'] = carte("third", 896*self.val.facteur, 150*self.val.facteur, self.dico['save3'])
+        self.d['save1'] = carte("first", 132 * self.val.facteur, 150 * self.val.facteur, self.dico['save1'])
+        self.d['save2'] = carte("second", 514 * self.val.facteur, 150 * self.val.facteur, self.dico['save2'])
+        self.d['save3'] = carte("third", 896 * self.val.facteur, 150 * self.val.facteur, self.dico['save3'])
 
         self.image_fond = PG.img('../img/menu/Fond_Menu.png', 0, 0, self.val.screensize[0], self.val.screensize[1],
                                  False)
@@ -677,7 +676,6 @@ class carte():
             self.img.image = self.img.img_copy
         self.img.iblit(screen)
         self.txt.iblit(screen)
-
 
 
 Menu = menu(valeurs.valeur)
