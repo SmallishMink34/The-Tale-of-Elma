@@ -1,3 +1,0 @@
-Foret
-Door: False
-Arbre: True

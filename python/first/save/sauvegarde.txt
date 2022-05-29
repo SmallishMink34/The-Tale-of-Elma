@@ -1,3 +1,0 @@
-SpawnPoint: Foret
-Money: 900
-Pseudo: MMMatth

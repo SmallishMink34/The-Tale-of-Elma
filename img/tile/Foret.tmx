@@ -1615,8 +1615,12 @@
   </object>
   <object id="157" name="Portail Foret -&gt; Colise" type="InputAction" x="796.675" y="1573.02" width="104.65" height="69.9693">
    <properties>
+    <property name="Il vous faut une clé !" value=""/>
     <property name="TeleportPoint" value="Colise"/>
     <property name="To?" value="Maison_Foret"/>
+    <property name="consume" type="bool" value="false"/>
+    <property name="needitem" value="Clé Jaune"/>
+    <property name="quantity" type="int" value="1"/>
    </properties>
   </object>
   <object id="158" name="Foret_Colise" type="PlayerPos" x="850.172" y="1618.42">
@@ -1657,6 +1661,7 @@
   </object>
   <object id="167" name="Door" type="InputAction" x="967.25" y="1067.2" width="96" height="105.091">
    <properties>
+    <property name="Texte" value="Il vous faut une clé"/>
     <property name="consume" type="bool" value="true"/>
     <property name="default" type="bool" value="true"/>
     <property name="needitem" value="Clé Bleue"/>
@@ -1686,6 +1691,7 @@
   <object id="185" name="Arbre" type="InputAction" x="1761.83" y="704.167" width="189" height="162.333">
    <properties>
     <property name="Infire" type="bool" value="false"/>
+    <property name="Texte" value="Il faudrait quelque chose pour le couper ..."/>
     <property name="consume" type="bool" value="false"/>
     <property name="default" type="bool" value="false"/>
     <property name="needitem" value="hache"/>
