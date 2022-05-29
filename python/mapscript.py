@@ -332,6 +332,15 @@ class Foret:
                 pass
         return a
 
+    def opendoor(self):
+        if not self.actionb["Door"]:
+            try:
+                self.mm.remove_collision(self.mm.get_object("ExitDoor"))
+            except ValueError:
+                pass
+            self.mm.remove_element_to_draw_obj(85, 65)
+            self.mm.remove_element_to_draw_obj(85, 64)
+    
     def load(self):
         self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
             self.default()) else self.default()
@@ -341,14 +350,7 @@ class Foret:
     def __str__(self):
         return "la map actuel est la foret"
     
-    def opendoor(self):
-        if not self.actionb["Door"]:
-            try:
-                self.mm.remove_collision(self.mm.get_object("ExitDoor"))
-            except ValueError:
-                pass
-            self.mm.remove_element_to_draw_obj(85, 65)
-            self.mm.remove_element_to_draw_obj(85, 64)
+    
             
     def collision(self, i):
         for element in self.mm.get_allobject("all"):

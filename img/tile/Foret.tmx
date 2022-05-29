@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="175">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="182">
  <tileset firstgid="1" source="Base2 (32).tsx"/>
  <tileset firstgid="1065" source="Base (32).tsx"/>
  <tileset firstgid="1485" source="ManyBats.tsx"/>
@@ -1509,7 +1509,7 @@
   <object id="51" type="Collision" x="2313.17" y="1826" width="172.666" height="32"/>
   <object id="52" type="Collision" x="1907.17" y="1825" width="73.666" height="32"/>
   <object id="53" type="Collision" x="1855.8" y="1572.25" width="30.4074" height="247.5"/>
-  <object id="60" name="PlayerPos" type="PlayerPos" x="2609.04" y="272.843">
+  <object id="60" name="PlayerPos" type="PlayerPos" x="2369.04" y="1654.84">
    <point/>
   </object>
   <object id="61" name="Foret" type="SpawnPoint" x="2537.58" y="202.25" width="146.5" height="135.167"/>
@@ -1681,5 +1681,6 @@
   <object id="172" type="Collision" x="2983.42" y="1957.42" width="45.166" height="27.8333"/>
   <object id="173" type="Collision" x="2850.75" y="1888.75" width="28.4993" height="27.8333"/>
   <object id="174" type="Collision" x="2336.46" y="1058.92" width="30.4074" height="247.5"/>
+  <object id="175" name="ExitDoor" type="Collision" x="991.25" y="1119.25" width="32" height="32"/>
  </objectgroup>
 </map>
