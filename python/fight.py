@@ -89,6 +89,8 @@ class fight():
                         x += 100
                         y = 480*self.facteur
                         
+  
+                        
                         
     def potions(self, Id):
         potions2 = pd.read_csv("../python/info/Potions.csv", sep=",", low_memory=False)
@@ -254,6 +256,8 @@ class fight():
                     player_move = False
                     self.ennemii.Pv -= self.realdmg
                     if self.ennemii.Pv <= 0:
+                        Cloot = Loot(self.lvlmob, self.joueur)
+                        Cloot.running()
                         return self.endfight("Player")
 
             elif not player_move:
@@ -308,3 +312,65 @@ class fight():
             
             pygame.display.update()
         return self.endfight("Fuite")
+
+class Loot():
+    def __init__(self, Id, joueur) : 
+        self.joueur = joueur
+        Argent = pd.read_csv("../python/info/Money.csv", sep=",", low_memory=False)
+        info4 = Argent.loc[Id-1, ["Level","Argent"]]
+        Lvl = info4["Level"]
+        self.Money = info4["Argent"]
+        
+        
+        self.screen = pygame.display.set_mode(valeurs.valeur.screensize, valeurs.valeur.toggle)
+    
+    def running(self):
+        
+        
+        # Boutoun Recupérer
+        Disp = False 
+        recup = pygame.image.load("../img/Fight/Recup.png").convert_alpha()
+        recup = pygame.transform.scale(recup, (200*valeurs.valeur.facteur,100*valeurs.valeur.facteur))
+        recup_rect = recup.get_rect()
+        recup_rect.x = 565 * valeurs.valeur.facteur
+        recup_rect.y = 575 *  valeurs.valeur.facteur
+        
+        #Image de fond
+        Img = ClassPG.img("../img/temp/screen.png", 0, 0, valeurs.valeur.screensize[0], valeurs.valeur.screensize[1], False)
+        
+        # Image de croix 
+        Cross = pygame.image.load("../img/Fight/Recup.png").convert_alpha()
+        Cross = pygame.transform.scale(Cross, (200*valeurs.valeur.facteur,100*valeurs.valeur.facteur))
+        Cross_rect = Cross.get_rect()
+        Cross_rect.x = 1260 * valeurs.valeur.facteur
+        Cross_rect.y = 20 *  valeurs.valeur.facteur
+        
+        
+        argent = ClassPG.Texte("Argent : "+str(self.joueur.money), 575* valeurs.valeur.facteur, 400* valeurs.valeur.facteur, False)
+        argentwin = ClassPG.Texte("Argent gagnés :"+ str(self.Money),555* valeurs.valeur.facteur, 500* valeurs.valeur.facteur, False)
+        running = True 
+        while running :      
+            # Vérification des événements dans le jeu.
+            for events in pygame.event.get():
+                if events.type == pygame.QUIT:
+                    running = False
+                if events.type == pygame.MOUSEBUTTONDOWN:
+                    if events.button == 1: # 1= clique gauche
+                        if recup_rect.collidepoint(events.pos) and Disp == False:
+                            self.joueur.money += self.Money
+                            Disp = True 
+                            print(self.joueur.money)
+                            running = False 
+                        if Cross_rect.collidepoint(events.pos):
+                            running = False 
+
+            Img.iblit(self.screen)
+            argent.iblit(self.screen)
+            argentwin.iblit(self.screen)
+            self.screen.blit(Cross,Cross_rect)
+            if Disp == False :
+                self.screen.blit(recup, recup_rect)
+                  
+            pygame.display.update()
+            
+        

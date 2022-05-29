@@ -5,6 +5,7 @@ import transition
 import time
 import Ennemis
 import random
+import inv 
 
 
 class Grotte:
@@ -470,36 +471,11 @@ class MaisonPêcheur:
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
-                self.allmap.collision(element)
-                if element[0].name == "Game":
-                    self.mm.player.gui.Game(self.mm.player.get_item_in_inventory(5).obj)
-                if "Map" in element[0].name:
-                    self.mm.player.gui.Carte(element[0].properties['Stage'])
                 if "pêcheur" in element[0].name:
-                    objet2 = self.mm.player.inv.item(9, 1)
-                    self.element['inv'][0].add(objet2, "c14")
-
-    def update(self):
-        pass
-
-    def load(self):
-        self.allmap.load()
-
-    def __str__(self):
-        return "la map actuel est la Foret"
-
-    def collision(self, i):
-        for element in self.mm.get_allobject("all"):
-            if element[0].type != "InputAction":
-                if i.feet.colliderect(element[1]):
-                    self.allmap.collision_without_action(element)
-                    break
-                else:
-                    self.mm.player.speed = 3
-            if i.feet.colliderect(
-                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
-                if self.allmap.hand(element) is False: break
+                    objet2 = inv.item(26, 1)
+                    self.mm.player.inventaire.add(objet2, "c14")
                 self.allmap.collision(element)
+                
 
     def update(self):
         pass
@@ -641,9 +617,9 @@ class Allmap():
                         if element[0].properties["consume"]:
                             if element[0].name in self.map.actionb.keys():
                                 if not self.map.actionb[element[0].name]:
-                                    self.mm.player.inventaire.suppr_nb_obj(1, 5)
+                                    self.mm.player.inventaire.suppr_nb_obj(element[0].properties["quantity"], 5)
                             else:
-                                self.mm.player.inventaire.suppr_nb_obj(1, 5)
+                                self.mm.player.inventaire.suppr_nb_obj(element[0].properties["quantity"], 5)
                     else:
                         self.action_help(element)
                         return False

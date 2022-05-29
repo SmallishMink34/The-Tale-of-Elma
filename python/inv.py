@@ -171,6 +171,7 @@ class inv:
         """[Méthode qui ajoute un objet à l'inv]"""
         case = case.replace(self.lettre, "")
         self.c[self.lettre + str(case)].add_obj(obj)
+        self.save(self.name)
 
     def suppr(self, case):
         """[Méthode qui suprime l'item dans la case de l'inv]"""
