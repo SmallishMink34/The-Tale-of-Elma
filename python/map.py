@@ -328,3 +328,4 @@ class Mapmanager:
 
     def get_layer_by_name(self, name):
         return self.get_map().tmx_data.get_layer_by_name(name)
+
