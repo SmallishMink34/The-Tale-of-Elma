@@ -638,37 +638,37 @@ class invdouble:
                 case2 (int): vers ou on veut déplacer l'item
 
             """
-            if str(case1) in self.allcase.keys():
-                if self.allcase[str(case1)].obj == None:  # si on déplace un None ( = rien )
-                    return False
+        if str(case1) in self.allcase.keys():
+            if self.allcase[str(case1)].obj == None:  # si on déplace un None ( = rien )
+                return False
 
-                elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case
+            elif case1 == case2:  self.retourner_case(case1) # si on déplace sur la meme case
 
 
-                elif self.allcase[str(case2)].obj is None :  # si la deuxieme case est vide
-                    if self.allcase[str(case1)].obj.nbr == 1: # si l'objet à déplacer est un seul
-                        self.retourner_case(case1) # on retourne la case
-                    else:
-                        print("on sépare dans le coffre")
-                        tmp = self.allcase[str(case1)].obj.nbr % 2
-                        self.allcase[str(case1)].obj.nbr = self.allcase[str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
-                        self.add(self.allcase[str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
-                        self.update()
-                        self.allcase[str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
+            elif self.allcase[str(case2)].obj is None :  # si la deuxieme case est vide
+                if self.allcase[str(case1)].obj.nbr == 1: # si l'objet à déplacer est un seul
+                    self.retourner_case(case1) # on retourne la case
+                else:
+                    print("on sépare dans le coffre")
+                    tmp = self.allcase[str(case1)].obj.nbr % 2
+                    self.allcase[str(case1)].obj.nbr = self.allcase[str(case1)].obj.nbr // 2 # on divise par 2 le nombre d'objet de la case 1
+                    self.add(self.allcase[str(case1)].obj, case2) # on ajoute l'objet de la case 1 dans la case 2
+                    self.update()
+                    self.allcase[str(case2)].add_nb(tmp) # on ajoute la moitié de la case un dans la deux
 
-                elif (self.allcase[str(case1)].obj.id == self.allcase[str(case2)].obj.id): # si les deux objets des deux cases sont identique
-                    if self.allcase[str(case1)].obj.nbr + self.allcase[str(case2)].obj.nbr <= self.allcase[str(case2)].obj.nbr_max: # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
-                        print("on emplile la motié dans le coffre")
-                        tmp = self.allcase[str(case1)].obj.nbr // 2 # on enregiste dans un var temporaire la moitié de la case 1
-                        self.allcase[str(case2)].add_nb(self.allcase[str(case1)].obj.nbr // 2 ) # on divise par 2 le nombre d'objet de la case 1
-                        self.update()
-                        self.allcase[str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
-                        self.update()
-                    else:
-                        self.retourner_case(case1)
-                else :  # sinon soit = si la deuxieme case est un autre objet que la première
+            elif (self.allcase[str(case1)].obj.id == self.allcase[str(case2)].obj.id): # si les deux objets des deux cases sont identique
+                if self.allcase[str(case1)].obj.nbr + self.allcase[str(case2)].obj.nbr <= self.allcase[str(case2)].obj.nbr_max: # on gère ici le fait qu'on ne peut pas dépasser le chiffre max
+                    print("on emplile la motié dans le coffre")
+                    tmp = self.allcase[str(case1)].obj.nbr // 2 # on enregiste dans un var temporaire la moitié de la case 1
+                    self.allcase[str(case2)].add_nb(self.allcase[str(case1)].obj.nbr // 2 ) # on divise par 2 le nombre d'objet de la case 1
+                    self.update()
+                    self.allcase[str(case1)].supr_nb(tmp) # on supprime la moitié de la case 1
+                    self.update()
+                else:
                     self.retourner_case(case1)
-            self.save(self.name) # on enrefistre l'inventaire
+            else :  # sinon soit = si la deuxieme case est un autre objet que la première
+                self.retourner_case(case1)
+        self.save(self.name) # on enrefistre l'inventaire
 
     def info_case(self, mouse_pos, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 2:
