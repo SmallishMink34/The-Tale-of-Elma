@@ -357,6 +357,7 @@ class ChoosePlayer():
 
 
     def gameloop(self, event, screen):
+        # Le code ci-dessus affiche l'image à l'écran, puis appelle la fonction eventpy.
         self.iblit(screen)
         self.eventpy(event, screen)
 
