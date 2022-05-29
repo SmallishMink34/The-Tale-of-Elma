@@ -53,12 +53,6 @@ class Game():
                     self.player.gui.inventory(self.player.inventaire)
                     self.player.pressed[valeur.l["inventory"]] = False
 
-                if self.player.pressed.get(pygame.K_l):
-                    fightt = fight.fight(self.player, 3, 3)
-                    fightt.image(self.display)
-                    fightt.FightScreen()
-                    self.player.pressed[pygame.K_l] = False
-
 
             self.player.gui.iblit(self.display)
 

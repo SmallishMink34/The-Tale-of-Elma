@@ -1,6 +1,6 @@
 c1: None
 c2: None
-c3: [27, 'Poisson', 1, 'item', 1]
+c3: [28, 'Bois', 1, 'item', 1]
 c4: None
 c5: None
 c6: None

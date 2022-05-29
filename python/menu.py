@@ -353,7 +353,7 @@ class ChoosePlayer():
         self.Film = moviepy.editor.VideoFileClip("../img/Intro.mp4")
         self.Film_resized = self.Film.resize(self.val.screensize)
         self.Film = self.Film_resized
-        self.Film.set_fps(60)
+        self.Film.audio.duration = self.Film.duration
 
 
     def gameloop(self, event, screen):
@@ -657,7 +657,6 @@ class carte():
         if self.save:
             w = open(self.savename + '/save/sauvegarde.txt', "r")
             L = w.readlines()
-            print(self.savename, L[2].split(': ')[1])
             self.pseudo = L[2].split(': ')[1].strip()
             w.close()
 

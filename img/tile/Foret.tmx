@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="188">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="188">
  <tileset firstgid="1" source="Base2 (32).tsx"/>
  <tileset firstgid="1065" source="Base (32).tsx"/>
  <tileset firstgid="1485" source="ManyBats.tsx"/>
@@ -1659,7 +1659,7 @@
     <property name="tilename" value="Base2"/>
    </properties>
   </object>
-  <object id="167" name="Door" type="InputAction" x="967.25" y="1067.2" width="96" height="105.091">
+  <object id="167" name="Door" type="InputAction" x="959.25" y="1064.87" width="96" height="105.091">
    <properties>
     <property name="Texte" value="Il vous faut une clé"/>
     <property name="consume" type="bool" value="true"/>

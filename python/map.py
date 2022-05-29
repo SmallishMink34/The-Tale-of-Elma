@@ -269,7 +269,7 @@ class Mapmanager:
                     self.maps[self.current_map].ennemis.remove(i3)
                     self.get_group().remove(i3)
                 else:
-                    self.teleport_player("PlayerPos")
+                    self.changemap(self.load_localtion(), "PlayerPos")
                     self.player.hp = self.player.hpmax
                 self.player.allinputoff(True)
                 self.player.pressed[pygame.K_l] = False

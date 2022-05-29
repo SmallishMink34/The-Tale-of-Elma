@@ -2077,7 +2077,7 @@
   </object>
   <object id="346" name="Portail To Plaine Village" type="InputAction" x="1.66683" y="1643" width="103.333" height="58">
    <properties>
-    <property name="TeleportPoint" value="Plaine"/>
+    <property name="TeleportPoint" value="VillageExit"/>
     <property name="To?" value="Village"/>
    </properties>
   </object>

@@ -1,6 +1,6 @@
-c1: [27, 'Poisson', 1, 'item', 1]
+c1: None
 c2: None
-c3: None
+c3: [27, 'Poisson', 1, 'item', 1]
 c4: None
 c5: None
 c6: None
@@ -10,12 +10,3 @@ c9: None
 c10: None
 c11: None
 c12: None
-c13: None
-c14: None
-c15: None
-c16: None
-c17: None
-c18: None
-c19: None
-c20: None
-c21: None

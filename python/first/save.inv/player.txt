@@ -1,20 +1,20 @@
 c1: None
-c2: None
+c2: [34, 'gold_chestplate', 1, 'plastron', 1]
 c3: None
 c4: None
-c5: None
+c5: [30, 'lance', 5, 'arme', 1]
 c6: None
 c7: None
 c8: None
 c9: None
-c10: [5, 'epee', 1, 'arme', 1]
+c10: None
 c11: None
-c12: [23, 'Mattheo', 1, 'item', 1]
-c13: [24, 'Louis', 1, 'item', 1]
-c14: None
-c15: [4, 'briquet', 1, 'item', 1]
-c16: None
-c17: None
-c18: [18, 'Chaussure de vitesse', 1, 'item', 1]
+c12: [29, 'hache', 5, 'arme', 1]
+c13: [29, 'hache', 6, 'arme', 1]
+c14: [28, 'Bois', 4, 'item', 1]
+c15: [8, 'PetitHeal', 5, 'potions', 1]
+c16: [27, 'Poisson', 5, 'item', 1]
+c17: [21, 'Clé Bleue', 5, 'item', 1]
+c18: [22, 'Clé Jaune', 5, 'item', 1]
 c19: None
 c20: None

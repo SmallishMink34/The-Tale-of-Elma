@@ -107,7 +107,7 @@ class inv:
     def suppr_nb_obj(self, nbr, case):
         """[Méthode qui supprime un objet à l'inv]"""
         case = case.replace(self.lettre, "") if isinstance(case, str) else case
-        self.c[self.lettre + str(case)].suppr_nb(nbr)
+        self.c[self.lettre + str(case)].supr_nb(nbr)
         self.save(self.name)
         self.load_inv()
         print(self.c[self.lettre + str(case)].obj)

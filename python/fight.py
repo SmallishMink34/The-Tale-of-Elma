@@ -16,7 +16,7 @@ class fight():
         self.gui = False 
         self.dico = {"heal":self.heal, "degat":self.damage}
         self.w = []
-        
+        self.boss = [5,6,7,8]
         try:
             if self.joueur.get_item_in_inventory(5).obj.genre == "arme":
                 self.armid = self.joueur.get_item_in_inventory(5).obj.link
@@ -214,10 +214,11 @@ class fight():
             
             # Vérification des événements dans le jeu.
             for events in pygame.event.get():
-                if events.type == pygame.QUIT:
-                    running = False
+                if self.mobid not in self.boss:
+                    if events.type == pygame.QUIT:
+                        running = False
                 if events.type == pygame.KEYDOWN : 
-                    if events.key == pygame.K_ESCAPE :
+                    if events.key == pygame.K_ESCAPE:
                         self.gui = False 
                 mousepos = pygame.mouse.get_pos()
                 if events.type == pygame.MOUSEBUTTONDOWN and self.tour == True :
@@ -228,7 +229,7 @@ class fight():
                                 player_move = True
                                 self.tour = False
                             # Bouton fuir 
-                            if bf_rect.collidepoint(events.pos):
+                            if bf_rect.collidepoint(events.pos) and self.mobid not in self.boss:
                                 return self.endfight("Fuite")
 
                             if bobj_rect.collidepoint(events.pos):
@@ -308,8 +309,7 @@ class fight():
                     i.iblit(self.screen)
             self.screen.blit(bottom, bottom_rect)
             pv.iblit(self.screen)
-                    
-            
+
             pygame.display.update()
         return self.endfight("Fuite")
 
@@ -352,6 +352,7 @@ class Loot():
         while running :      
             # Vérification des événements dans le jeu.
             for events in pygame.event.get():
+
                 if events.type == pygame.QUIT:
                     running = False
                 if events.type == pygame.MOUSEBUTTONDOWN:

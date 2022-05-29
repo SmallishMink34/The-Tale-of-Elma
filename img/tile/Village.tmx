@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="145" height="152" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="470">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="145" height="152" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="473">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="ManyBats.tsx"/>
  <tileset firstgid="15179" source="Base2 (32).tsx"/>
@@ -2198,7 +2198,7 @@
     <property name="To?" value="Foret"/>
    </properties>
   </object>
-  <object id="455" name="ForetPosVillage" type="PlayerPos" x="1888.66" y="4026.67">
+  <object id="455" name="ForetPosVillage" type="PlayerPos" x="1889.99" y="3987.34">
    <point/>
   </object>
   <object id="456" name="VillageExit" type="PlayerPos" x="4198.1" y="1796.83">
@@ -2206,7 +2206,7 @@
   </object>
   <object id="457" name="Portail To Plaine Village" type="InputAction" x="4122.02" y="1740.5" width="159.454" height="89.5">
    <properties>
-    <property name="TeleportPoint" value="Plaine"/>
+    <property name="TeleportPoint" value="Plaine2"/>
     <property name="To?" value="Plaine"/>
    </properties>
   </object>
@@ -2219,6 +2219,16 @@
   <object id="467" type="Collision" x="4288" y="1696" width="32" height="160"/>
   <object id="468" type="Collision" x="4160" y="1696" width="128" height="32"/>
   <object id="469" type="Collision" x="4160" y="1856" width="32" height="32"/>
+  <object id="470" type="Collision" x="1792" y="-32" width="224" height="32"/>
+  <object id="471" name="GoPlage" type="PlayerPos" x="1881.85" y="58.08">
+   <point/>
+  </object>
+  <object id="472" name="Portail To Plaine Village" type="InputAction" x="1805.77" y="1.75" width="159.454" height="89.5">
+   <properties>
+    <property name="TeleportPoint" value="Plage"/>
+    <property name="To?" value="Plage"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="18" name="ArbreBottom" width="145" height="152">
   <data encoding="csv">

@@ -1,7 +1,7 @@
 c1: None
 c2: None
-c3: [27, 'Poisson', 1, 'item', 1]
-c4: None
+c3: [11, 'GrosDmg', 2, 'potions', 1]
+c4: [8, 'PetitHeal', 1, 'potions', 1]
 c5: None
 c6: None
 c7: None
