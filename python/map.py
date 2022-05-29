@@ -54,11 +54,16 @@ class Mapmanager:
         self.register_map("Plage", mapscript.Plage(self))
         self.register_map("MaisonPlage", mapscript.MaisonPlage(self))
 
+        self.current_map = self.basemap
+
         self.changemap(self.basemap, "PlayerPos")
 
         self.Animation = transition.Animation(3)
 
-
+        self.song = {}
+        self.song['door'] = PG.son("../song/Ingame/door.mp3", "song")
+        self.song['chest'] = PG.son("../song/Ingame/chest.mp3", "song")
+        self.song['aie'] = PG.son("../song/Ingame/aie.mp3", "song")
 
         self.teleport_player("PlayerPos")
 
@@ -103,7 +108,7 @@ class Mapmanager:
                 for i in range(element.properties['nbennemis']):
                     id = int(random.choice(element.properties['Ennemis'].split(",")))
                     lvl = random.randint(int(element.properties['level'].split(",")[0]),
-                                         int(element.properties['level'].split(",")[1]))
+                                         int(element.properties['level'].split(",")[-1]))
                     x = int(random.randint(int(element.x), int(element.x + element.width)))
                     y = int(random.randint(int(element.y), int(element.y + element.height)))
                     a = Ennemis.Ennemy(id, lvl, x, y)
@@ -118,7 +123,7 @@ class Mapmanager:
         self.maps[name] = Map(name, self.walls, objects_input, group, tmx, mapdata, mapobject, ennemis)
         mapobject.load()
         self.actionnb = mapobject.actionb
-        self.current_map = self.basemap
+
 
     def reloadmap(self):
 
@@ -213,6 +218,7 @@ class Mapmanager:
             returntype = object : return object
             returntype = all : [object, pygame.Rect]
         """
+        print("After", self.current_map )
         l = []
         if returntype == "rect":
             for i in self.get_map().object.keys():

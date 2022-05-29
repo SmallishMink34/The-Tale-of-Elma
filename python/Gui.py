@@ -17,7 +17,6 @@ class Gui:
         self.element = {}
         self.InGame()
 
-
         self.currentGui = 'InGame'
 
         self.move = None
@@ -32,10 +31,10 @@ class Gui:
     def InGame(self):
         self.currentGui = "InGame"
         self.element = {}
-        self.element['Pname'] = [ClassPG.Texte(self.player.name, 20, 20, False, (255, 255, 255), 32), True]
+        self.element['Pname'] = [ClassPG.Texte(self.player.name, 20*self.facteur, 10*self.facteur, False, (255, 255, 255), 32), True]
         self.element['Kaction'] = [ClassPG.Texte("Interagir : "+str(pygame.key.name(valeur.l["interact"])).upper(), self.w/2, self.h-30, True, (255, 255, 255), int(15*self.facteur)),
                                    self.player.KeyAction]
-        #self.element['Vie'] = [ClassPG.img("")]
+        self.element['Vie'] = [ClassPG.img("../img/bar/vie/Vie_00100.png", 0, 50*valeur.facteur,valeur.screensize[0]/4, valeur.screensize[1]/4, False), True]
 
     def DialogB(self, name, texte):
         self.currentGui = "DialogB"
@@ -94,11 +93,22 @@ class Gui:
         self.element["Annulerr"] = [ClassPG.Texte("Annuler", 590 * self.facteur, 380 * self.facteur, True), True]
         self.player.allinputoff(False)
 
+    def PlayerLife(self, vie):
+        if self.player.hp_previous != self.player.hp:
+            self.player.hp_previous = self.player.hp
+            self.player.hp = vie
+            if self.player.hp > self.player.hpmax: self.player.hp = self.player.hpmax
+            if self.player.hp < 0: self.player.hp = 0
+            vie = (5- len(str(int(self.player.hp))))*"0"+str(int(self.player.hp))
+
+            self.element['Vie'][0].iupdate(f"../img/bar/vie/Vie_{vie}.png", True, True)
+
     def Pause(self):
         self.currentGui = "Pause"
         pass
 
     def iblit(self, screen):
+        self.PlayerLife(self.player.hp)
         if self.currentGui == "InGame":
             self.element['Kaction'][1] = self.player.KeyAction
         for i in self.element.keys():

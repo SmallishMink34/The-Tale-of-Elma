@@ -193,10 +193,10 @@ class Maison:
         self.actionb = {}
         self.liste_obj = {}
         self.allmap = Allmap(self.mm, self)
-        self.load()
 
 
     def load(self):
+
         self.actionb = self.mm.load(self.name) if self.mm.load(self.name) != None and len(self.mm.load(self.name)) == len(
             self.default()) else self.default()
         self.load_img()
@@ -217,6 +217,7 @@ class Maison:
         :return: Dictionnaire de toutes les valeurs par défaut de tous les objets du modèle.
         """
         a = {}
+        print(self.mm.current_map)
         for i in self.mm.get_allobject("all"):
             try:
                 a[i[0].name] = i[0].properties["default"]
@@ -470,39 +471,14 @@ class MaisonPêcheur:
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
-                self.allmap.collision(element)
-                if element[0].name == "Game":
-                    self.mm.player.gui.Game(self.mm.player.get_item_in_inventory(5).obj)
-                if "Map" in element[0].name:
-                    self.mm.player.gui.Carte(element[0].properties['Stage'])
                 if "pêcheur" in element[0].name:
                     objet2 = self.mm.player.inv.item(9, 1)
                     self.element['inv'][0].add(objet2, "c14")
-
-    def update(self):
-        pass
-
-    def load(self):
-        self.allmap.load()
-
-    def __str__(self):
-        return "la map actuel est la Foret"
-
-    def collision(self, i):
-        for element in self.mm.get_allobject("all"):
-            if element[0].type != "InputAction":
-                if i.feet.colliderect(element[1]):
-                    self.allmap.collision_without_action(element)
-                    break
-                else:
-                    self.mm.player.speed = 3
-            if i.feet.colliderect(
-                    element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
-                if self.allmap.hand(element) is False: break
                 self.allmap.collision(element)
 
     def update(self):
         pass
+
 class Plage:
     def __init__(self, mapmanager, save_load=False):
         self.name = "Plage"
@@ -641,9 +617,9 @@ class Allmap():
                         if element[0].properties["consume"]:
                             if element[0].name in self.map.actionb.keys():
                                 if not self.map.actionb[element[0].name]:
-                                    self.mm.player.inventaire.suppr_nb_obj(1, 5)
+                                    self.mm.player.inventaire.suppr_nb_obj(element[0].properties["quantity"], 5)
                             else:
-                                self.mm.player.inventaire.suppr_nb_obj(1, 5)
+                                self.mm.player.inventaire.suppr_nb_obj(element[0].properties["quantity"], 5)
                     else:
                         self.action_help(element)
                         return False
@@ -662,8 +638,14 @@ class Allmap():
             return True
 
     def collision(self, element):
+        try:
+            a = element[0].properties['song']
+            self.mm.song[a].play()
+        except KeyError:
+            pass
         if "Chest" in element[0].name:
             self.mm.player.gui.inventory_chest(element[0].name)
+
         if "Panneau" in element[0].name:
             self.mm.player.gui.DialogP(element[0].properties['Speaker'], element[0].properties['Texte'])
         if "Portail" in element[0].name:  # Si c'est un point de teleportation
@@ -731,8 +713,14 @@ class Allmap():
         b = element[0].type if isinstance(element[0].type, str) else ""
         if "Spike" in a:
             self.time_in += 1
-            if self.time_in > 20:
+            if self.time_in > 80:
+                self.time_in = 0
                 self.mm.player.hp -= element[0].properties['Damage']
+                try:
+                    a = element[0].properties['song']
+                    self.mm.song[a].play()
+                except KeyError:
+                    pass
         if "SpawnPoint" in b:
             if self.mm.current_map != self.spawnpoint:
                 self.load()

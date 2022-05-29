@@ -84,7 +84,6 @@ class case:
             self.supr_obj()
 
 
-
 class inv:
     def __init__(self, text: str, personnage: str, inv: str, name: str, size: tuple):
         """[class pour l'inventaire]
@@ -171,6 +170,7 @@ class inv:
         """[Méthode qui ajoute un objet à l'inv]"""
         case = case.replace(self.lettre, "")
         self.c[self.lettre + str(case)].add_obj(obj)
+        self.save(self.name)
 
     def suppr(self, case):
         """[Méthode qui suprime l'item dans la case de l'inv]"""

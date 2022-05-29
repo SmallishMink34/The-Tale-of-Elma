@@ -1775,6 +1775,7 @@
     <property name="default" type="bool" value="false"/>
     <property name="needitem" value="Corde"/>
     <property name="quantity" type="int" value="1"/>
+    <property name="song" value="Corde"/>
    </properties>
   </object>
   <object id="45" type="Collision" x="2456.17" y="2201" width="49.6663" height="6.00033"/>
@@ -1907,7 +1908,11 @@
   <object id="206" type="Collision" x="2963.92" y="1670.27" width="32.1637" height="101.459"/>
   <object id="207" type="Collision" x="2995.25" y="1763.6" width="32.1637" height="76.1253"/>
   <object id="208" type="Collision" x="3027.25" y="1829.6" width="32.1637" height="28.792"/>
-  <object id="210" name="Chest3" type="InputAction" x="3196.33" y="1892.67" width="102" height="89.3334"/>
+  <object id="210" name="Chest3" type="InputAction" x="3196.33" y="1892.67" width="102" height="89.3334">
+   <properties>
+    <property name="song" value="chest"/>
+   </properties>
+  </object>
   <object id="222" type="effect Boue" x="2208" y="1888" width="512" height="64">
    <properties>
     <property name="ralenti" type="int" value="1"/>
@@ -1937,6 +1942,7 @@
    <properties>
     <property name="TeleportPoint" value="Library"/>
     <property name="To?" value="Maison"/>
+    <property name="song" value="door"/>
    </properties>
   </object>
   <object id="228" name="Library" x="2911.67" y="2918.67">
@@ -2135,6 +2141,7 @@
     <property name="To?" value="Maison"/>
     <property name="default" type="bool" value="false"/>
     <property name="money" type="int" value="100"/>
+    <property name="song" value="door"/>
    </properties>
   </object>
   <object id="445" name="MyHouse" x="1229" y="1258">
@@ -2194,7 +2201,7 @@
   <object id="455" name="ForetPosVillage" type="PlayerPos" x="1888.66" y="4026.67">
    <point/>
   </object>
-  <object id="456" name="Plaine" type="PlayerPos" x="4198.1" y="1796.83">
+  <object id="456" name="VillageExit" type="PlayerPos" x="4198.1" y="1796.83">
    <point/>
   </object>
   <object id="457" name="Portail To Plaine Village" type="InputAction" x="4122.02" y="1740.5" width="159.454" height="89.5">

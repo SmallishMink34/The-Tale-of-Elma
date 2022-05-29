@@ -166,9 +166,11 @@ class PlayerTopDown(AnimateSprite):
         self.tilesizescale = 2
         self.screen = screen
 
-        # Stats du joueur 
+        # Stats du joueur
+
         self.hp = 100
         self.hpmax = 100
+        self.hp_previous = self.hp
         self.deffence = 0
         self.attaque = 0
         self.speedfight = 200000

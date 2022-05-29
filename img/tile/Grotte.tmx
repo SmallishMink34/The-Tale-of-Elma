@@ -433,7 +433,11 @@
   <object id="1" name="PlayerPos" type="PlayerPos" x="1104.37" y="2347.13">
    <point/>
   </object>
-  <object id="34" name="Chest1" type="InputAction" x="746" y="1559" width="72.6667" height="57.3334"/>
+  <object id="34" name="Chest1" type="InputAction" x="746" y="1559" width="72.6667" height="57.3334">
+   <properties>
+    <property name="song" value="chest"/>
+   </properties>
+  </object>
   <object id="36" name="Portail Exit Grotte" type="InputAction" x="854.333" y="2191.67" width="132" height="104">
    <properties>
     <property name="TeleportPoint" value="GrottePos"/>
@@ -540,6 +544,7 @@
   <object id="147" name="Chest2" type="InputAction" x="2733.67" y="106.667" width="98" height="73.3334">
    <properties>
     <property name="c4:" value="1,1"/>
+    <property name="song" value="chest"/>
    </properties>
   </object>
   <object id="153" name="Portail Exit Grotte2" type="InputAction" x="2789.67" y="774.333" width="60" height="58">
@@ -552,11 +557,13 @@
   <object id="154" name="Spike" type="Damage" x="2720" y="352" width="64" height="160">
    <properties>
     <property name="Damage" type="int" value="1"/>
+    <property name="song" value="aie"/>
    </properties>
   </object>
   <object id="155" name="Spike" type="Damage" x="2784" y="384" width="32" height="96">
    <properties>
     <property name="Damage" type="int" value="1"/>
+    <property name="song" value="aie"/>
    </properties>
   </object>
   <object id="156" name="Portail In Grotte" type="InputAction" x="2687.33" y="1916.33" width="103.333" height="58">
