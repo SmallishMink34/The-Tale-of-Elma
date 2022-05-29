@@ -5,6 +5,7 @@ import transition
 import time
 import Ennemis
 import random
+import inv
 
 
 class Grotte:
@@ -478,9 +479,12 @@ class MaisonPêcheur:
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
                 if "pêcheur" in element[0].name:
-                    objet2 = self.mm.player.inv.item(9, 1)
-                    self.element['inv'][0].add(objet2, "c14")
+                    objet2 = inv.item(26, 1)
+                    self.mm.player.inventaire.add(objet2, "c14")
+                #if "rubisBoss" in element[0].name:
+
                 self.allmap.collision(element)
+
 
     def update(self):
         pass

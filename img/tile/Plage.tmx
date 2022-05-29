@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="73">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="75">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="ManyBats.tsx"/>
  <tileset firstgid="15179" source="TX Props (32).tsx"/>
@@ -1006,7 +1006,7 @@
   </object>
   <object id="56" name="Portail To Village Plaine" type="InputAction" x="2080.33" y="3740.79" width="175.333" height="98.413">
    <properties>
-    <property name="TeleportPoint" value="VillagePlage"/>
+    <property name="TeleportPoint" value="GoPlage"/>
     <property name="To?" value="Village"/>
    </properties>
   </object>
@@ -1050,7 +1050,7 @@
     <property name="To?" value="Plage"/>
    </properties>
   </object>
-  <object id="69" name="Portail bois" type="InputAction" x="3590.56" y="1886.92" width="124.882" height="130.154" rotation="0.584631">
+  <object id="69" name="Portail bois" type="InputAction" x="3624.57" y="1930.34" width="50.8722" height="65.3955" rotation="0.584631">
    <properties>
     <property name="Speaker" value="Mind"/>
     <property name="TeleportPoint" value="ile"/>
@@ -1062,6 +1062,22 @@
   </object>
   <object id="70" name="ChestB1" type="InputAction" x="2914.33" y="3458.33" width="91.3334" height="81.3334"/>
   <object id="71" name="ChestB2" type="InputAction" x="645.333" y="3590.33" width="91.3334" height="81.3334"/>
+  <object id="73" type="Ennemi" x="1251" y="2965" width="514" height="370">
+   <properties>
+    <property name="Ennemis" value="3,4"/>
+    <property name="Respawn?" type="bool" value="false"/>
+    <property name="level" value="2,5"/>
+    <property name="nbennemis" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="74" type="Ennemi" x="2475" y="2557" width="514" height="370">
+   <properties>
+    <property name="Ennemis" value="1,3"/>
+    <property name="Respawn?" type="bool" value="false"/>
+    <property name="level" value="2,3"/>
+    <property name="nbennemis" type="int" value="4"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="Collision">
   <object id="3" type="Collision" x="608" y="3680" width="79" height="31"/>

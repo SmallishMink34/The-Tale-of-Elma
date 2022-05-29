@@ -1,10 +1,10 @@
-from turtle import right
 import pygame
 import inv
 import ClassPG, pygame_textbox
 from valeurs import valeur
 import pandas as pd
 
+#
 class Gui:
     def __init__(self, name, player, size=(1280, 720)):
         self.name = name
@@ -177,18 +177,10 @@ class Gui:
                 self.element["inv"][0].move(self.c, self.c2)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                objet = inv.item(23, 1)
-                objet1 = inv.item(24, 1)
-                objet2 = inv.item(25, 1)
-                objet3 = inv.item(4, 1)
-                objet4 = inv.item(5, 1)
-
+                objet = inv.item(28, 1)
+            #     objet2 = inv.item(11, 2)
                 self.element['inv'][0].add(objet, "c12")
-                self.element['inv'][0].add(objet1, "c13")
-                self.element['inv'][0].add(objet2, "c14")
-                self.element['inv'][0].add(objet3, "c15")
-                self.element['inv'][0].add(objet4, "c10")
-
+            #     self.element['inv'][0].add(objet2, "c2")
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
                 self.sep = True

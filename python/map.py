@@ -115,6 +115,7 @@ class Mapmanager:
                     group.add(a)
                     ennemis.append(a)
 
+
         # groupe contenant le joueur et la map
         group.add(self.player)
         group.change_layer(self.player, u)
