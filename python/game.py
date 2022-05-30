@@ -52,7 +52,9 @@ class Game():
                 if self.player.pressed.get(valeur.l["inventory"]):
                     self.player.gui.inventory(self.player.inventaire)
                     self.player.pressed[valeur.l["inventory"]] = False
-
+                if self.player.pressed.get(pygame.K_o):
+                    self.map_manag.reload_maps()
+                    break
 
             self.player.gui.iblit(self.display)
 

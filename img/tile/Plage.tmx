@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="75">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="76">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="ManyBats.tsx"/>
  <tileset firstgid="15179" source="TX Props (32).tsx"/>
@@ -1061,7 +1061,11 @@
    </properties>
   </object>
   <object id="70" name="ChestB1" type="InputAction" x="2914.33" y="3458.33" width="91.3334" height="81.3334"/>
-  <object id="71" name="ChestB2" type="InputAction" x="645.333" y="3590.33" width="91.3334" height="81.3334"/>
+  <object id="71" name="ChestB2" type="InputAction" x="645.333" y="3590.33" width="91.3334" height="81.3334">
+   <properties>
+    <property name="song" value="chest"/>
+   </properties>
+  </object>
   <object id="73" type="Ennemi" x="421" y="3015" width="1488" height="480">
    <properties>
     <property name="Ennemis" value="3,4"/>

@@ -12,7 +12,7 @@
 11,GrosDmg,potions,../img/item/grosse_dmg.png,1,6,GrosDmg
 12,Casquette Pong,item,../img/item/casette.png,1,0,Casquette Pong
 13,Corde,item,../img/item/corde.png,1,0,Corde
-14,aaaa,arme,../img/item/hache.png,1,0,hache
+14,hache,arme,../img/item/hache.png,1,2,hache
 15,marteau,item,../img/item/marteau.png,1,0,marteau
 16,tournevis,item,../img/item/tournevis.png,1,0,tournevis
 17,lance pierre,item,../img/item/lancepierre.png,1,0,lance pierre

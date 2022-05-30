@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="128">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="130">
  <tileset firstgid="1" source="Base2 (32).tsx"/>
  <tileset firstgid="1065" source="Interior.tsx"/>
  <tileset firstgid="2489" source="ManyBats.tsx"/>
@@ -750,7 +750,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="Element">
-  <object id="1" name="Portail Foret -&gt; Maison 1" type="InputAction" x="474.675" y="1481.69" width="77.3167" height="51.6942">
+  <object id="1" name="Portail Foret -&gt; Maison 1" type="InputAction" x="477.766" y="1482.24" width="77.3167" height="51.6942">
    <properties>
     <property name="TeleportPoint" value="Foret_Maison1"/>
     <property name="To?" value="Foret"/>
@@ -887,10 +887,10 @@
   <object id="106" type="Collision" x="2951.33" y="2088.17" width="16.333" height="17.1663"/>
   <object id="107" type="Collision" x="2918.83" y="2055.92" width="16.333" height="17.1663"/>
   <object id="108" type="Collision" x="3040.58" y="1921.17" width="31.833" height="30.6663"/>
-  <object id="109" name="PanneauForet" type="InputAction" x="322.833" y="1423" width="69.3333" height="79.5">
+  <object id="109" name="PanneauForet" type="InputAction" x="347.197" y="1420.64" width="50.7878" height="56.2273">
    <properties>
     <property name="Speaker" value="Astuce"/>
-    <property name="Texte" value="Pour combatre le Centore il faudrait couper l'arbre au nord avec une hache"/>
+    <property name="Texte" value="Pour combatre le Centaure il faudrait couper l'arbre au nord avec une hache"/>
    </properties>
   </object>
   <object id="111" name="ChestFake" type="InputAction" x="2907" y="1980.17" width="56" height="58.9997"/>
@@ -970,6 +970,16 @@
     <property name="Respawn?" type="bool" value="false"/>
     <property name="level" value="22"/>
     <property name="nbennemis" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="128" name="Banc" type="InputAction" x="321.943" y="1446.98" width="28.1136" height="29.3182">
+   <properties>
+    <property name="Dirrection" value="down"/>
+   </properties>
+  </object>
+  <object id="129" name="Banc" type="InputAction" x="353.761" y="1477.16" width="28.1136" height="29.3182">
+   <properties>
+    <property name="Dirrection" value="down"/>
    </properties>
   </object>
  </objectgroup>

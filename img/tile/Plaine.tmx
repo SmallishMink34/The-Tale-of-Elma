@@ -1760,9 +1760,21 @@
     <property name="To?" value="MaisonPêcheur"/>
    </properties>
   </object>
-  <object id="666" name="ChestP3" type="InputAction" x="3139" y="3011.33" width="91.3334" height="81.3334"/>
-  <object id="667" name="ChestP2" type="InputAction" x="1345.67" y="2535.33" width="91.3334" height="81.3334"/>
-  <object id="668" name="ChestP1" type="InputAction" x="99.6666" y="3436.67" width="91.3334" height="81.3334"/>
+  <object id="666" name="ChestP3" type="InputAction" x="3139" y="3011.33" width="91.3334" height="81.3334">
+   <properties>
+    <property name="song" value="chest"/>
+   </properties>
+  </object>
+  <object id="667" name="ChestP2" type="InputAction" x="1345.67" y="2535.33" width="91.3334" height="81.3334">
+   <properties>
+    <property name="song" value="chest"/>
+   </properties>
+  </object>
+  <object id="668" name="ChestP1" type="InputAction" x="99.6666" y="3436.67" width="91.3334" height="81.3334">
+   <properties>
+    <property name="song" value="chest"/>
+   </properties>
+  </object>
   <object id="671" type="Ennemi" x="743" y="947" width="586" height="466">
    <properties>
     <property name="Ennemis" value="1,3"/>
@@ -2136,8 +2148,8 @@
   <object id="609" type="Collision" x="3298" y="1087.82" width="352" height="32"/>
   <object id="610" type="Collision" x="3298" y="1214.49" width="264" height="33.3333"/>
   <object id="611" type="Collision" x="3554" y="1248.49" width="8" height="223.333"/>
-  <object id="612" type="Collision" x="3554" y="1439.82" width="192" height="32"/>
-  <object id="613" type="Collision" x="3778" y="1439.82" width="96" height="32"/>
+  <object id="612" type="Collision" x="3554" y="1439.82" width="190" height="32"/>
+  <object id="613" type="Collision" x="3776.38" y="1439.82" width="97.625" height="32"/>
   <object id="614" type="Collision" x="3865.33" y="1313.15" width="8.66667" height="126.667"/>
   <object id="615" type="Collision" x="3138" y="1375.82" width="352" height="32"/>
   <object id="616" type="Collision" x="3138" y="1247.82" width="8.66667" height="128"/>
@@ -2181,7 +2193,11 @@
   <object id="654" type="Collision" x="2530" y="703.818" width="32" height="32"/>
   <object id="655" type="Collision" x="3106" y="639.818" width="32" height="32"/>
   <object id="656" type="Collision" x="3394" y="639.818" width="32" height="32"/>
-  <object id="669" name="ChestP4" type="InputAction" x="67.6666" y="68.6666" width="91.3334" height="81.3334"/>
+  <object id="669" name="ChestP4" type="InputAction" x="67.6666" y="68.6666" width="91.3334" height="81.3334">
+   <properties>
+    <property name="song" value="chest"/>
+   </properties>
+  </object>
   <object id="670" name="Panneau4" type="InputAction" x="3023.33" y="2901.67" width="77.3333" height="100.667">
    <properties>
     <property name="Speaker" value="Panneau"/>

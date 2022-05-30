@@ -623,6 +623,7 @@ class Allmap():
         self.in_a_zone = False
 
         self.time_in = 0
+        self.banc = False
 
     def load(self):
         if self.map.name == self.mm.current_map:
@@ -728,6 +729,24 @@ class Allmap():
 
         if "Marchant" in element[0].name:
             self.mm.player.gui.shop(element[0].name)
+
+        if "Banc" in element[0].name:
+            if not self.banc:
+                self.mm.player.moveinputoff(False)
+                self.mm.player.rect.centerx, self.mm.player.rect.centery = element[0].x+element[0].width/2, element[0].y+element[0].height/2
+                self.banc = True
+                self.mm.player.animation(element[0].properties['Dirrection'])
+            else:
+                if element[0].properties["Dirrection"] == "down":
+                    self.mm.player.rect.centery += 10
+                elif element[0].properties["Dirrection"] == "up":
+                    self.mm.player.rect.centery -= 10
+                elif element[0].properties["Dirrection"] == "right":
+                    self.mm.player.rect.centerx += 10
+                elif element[0].properties["Dirrection"] == "left":
+                    self.mm.player.rect.centerx -= 10
+                self.banc = False
+                self.mm.player.moveinputoff(True)
 
     def buy(self, element):
         """

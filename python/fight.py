@@ -31,7 +31,7 @@ class fight():
         pygame.init()
         self.size = valeurs.valeur.screensize
         self.defaultsize = (1280, 720)
-        self.facteur = self.size[0]/self.defaultsize[0]
+        self.facteur = valeurs.valeur.facteur
         self.screen = pygame.display.set_mode(self.size, valeurs.valeur.toggle)
         self.read()
         # Pour savoir qui attaque en premier 
@@ -144,7 +144,7 @@ class fight():
         # Bouton Atk
         
         batk = pygame.image.load("../img/Fight/Attaques.png").convert_alpha()
-        batk = pygame.transform.scale(batk, (200*(self.size[0]/self.defaultsize[0]),100*(self.size[1]/self.defaultsize[1])))
+        batk = pygame.transform.scale(batk, (int(200*(self.size[0]/self.defaultsize[0])),int(100*(self.size[1]/self.defaultsize[1]))))
         batk_rect = batk.get_rect()
         batk_rect.centerx = self.size[0]//6*1.5
         batk_rect.centery =  self.size[1]//5*4
@@ -152,7 +152,7 @@ class fight():
         # Bouton Objets
         
         bobj = pygame.image.load("../img/Fight/Objets.png").convert_alpha()
-        bobj = pygame.transform.scale(bobj, (200*(self.size[0]/self.defaultsize[0]),100*(self.size[1]/self.defaultsize[1])))
+        bobj = pygame.transform.scale(bobj, (int(200*(self.size[0]/self.defaultsize[0])),int(100*(self.size[1]/self.defaultsize[1]))))
         bobj_rect = bobj.get_rect()
         bobj_rect.centerx = self.size[0]//6*3
         bobj_rect.centery = self.size[1]//5*4
@@ -160,7 +160,7 @@ class fight():
         # Bouton Escp
         
         bf = pygame.image.load("../img/Fight/Fuir.png").convert_alpha()
-        bf = pygame.transform.scale(bf, (200*(self.size[0]/self.defaultsize[0]),100*(self.size[1]/self.defaultsize[1])))
+        bf = pygame.transform.scale(bf, (int(200*(self.size[0]/self.defaultsize[0])),int(100*(self.size[1]/self.defaultsize[1]))))
         bf_rect = bf.get_rect()
         bf_rect.centerx = self.size[0]//6*4.5
         bf_rect.centery = self.size[1]//5*4
@@ -168,27 +168,27 @@ class fight():
         # Image du joueur avec l'arme 
         
         jimg = self.joueur.moveimage["right"][0]
-        jimg = pygame.transform.scale(jimg, (150*self.facteur, 150*self.facteur))
+        jimg = pygame.transform.scale(jimg, (int(150*self.facteur), int(150*self.facteur)))
         jimg.set_colorkey((0, 0, 0))
         jimg_rect = jimg.get_rect()
         jimg_rect.x = 225*self.facteur
         jimg_rect.y = 175*self.facteur
         
         aimg = pygame.image.load(self.imga).convert_alpha()
-        aimg = pygame.transform.scale(aimg,(75*self.facteur, 75*self.facteur))
+        aimg = pygame.transform.scale(aimg,(int(75*self.facteur), int(75*self.facteur)))
         aimg = pygame.transform.flip(aimg, 180, 0)
         aimg.set_colorkey((0, 0, 0))
         aimg_rect = aimg.get_rect()
-        aimg_rect.x = 295*self.facteur
-        aimg_rect.y = 240*self.facteur
+        aimg_rect.x = int(295*self.facteur)
+        aimg_rect.y = int(240*self.facteur)
         
         # texte hp 
         
-        pv = ClassPG.Texte("PV : "+str(self.joueur.hp), 575*self.facteur, 400*self.facteur, False)
-        lvltext = ClassPG.Texte(str(self.lvlmob), 980*self.facteur, 110*self.facteur, True)
-        name = ClassPG.Texte(str(self.ennemii.Nom), 980*self.facteur, 50, True)
+        pv = ClassPG.Texte("PV : "+str(self.joueur.hp), int(575*self.facteur), int(400*self.facteur), False)
+        lvltext = ClassPG.Texte(str(self.lvlmob), int(980*self.facteur), int(110*self.facteur), True)
+        name = ClassPG.Texte(str(self.ennemii.Nom), int(980*self.facteur), 50, True)
 
-        Hp_mob = ClassPG.progressbar(self.ennemii.Pv/self.ennemii.PvMax,  925*self.facteur, 130*self.facteur, 110*self.facteur,20*self.facteur)
+        Hp_mob = ClassPG.progressbar(self.ennemii.Pv/self.ennemii.PvMax,  int(925*self.facteur), int(130*self.facteur), int(110*self.facteur),int(20*self.facteur))
         
         #Image de fond
         Img = ClassPG.img("../img/temp/screen.png", 0, 0, self.size[0], self.size[1], False)

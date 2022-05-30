@@ -42,17 +42,10 @@ class Mapmanager:
 
         self.loading = False  # Load from the file
         self.seecollision = False
-        self.register_map("Lobby", mapscript.lobby(self))
-        self.register_map("Grotte", mapscript.Grotte(self))
-        self.register_map("Village", mapscript.Village(self))
-        self.register_map("Maison", mapscript.Maison(self))
-        self.register_map("Puit", mapscript.Puit(self))
-        self.register_map("Foret", mapscript.Foret(self))
-        self.register_map("Maison_Foret", mapscript.Maison_Foret(self))
-        self.register_map("Plaine", mapscript.Plaine(self))
-        self.register_map("MaisonPêcheur", mapscript.MaisonPêcheur(self))
-        self.register_map("Plage", mapscript.Plage(self))
-        self.register_map("MaisonPlage", mapscript.MaisonPlage(self))
+
+        self.maps_dico = {}
+
+        self.all_register()
 
         self.current_map = self.basemap
 
@@ -67,6 +60,26 @@ class Mapmanager:
 
         self.teleport_player("PlayerPos")
 
+    def all_register(self):
+        self.register_map("Lobby", mapscript.lobby(self))
+        self.register_map("Grotte", mapscript.Grotte(self))
+        self.register_map("Village", mapscript.Village(self))
+        self.register_map("Maison", mapscript.Maison(self))
+        self.register_map("Puit", mapscript.Puit(self))
+        self.register_map("Foret", mapscript.Foret(self))
+        self.register_map("Maison_Foret", mapscript.Maison_Foret(self))
+        self.register_map("Plaine", mapscript.Plaine(self))
+        self.register_map("MaisonPêcheur", mapscript.MaisonPêcheur(self))
+        self.register_map("Plage", mapscript.Plage(self))
+        self.register_map("MaisonPlage", mapscript.MaisonPlage(self))
+
+        self.zoomIO(1.6*(self.screen.get_size()[0] / 1280))
+
+    def reload_maps(self):
+        self.register_map(self.current_map, self.maps_dico[self.current_map])
+        self.zoomIO(1.6 * (self.screen.get_size()[0] / 1280))
+        print('reload maps')
+
     def alltiles(self):
         self.alltiles_d = {}
         self.alltiles_d["Base"] = pytmx.util_pygame.load_pygame("../img/tile/alltiles.tmx", load_all_tiles=True)
@@ -75,6 +88,7 @@ class Mapmanager:
 
     def register_map(self, name, mapobject):
         self.current_map = name
+        self.maps_dico[name] = mapobject
         tmx = pytmx.util_pygame.load_pygame(f"../img/tile/{name}.tmx", load_all_tiles=True)
         self.alltiles()
         mapdata = pyscroll.data.TiledMapData(tmx)
@@ -126,9 +140,6 @@ class Mapmanager:
 
 
     def reloadmap(self):
-
-        self.maps[self.current_map].map_layer.reload()
-        self.maps[self.current_map].map_layer.set_size((1280, 720))
 
         pygame.display.flip()
 

@@ -196,6 +196,7 @@ class PlayerTopDown(AnimateSprite):
 
         self.KeyAction = True
         self.canPressKey = True
+        self.canMoveKey = True
 
         self.gui = Gui.Gui('Normal', self, self.screen.get_size())
         self.load_info()
@@ -210,9 +211,6 @@ class PlayerTopDown(AnimateSprite):
         self.save_old_location()  # Savegarde des position du joueur avant mouvement
         self.dirrection()  # Deplacement joueur
         self.KeyAction = False
-
-        if self.pressed.get(valeur.l["interact"]):
-            pass
 
     def get_coords_image(self, x, y):
         """
@@ -231,7 +229,7 @@ class PlayerTopDown(AnimateSprite):
         Dirrige le joueur dans une dirrection
         :return: Nothing
         """
-        if self.canPressKey:
+        if self.canPressKey and self.canMoveKey:
             if self.pressed.get(valeur.l["right"]):
                 self.move(self.rect.x + self.speed, self.rect.y)
                 self.animation('right')
@@ -286,7 +284,7 @@ class PlayerTopDown(AnimateSprite):
 
     def allinputoff(self, switch=None):
         """
-        Desactive/Active les touches de déplacement
+        Desactive/Active les touches de déplacement et interaction
         :param switch: Boolean
         :return: Nothing
         """
@@ -300,6 +298,23 @@ class PlayerTopDown(AnimateSprite):
         else:
             self.canPressKey = switch
             self.pressed = {} if not self.canPressKey else self.pressed
+
+    def moveinputoff(self, switch=None):
+        """
+        Desactive/Active les touches de déplacement et interaction
+        :param switch: Boolean
+        :return: Nothing
+        """
+
+        if switch is None:
+            if self.canMoveKey:
+                self.canMoveKey = False
+                self.pressed = {}
+            else:
+                self.canMoveKey = True
+        else:
+            self.canMoveKey = switch
+            self.pressed = {} if not self.canMoveKey else self.pressed
 
     def load_info(self):
         try:

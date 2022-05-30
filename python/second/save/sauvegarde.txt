@@ -1,0 +1,3 @@
+SpawnPoint: Maison
+Money: 0
+Pseudo: Test

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="164">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="166">
  <tileset firstgid="1" source="Base (32).tsx"/>
  <tileset firstgid="421" source="Base2 (32).tsx"/>
  <tileset firstgid="1485" source="Shadow.tsx"/>
@@ -534,8 +534,9 @@
    <properties>
     <property name="consume" type="bool" value="true"/>
     <property name="default" type="bool" value="true"/>
-    <property name="needitem" value="briquet"/>
+    <property name="needitem" value="Clé Rouge"/>
     <property name="quantity" type="int" value="1"/>
+    <property name="song" value="door"/>
    </properties>
   </object>
   <object id="143" name="Tunnel" type="Tunnel" x="2351.83" y="1647.17">
@@ -579,6 +580,7 @@
   <object id="159" name="IntoGrotte" type="PlayerPos" x="911.25" y="2210.08">
    <point/>
   </object>
+  <object id="165" type="Collision" x="2463.45" y="1612.18" width="64.5455" height="52.5455"/>
  </objectgroup>
  <layer id="2" name="walls" width="100" height="100">
   <data encoding="csv">

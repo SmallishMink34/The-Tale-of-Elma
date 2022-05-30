@@ -132,6 +132,7 @@ class Gui:
 
     def iblit(self, screen):
         if self.currentGui == "InGame":
+            self.PlayerLife(self.player.hp)
             self.element['Kaction'][1] = self.player.KeyAction
         for i in self.element.keys():
             if self.element[i][1]:
