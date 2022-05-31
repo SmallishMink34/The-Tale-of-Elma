@@ -2256,7 +2256,7 @@
     <property name="Ennemis" value="1,2"/>
     <property name="Respawn?" type="bool" value="false"/>
     <property name="level" value="1,5"/>
-    <property name="nbennemis" type="int" value="10"/>
+    <property name="nbennemis" type="int" value="2"/>
    </properties>
   </object>
   <object id="485" type="effect Boue" x="2207" y="1890.33" width="512" height="64">
