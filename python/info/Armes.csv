@@ -1,6 +1,6 @@
 ID;Nom;Dmg;img
-1;Epee;10;../img/item/epee.png
-2;hache;35;../img/item/hache.png
-3;lance;49;../img/item/Lance.png
-4;massue;65;../img/item/Massue.png
-5;Epee++;90;../img/item/Epee++.png
+1;Epee;14;../img/item/epee.png
+2;hache;25;../img/item/hache.png
+3;lance;38;../img/item/Lance.png
+4;massue;51;../img/item/Massue.png
+5;Epee++;75;../img/item/Epee++.png

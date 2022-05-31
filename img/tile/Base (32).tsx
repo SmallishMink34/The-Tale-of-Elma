@@ -22,4 +22,10 @@
    <object id="3" type="Collision" x="16.1818" y="0" width="16" height="6"/>
   </objectgroup>
  </tile>
+ <tile id="405">
+  <animation>
+   <frame tileid="173" duration="1600"/>
+   <frame tileid="174" duration="1600"/>
+  </animation>
+ </tile>
 </tileset>

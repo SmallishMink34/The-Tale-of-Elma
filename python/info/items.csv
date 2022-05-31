@@ -1,7 +1,7 @@
 ﻿Id,name,type,imglink,nbmax,link,Description
-1,casque,armure,../img/item/diamond_helmet.png,1,1,casque
-2,plastron,armure,../img/item/diamond_chestplate.png,1,2,plastron
-3,legging,armure,../img/item/diamond_legging.png,1,3,legging
+1,casque,casque,../img/item/diamond_helmet.png,1,1,casque
+2,plastron,plastron,../img/item/diamond_chestplate.png,1,2,plastron
+3,legging,jambiere,../img/item/diamond_legging.png,1,3,legging
 4,briquet,item,../img/item/lighter.png,1,0,briquet
 5,epee,arme,../img/item/epee.png,1,1,epee
 6,healpotions,potions,../img/item/moyen_heal.png,1,1,healpotions

@@ -176,22 +176,30 @@ class Gui:
                     self.c2 = self.c
                 self.element["inv"][0].move(self.c, self.c2)
 
-            """if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
-                objet = inv.item(29, 1)
-                objet2 = inv.item(28, 1)
-                objet3 = inv.item(30, 1)
-                objet4 = inv.item(8, 1)
-                objet5 = inv.item(27, 1)
-                objet6 = inv.item(21, 1)
-                objet7 = inv.item(22, 1)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_8:
+                    objet5 = inv.item(5, 1)
+                    objet = inv.item(29, 1)
+                    objet2 = inv.item(30, 1)
+                    objet3 = inv.item(31, 1)
+                    objet4 = inv.item(32, 1)
 
-                self.element['inv'][0].add(objet, "c12")
-                self.element['inv'][0].add(objet2, "c13")
-                self.element['inv'][0].add(objet3, "c14")
-                self.element['inv'][0].add(objet4, "c15")
-                self.element['inv'][0].add(objet5, "c16")
-                self.element['inv'][0].add(objet6, "c17")
-                self.element['inv'][0].add(objet7, "c18")"""
+                    objet6 = inv.item(42, 1)
+                    objet7 = inv.item(43, 1)
+                    objet8 = inv.item(44, 1)
+                    objet9 = inv.item(41, 1)
+                    objet10 = inv.item(9, 1)
+
+                    self.element['inv'][0].add(objet, "c12")
+                    self.element['inv'][0].add(objet2, "c13")
+                    self.element['inv'][0].add(objet3, "c14")
+                    self.element['inv'][0].add(objet4, "c15")
+                    self.element['inv'][0].add(objet5, "c16")
+                    self.element['inv'][0].add(objet6, "c6")
+                    self.element['inv'][0].add(objet7, "c7")
+                    self.element['inv'][0].add(objet8, "c8")
+                    self.element['inv'][0].add(objet9, "c9")
+                    self.element['inv'][0].add(objet10, "c10")
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT:
                 self.sep = True

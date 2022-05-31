@@ -2,19 +2,19 @@ c1: None
 c2: None
 c3: None
 c4: None
-c5: None
-c6: None
-c7: None
-c8: None
-c9: None
-c10: None
-c11: None
-c12: [13, 'Corde', 1, 'item', 1]
-c13: None
-c14: None
-c15: None
-c16: None
+c5: [5, 'epee', 39, 'arme', 1]
+c6: [42, 'diamond_chestplate', 3, 'plastron', 1]
+c7: [43, 'diamond_legging', 3, 'jambiere', 1]
+c8: [44, 'diamond_helmet', 3, 'casque', 1]
+c9: [41, 'diamond_boots', 1, 'botte', 1]
+c10: [44, 'diamond_helmet', 1, 'casque', 1]
+c11: [42, 'diamond_chestplate', 1, 'plastron', 1]
+c12: [29, 'hache', 39, 'arme', 1]
+c13: [30, 'lance', 39, 'arme', 1]
+c14: [31, 'massue', 39, 'arme', 1]
+c15: [32, 'Epee++', 4, 'arme', 1]
+c16: [32, 'Epee++', 35, 'arme', 1]
 c17: None
-c18: [14, 'hache', 1, 'arme', 1]
-c19: [5, 'epee', 1, 'arme', 1]
-c20: [20, 'Clé Rouge', 1, 'item', 1]
+c18: [43, 'diamond_legging', 1, 'jambiere', 1]
+c19: [41, 'diamond_boots', 1, 'botte', 1]
+c20: None

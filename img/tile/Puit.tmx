@@ -1036,7 +1036,7 @@
     <property name="TeleportPoint" value="BossD"/>
     <property name="To?" value="Maison"/>
     <property name="consume" type="bool" value="false"/>
-    <property name="needitem" value="marteau"/>
+    <property name="needitem" value="hache"/>
     <property name="quantity" type="int" value="1"/>
    </properties>
   </object>

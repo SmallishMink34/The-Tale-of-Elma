@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import ClassPG
 import ennemi
@@ -35,9 +37,9 @@ class fight():
         self.screen = pygame.display.set_mode(self.size, valeurs.valeur.toggle)
         self.read()
         # Pour savoir qui attaque en premier 
-        if self.ennemii.Speed > self.joueur.speedfight:
+        if self.ennemii.Speed > self.joueur.get_speedfight():
             self.tour = False # False = tour du mob
-        elif self.ennemii.Speed == self.joueur.speedfight:
+        elif self.ennemii.Speed == self.joueur.get_speedfight():
             self.tour = rd.choice([False, True])
         else : 
             self.tour = True
@@ -53,13 +55,15 @@ class fight():
         self.dmg = info2["Dmg"]
         self.imga = info2["img"]
 
+        self.joueur.get_defense()
         
         self.ennemii = ennemi.mob(self.mobid, self.lvlmob)
         self.ennemii.imgload(self.facteur)
-        self.realdmg = self.dmg//1.3 - self.ennemii.Def/4 # degat que le joueur inflige
-        if self.realdmg < 0 :
+        self.realdmg = self.dmg//1.3 - self.ennemii.Def/3 # degat que le joueur inflige
+        if self.realdmg < 0:
             self.realdmg = 0
-        self.dmgmob = self.ennemii.Atk//1.3 - self.joueur.deffence/4
+        print(self.ennemii.Atk//1.3)
+        self.dmgmob = self.ennemii.Atk//1.3 - self.joueur.deffence/3 # degat que le joueur recoi
         if self.dmgmob < 0:
             self.dmgmob = 0
 
@@ -255,7 +259,7 @@ class fight():
                 aimg_rect.x, aimg_rect.y = anim_arme_x[x], 1 / x + aimg_rect.y
                 if x > len(anim_x) - 2:
                     player_move = False
-                    self.ennemii.Pv -= self.realdmg
+                    self.ennemii.Pv -= round(self.realdmg + (self.realdmg * (random.randint(-10, 10)/100)),2)
                     if self.ennemii.Pv <= 0:
                         Cloot = Loot(self.lvlmob, self.joueur)
                         Cloot.running()
@@ -282,7 +286,7 @@ class fight():
                 self.ennemii.mobimg_rect.x, self.ennemii.mobimg_rect.y = anim_mob_x[x_m], 1 / x_m + self.ennemii.mobimg_rect.y
                 if x_m > len(anim_mob_x) - 2:
                     ennemi_move = False
-                    self.joueur.hp -= self.dmgmob
+                    self.joueur.hp -= round((self.dmgmob + (self.dmgmob * (random.randint(-10, 10)/100))), 2)
                     pv.iupdate("PV : " + str(self.joueur.hp), (255, 255, 255), (pv.x, pv.y))
                     if self.joueur.hp <= 0:
                         return self.endfight("Ennemis")

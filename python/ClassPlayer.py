@@ -1,7 +1,7 @@
 import pygame, sys, ClassPG, Gui, inv
 from valeurs import valeur
 from PlayerAnim import AnimateSprite
-
+import pandas as pd
 
 class Player(pygame.sprite.Sprite):
     """Class créant un joueur sideview"""
@@ -173,7 +173,7 @@ class PlayerTopDown(AnimateSprite):
         self.hp_previous = self.hp
         self.deffence = 0
         self.attaque = 0
-        self.speedfight = 200000
+        self.speedfight = 250
         self.money = 0
 
         self.type = 'Joueur'
@@ -187,6 +187,7 @@ class PlayerTopDown(AnimateSprite):
         self.inventaire.load_inv()
         self.pressed = {}
         self.speed = 3
+        self.basespeed = 3
         # Il crée un rectangle qui fait la moitié de la largeur du rectangle du joueur et 12 pixels de haut.
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
 
@@ -201,6 +202,25 @@ class PlayerTopDown(AnimateSprite):
         self.gui = Gui.Gui('Normal', self, self.screen.get_size())
         self.load_info()
 
+    def get_speedfight(self):
+        less = 0
+        self.speedfight = 250
+        for i in self.inventaire.c.keys():
+            if self.inventaire.c[i].obj != None:
+                less += self.inventaire.c[i].obj.nbr
+
+        print('Vitesse combat : ', self.speedfight - less)
+        return self.speedfight - less
+
+    def get_defense(self):
+        armure = pd.read_csv("../python/info/armures.csv", sep=";", low_memory=False)
+        self.deffence = 0
+        for i in self.inventaire.c.keys():
+            if i in ["c1", "c2", "c3", "c4"]:
+                if self.inventaire.c[i].obj != None:
+                    info2 = armure.loc[int(self.inventaire.c[i].obj.link-1), ["Protection"]]
+                    self.deffence += int(info2["Protection"])
+        return self.deffence
     def get_inventory(self):
         return self.inventaire.c
 

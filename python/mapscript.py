@@ -170,7 +170,7 @@ class Village:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if "puit" in element[0].name:
@@ -243,7 +243,7 @@ class Maison:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -307,7 +307,7 @@ class Puit:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -378,7 +378,7 @@ class Foret:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -430,7 +430,7 @@ class Maison_Foret:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -476,7 +476,7 @@ class Plaine:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -509,7 +509,7 @@ class MaisonPêcheur:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -557,7 +557,7 @@ class Plage:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -600,7 +600,7 @@ class MaisonPlage:
                     self.allmap.collision_without_action(element)
                     break
                 else:
-                    self.mm.player.speed = 3
+                    self.mm.player.speed = self.mm.player.basespeed
             if i.feet.colliderect(
                     element[1]) and self.mm.player.inputaction():  # si le joueurs entre en collision avec un objet
                 if self.allmap.hand(element) is False: break
@@ -793,6 +793,7 @@ class Allmap():
                 except KeyError:
                     pass
         if "SpawnPoint" in b:
+            self.mm.player.hp = self.mm.player.hpmax
             if self.mm.current_map != self.spawnpoint:
                 self.load()
                 self.save_player_info()
